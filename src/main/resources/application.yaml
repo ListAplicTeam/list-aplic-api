@@ -1,0 +1,53 @@
+spring:
+  profiles:
+    active: dev
+    default: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/list-aplic
+    username: postgre-user-test
+    password: postgre-passwd-test
+    jpa:
+      show-sql: true
+      hibernate:
+        dll-auto: none
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
+  server:
+    port: 8089
+    context-path: /
+
+server:
+  port: 8088
+
+---
+spring:
+  profiles:
+    active: prod
+
+  datasource:
+    url: jdbc:postgresql://ec2-174-129-41-127.compute-1.amazonaws.com:5432/d1k818ue8sn4dr
+    username: vreuvklmvurvef
+    password: 1289d7f84108398471241275bac7d27ffccc21a848997603f99ee9f666a312a4
+    jpa:
+      show-sql: true
+      hibernate:
+        dll-auto: none
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
