@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,7 +34,6 @@ public class ClassroomServiceTest extends BaseTest {
     @Test
     public void testFindAll() {
         // Setup
-        final List<ClassroomDTO> classroomDTOS = Fixture.from(ClassroomDTO.class).gimme(2, ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
         final List<Classroom> classrooms = Fixture.from(Classroom.class).gimme(2, ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
         when(mockClassroomJpaRepository.findAll()).thenReturn(classrooms);
 
@@ -74,6 +74,22 @@ public class ClassroomServiceTest extends BaseTest {
         assertEquals(classroom.getName(), result.get().getName());
         assertEquals(classroom.getSubjectCode(), result.get().getSubjectCode());
         assertEquals(classroom.getInstructorId(), result.get().getInstructorId());
+    }
+
+    @Test
+    public void testFindClassroomBySubjectCode() {
+        // Setup
+        final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        when(mockClassroomJpaRepository.findBySubjectCode(anyString())).thenReturn(Optional.of(classroom));
+
+        // Run the test
+        final Classroom result = classroomServiceUnderTest.findBySubjectCode(classroom.getSubjectCode());
+
+        // Verify the results
+        assertEquals(classroom, result);
+        assertEquals(classroom.getName(), result.getName());
+        assertEquals(classroom.getSubjectCode(), result.getSubjectCode());
+        assertEquals(classroom.getInstructorId(), result.getInstructorId());
     }
 
     @Test

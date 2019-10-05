@@ -4,12 +4,14 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.model.Student;
+import br.com.ufg.listaplic.service.EnrollmentService;
 import br.com.ufg.listaplic.service.StudentService;
 import br.com.ufg.listaplic.template.StudentDTOTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +32,9 @@ public class StudentControllerTest extends BaseTest {
 
     @Mock
     private StudentService mockStudentService;
+
+    @Mock
+    private EnrollmentService mockEnrollmentService;
 
     @Test
     public void testFindAll() {
@@ -68,6 +74,18 @@ public class StudentControllerTest extends BaseTest {
 
         // Verify the results
         assertEquals(studentDTO, result);
+    }
+
+    @Test
+    public void testEnrollment() {
+        // Setup
+        Mockito.doNothing().when(mockEnrollmentService).enrollment(any(UUID.class), anyString());
+
+        // Run the test
+        ResponseEntity result = studentControllerUnderTest.enrollment(UUID.randomUUID(), "CODE_TEST");
+
+        // Verify the results
+        assertEquals(ResponseEntity.ok().build(), result);
     }
 
     @Test

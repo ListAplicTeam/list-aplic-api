@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.controller;
 
 import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.service.EnrollmentService;
 import br.com.ufg.listaplic.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +31,9 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
 
     @ApiOperation(
             value = "Get All Students",
@@ -75,6 +80,21 @@ public class StudentController {
     @ResponseStatus(HttpStatus.CREATED)
     public StudentDTO save(@RequestBody @Valid StudentDTO studentDTO) {
         return studentService.save(studentDTO);
+    }
+
+    @ApiOperation(
+            value = "Enroll Student"
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Student enrolled successfully."
+    )
+    @PostMapping("/{id}/enrollment")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity enrollment(@PathVariable("id") UUID id,
+                                     @RequestParam("subjectCode") String subjectCode) {
+        enrollmentService.enrollment(id, subjectCode);
+        return ResponseEntity.ok().build();
     }
 
     @ApiOperation(

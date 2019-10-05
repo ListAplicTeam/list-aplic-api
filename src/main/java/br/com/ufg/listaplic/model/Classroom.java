@@ -2,11 +2,14 @@ package br.com.ufg.listaplic.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +33,9 @@ public class Classroom {
 
     @Column(name = "instructor_id", nullable = false, unique = true)
     private UUID instructorId;
+
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    private Set<Enrollment> enrollments;
 
     public UUID getId() {
         return id;
@@ -61,5 +67,13 @@ public class Classroom {
 
     public void setInstructorId(UUID instructorId) {
         this.instructorId = instructorId;
+    }
+
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 }

@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 @Service
 public class ClassroomService {
 
+    private static final String CLASSROOM_NOT_FOUND = "Classroom not found";
+
     @Autowired
     private ClassroomJpaRepository classroomJpaRepository;
 
@@ -29,7 +31,12 @@ public class ClassroomService {
     public ClassroomDTO findById(UUID id) {
         return classroomJpaRepository.findById(id)
                 .map(ClassroomConverterDTO::fromDomainToDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Classroom not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
+    }
+
+    public Classroom findBySubjectCode(String subjectCode) {
+        return classroomJpaRepository.findBySubjectCode(subjectCode)
+                .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
     }
 
     public Optional<Classroom> findClassroomById(UUID id) {
@@ -44,7 +51,7 @@ public class ClassroomService {
 
     public ClassroomDTO update(UUID id, ClassroomDTO newClassroomDTO) {
         Classroom classroom = classroomJpaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Classroom not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
 
         Classroom newClassroom = ClassroomConverterDTO.updateDTO(classroom, newClassroomDTO);
         Classroom classroomSaved = classroomJpaRepository.save(newClassroom);
