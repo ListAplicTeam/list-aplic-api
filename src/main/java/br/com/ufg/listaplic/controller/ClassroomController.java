@@ -1,7 +1,7 @@
 package br.com.ufg.listaplic.controller;
 
-import br.com.ufg.listaplic.dto.StudentDTO;
-import br.com.ufg.listaplic.service.StudentService;
+import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.service.ClassroomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,89 +23,89 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/students")
-@Api(value = "Student")
-public class StudentController {
+@RequestMapping("/classrooms")
+@Api(value = "Classroom")
+public class ClassroomController {
 
     @Autowired
-    private StudentService studentService;
+    private ClassroomService classroomService;
 
     @ApiOperation(
-            value = "Get All Students",
+            value = "Get All Classrooms",
             responseContainer = "list",
-            response = StudentDTO.class
+            response = ClassroomDTO.class
     )
     @ApiResponse(
             code = 200,
-            message = "Get All Students",
+            message = "Get All Classrooms",
             responseContainer = "list",
-            response = StudentDTO.class
+            response = ClassroomDTO.class
     )
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentDTO> findAll() {
-        return studentService.findAll();
+    public List<ClassroomDTO> findAll() {
+        return classroomService.findAll();
     }
 
     @ApiOperation(
-            value = "Get Student by id",
-            response = StudentDTO.class
+            value = "Get Classroom by id",
+            response = ClassroomDTO.class
     )
     @ApiResponse(
             code = 200,
-            message = "Get Student by id",
-            response = StudentDTO.class
+            message = "Get Classroom by id",
+            response = ClassroomDTO.class
     )
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public StudentDTO findById(@PathVariable("id") UUID id) {
-        return studentService.findById(id);
+    public ClassroomDTO findById(@PathVariable("id") UUID id) {
+        return classroomService.findById(id);
     }
 
     @ApiOperation(
-            value = "Create Student",
-            response = StudentDTO.class
+            value = "Create Classroom",
+            response = ClassroomDTO.class
     )
     @ApiResponse(
             code = 201,
-            message = "Student created successfully.",
-            response = StudentDTO.class
+            message = "Classroom created successfully.",
+            response = ClassroomDTO.class
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentDTO save(@RequestBody @Valid StudentDTO studentDTO) {
-        return studentService.save(studentDTO);
+    public ClassroomDTO save(@RequestBody @Valid ClassroomDTO classroomDTO) {
+        return classroomService.save(classroomDTO);
     }
 
     @ApiOperation(
-            value = "Update Student",
-            response = StudentDTO.class
+            value = "Update Classroom",
+            response = ClassroomDTO.class
     )
     @ApiResponse(
             code = 200,
-            message = "Student updated successfully",
-            response = StudentDTO.class
+            message = "Classroom updated successfully",
+            response = ClassroomDTO.class
     )
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public StudentDTO update(@PathVariable("id") UUID id,
-                             @RequestBody @Valid StudentDTO studentDTO) {
-        return studentService.update(id, studentDTO);
+    public ClassroomDTO update(@PathVariable("id") UUID id,
+                             @RequestBody @Valid ClassroomDTO classroomDTO) {
+        return classroomService.update(id, classroomDTO);
     }
 
     @ApiOperation(
-            value = "Delete Student by id"
+            value = "Delete Classroom by id"
     )
     @ApiResponse(
             code = 200,
-            message = "Student deleted successfully"
+            message = "Classroom deleted successfully"
     )
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity deleteById(@PathVariable UUID id) {
-        return studentService.findStudentById(id)
+        return classroomService.findClassroomById(id)
                 .map(student -> {
-                    studentService.deleteById(id);
+                    classroomService.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
     }
