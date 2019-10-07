@@ -5,6 +5,7 @@ import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.dto.StudentPublicDTO;
 import br.com.ufg.listaplic.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.HttpURLConnection;
@@ -15,6 +16,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @PostMapping
     public LoginResponseDTO authenticate(StudentDTO credentials) {
         StudentPublicDTO studentPublicDTO = loginService.authenticate(credentials);
 
