@@ -42,6 +42,23 @@ public class StudentDTO extends StudentPublicDTO {
     @Pattern(regexp = ".*@discente.ufg.br", message = "Email must be from UFG domain")
     @NotNull(message = "email must be provided")
     private String email;
+	
+	@ApiModelProperty(
+            value = "Student's password",
+            dataType = "string",
+            example = "nobodyyesdoor",
+            required = true
+    )
+    @NotNull(message = "password must be provided")
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public boolean equals(Object o) {
