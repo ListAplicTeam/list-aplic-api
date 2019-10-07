@@ -13,8 +13,8 @@ import java.util.UUID;
         value = "Student",
         description = "Model of a Student."
 )
-public class StudentDTO {
-
+public class StudentDTO extends StudentPublicDTO {
+  
     @ApiModelProperty(
             value = "Student identification UUID.",
             dataType = "string",
@@ -42,47 +42,6 @@ public class StudentDTO {
     @Pattern(regexp = ".*@discente.ufg.br", message = "Email must be from UFG domain")
     @NotNull(message = "email must be provided")
     private String email;
-
-    @ApiModelProperty(
-            value = "Student's password",
-            dataType = "string",
-            example = "nobodyyesdoor",
-            required = true
-    )
-    @NotNull(message = "password must be provided")
-    private String password;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public boolean equals(Object o) {

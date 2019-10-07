@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.converter;
 
 import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.dto.StudentPublicDTO;
 import br.com.ufg.listaplic.model.Student;
 
 public final class StudentConverterDTO {
@@ -25,6 +26,7 @@ public final class StudentConverterDTO {
         studentDTO.setPassword(student.getPassword());
         return studentDTO;
     }
+
 
     public static Student updateDTO(Student student, StudentDTO newStudent) {
         student.setName(newStudent.getName());

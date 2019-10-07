@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.service;
 
 import br.com.ufg.listaplic.converter.StudentConverterDTO;
+import br.com.ufg.listaplic.dto.LoginResponseDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.exception.ResourceNotFoundException;
 import br.com.ufg.listaplic.model.Student;
@@ -32,12 +33,19 @@ public class StudentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
+    public StudentDTO findByEmail(String email) {
+        return studentJpaRepository.findByEmail(email)
+                .map(StudentConverterDTO::fromDomainToDTO)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
+    }
+
     public Optional<Student> findStudentById(UUID id) {
         return studentJpaRepository.findById(id);
     }
 
     public StudentDTO save(StudentDTO studentDTO) {
         Student student = StudentConverterDTO.fromDTOToDomain(studentDTO);
+        student.setPassword(LoginService.md5(student.getPassword()));
         Student studentSaved = studentJpaRepository.save(student);
         return StudentConverterDTO.fromDomainToDTO(studentSaved);
     }
