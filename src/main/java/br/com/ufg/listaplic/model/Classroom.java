@@ -9,13 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "student")
-public class Student {
+@Table(name = "classroom")
+public class Classroom {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -29,13 +28,13 @@ public class Student {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "subject_code", nullable = false, unique = true)
+    private String subjectCode;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "instructor_id", nullable = false, unique = true)
+    private UUID instructorId;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private Set<Enrollment> enrollments;
 
     public UUID getId() {
@@ -54,20 +53,20 @@ public class Student {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSubjectCode() {
+        return subjectCode;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
     }
 
-    public String getPassword() {
-        return password;
+    public UUID getInstructorId() {
+        return instructorId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setInstructorId(UUID instructorId) {
+        this.instructorId = instructorId;
     }
 
     public Set<Enrollment> getEnrollments() {
@@ -76,18 +75,5 @@ public class Student {
 
     public void setEnrollments(Set<Enrollment> enrollments) {
         this.enrollments = enrollments;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return Objects.equals(email, student.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
     }
 }
