@@ -4,15 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Collection;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseError {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String id;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Collection<FieldError> fieldErrors;
 
     public ResponseError(final String message) {
