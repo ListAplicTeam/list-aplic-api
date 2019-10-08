@@ -1,7 +1,6 @@
 package br.com.ufg.listaplic.converter;
 
 import br.com.ufg.listaplic.dto.StudentDTO;
-import br.com.ufg.listaplic.dto.StudentPublicDTO;
 import br.com.ufg.listaplic.model.Student;
 
 public final class StudentConverterDTO {
