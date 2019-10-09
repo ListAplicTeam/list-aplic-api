@@ -31,7 +31,7 @@ public class LoginController {
             response = StudentDTO.class
     )
     @PostMapping
-    public StudentDTO authenticate(@Valid LoginDTO loginDTO) {
+    public StudentDTO authenticate(@RequestBody @Valid LoginDTO loginDTO) {
         return loginService.authenticate(loginDTO);
     }
 }
