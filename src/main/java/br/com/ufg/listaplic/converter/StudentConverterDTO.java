@@ -26,7 +26,6 @@ public final class StudentConverterDTO {
         return studentDTO;
     }
 
-
     public static Student updateDTO(Student student, StudentDTO newStudent) {
         student.setName(newStudent.getName());
         student.setEmail(newStudent.getEmail());

@@ -1,6 +1,5 @@
 package br.com.ufg.listaplic.dto;
 
-import br.com.ufg.listaplic.model.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -55,14 +54,6 @@ public class StudentDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @ApiModelProperty(
-            value = "User role.",
-            dataType = "string",
-            example = "Discente",
-            readOnly = true
-    )
-    private Role role;
-
     public UUID getId() {
         return id;
     }
@@ -93,14 +84,6 @@ public class StudentDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     @Override

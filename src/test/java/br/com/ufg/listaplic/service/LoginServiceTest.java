@@ -4,6 +4,7 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.LoginDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.dto.UserDTO;
 import br.com.ufg.listaplic.exception.InvalidPasswordException;
 import br.com.ufg.listaplic.template.LoginDTOTemplate;
 import br.com.ufg.listaplic.template.StudentDTOTemplate;
@@ -37,7 +38,7 @@ public class LoginServiceTest extends BaseTest {
         when(mockStudentService.findByEmail(anyString())).thenReturn(studentDTO);
 
         // Run the test
-        final StudentDTO result = loginServiceUnderTest.authenticate(loginDTO);
+        final UserDTO result = loginServiceUnderTest.authenticate(loginDTO);
 
         // Verify the results
         assertEquals(studentDTO.getEmail(), result.getEmail());
@@ -55,6 +56,6 @@ public class LoginServiceTest extends BaseTest {
         when(mockStudentService.findByEmail(anyString())).thenReturn(studentDTO);
 
         // Run the test
-        final StudentDTO result = loginServiceUnderTest.authenticate(loginDTO);
+        loginServiceUnderTest.authenticate(loginDTO);
     }
 }
