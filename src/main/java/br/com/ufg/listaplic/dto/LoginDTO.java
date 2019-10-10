@@ -20,7 +20,7 @@ public class LoginDTO {
             required = true
     )
     @Email(message = "Invalid email")
-    @Pattern(regexp = ".*@discente.ufg.br", message = "Email must be from UFG domain")
+    @Pattern(regexp = ".*@(?:discente.)?ufg.br", message = "Email must be from UFG domain")
     @NotNull(message = "email must be provided")
     private String email;
 
