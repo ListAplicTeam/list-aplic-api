@@ -2,7 +2,6 @@ package br.com.ufg.listaplic.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class InstructorDTO {
@@ -50,19 +49,6 @@ public class InstructorDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InstructorDTO that = (InstructorDTO) o;
-        return Objects.equals(email, that.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
     }
 
 }
