@@ -22,6 +22,7 @@ public class ClassroomConverterDTOTest extends BaseTest {
         // Verify the results
         assertEquals(classroomDTO.getId(), classroomConverted.getId());
         assertEquals(classroomDTO.getName(), classroomConverted.getName());
+        assertEquals(classroomDTO.getCode(), classroomConverted.getCode());
         assertEquals(classroomDTO.getSubjectCode(), classroomConverted.getSubjectCode());
         assertEquals(classroomDTO.getInstructorId(), classroomConverted.getInstructorId());
     }
@@ -36,6 +37,7 @@ public class ClassroomConverterDTOTest extends BaseTest {
         // Verify the results
         assertEquals(classroom.getId(), classroomDTOConverted.getId());
         assertEquals(classroom.getName(), classroomDTOConverted.getName());
+        assertEquals(classroom.getCode(), classroomDTOConverted.getCode());
         assertEquals(classroom.getSubjectCode(), classroomDTOConverted.getSubjectCode());
         assertEquals(classroom.getInstructorId(), classroomDTOConverted.getInstructorId());
     }

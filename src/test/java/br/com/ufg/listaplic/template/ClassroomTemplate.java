@@ -11,6 +11,7 @@ public class ClassroomTemplate implements TemplateLoader {
 
     private static final String ID = "id";
     private static final String NAME = "name";
+    private static final String CODE = "code";
     private static final String SUBJECT_CODE = "subjectCode";
     private static final String INSTRUCTOR_ID = "instructorId";
 
@@ -28,6 +29,7 @@ public class ClassroomTemplate implements TemplateLoader {
     private void buildClassroomTemplate() {
         Fixture.of(Classroom.class).addTemplate(TYPES.CLASSROOM.name(), new Rule() {{
             add(NAME, "Engenharia de Software - Turma A");
+            add(CODE, "FLA0214");
             add(SUBJECT_CODE, "ARQSOFT2019-1");
             add(INSTRUCTOR_ID, UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a1"));
         }});

@@ -30,6 +30,14 @@ public class ClassroomDTO {
     private String name;
 
     @ApiModelProperty(
+            value = "Classroom identification code",
+            dataType = "string",
+            example = "FLA0214",
+            readOnly = true
+    )
+    private String code;
+
+    @ApiModelProperty(
             value = "Subject identification code",
             dataType = "string",
             example = "ARQSOFT2019-1",
@@ -61,6 +69,14 @@ public class ClassroomDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getSubjectCode() {

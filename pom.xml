@@ -24,6 +24,7 @@
 
         <springfox.version>2.9.2</springfox.version>
         <fixture.version>3.1.0</fixture.version>
+        <apache.commons.lang.version>3.9</apache.commons.lang.version>
     </properties>
 
     <dependencies>
@@ -58,6 +59,13 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- Util -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache.commons.lang.version}</version>
         </dependency>
 
         <!-- Test -->

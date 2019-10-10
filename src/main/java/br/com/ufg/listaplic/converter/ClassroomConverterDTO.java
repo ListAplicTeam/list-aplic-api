@@ -12,6 +12,7 @@ public final class ClassroomConverterDTO {
         Classroom classroom = new Classroom();
         classroom.setId(classroomDTO.getId());
         classroom.setName(classroomDTO.getName());
+        classroom.setCode(classroomDTO.getCode());
         classroom.setSubjectCode(classroomDTO.getSubjectCode());
         classroom.setInstructorId(classroomDTO.getInstructorId());
         return classroom;
@@ -21,6 +22,7 @@ public final class ClassroomConverterDTO {
         ClassroomDTO classroomDTO = new ClassroomDTO();
         classroomDTO.setId(classroom.getId());
         classroomDTO.setName(classroom.getName());
+        classroomDTO.setCode(classroom.getCode());
         classroomDTO.setSubjectCode(classroom.getSubjectCode());
         classroomDTO.setInstructorId(classroom.getInstructorId());
         return classroomDTO;
@@ -28,8 +30,8 @@ public final class ClassroomConverterDTO {
 
     public static Classroom updateDTO(Classroom classroom, ClassroomDTO classroomDTO) {
         classroom.setName(classroomDTO.getName());
-        classroomDTO.setSubjectCode(classroom.getSubjectCode());
-        classroomDTO.setInstructorId(classroom.getInstructorId());
+        classroom.setSubjectCode(classroomDTO.getSubjectCode());
+        classroom.setInstructorId(classroomDTO.getInstructorId());
         return classroom;
     }
 }

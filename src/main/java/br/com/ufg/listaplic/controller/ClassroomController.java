@@ -89,7 +89,7 @@ public class ClassroomController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ClassroomDTO update(@PathVariable("id") UUID id,
-                             @RequestBody @Valid ClassroomDTO classroomDTO) {
+                               @RequestBody @Valid ClassroomDTO classroomDTO) {
         return classroomService.update(id, classroomDTO);
     }
 
