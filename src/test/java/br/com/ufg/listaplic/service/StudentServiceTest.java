@@ -3,11 +3,14 @@ package br.com.ufg.listaplic.service;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.exception.ResourceNotFoundException;
 import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.repository.StudentJpaRepository;
 import br.com.ufg.listaplic.template.StudentDTOTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -16,8 +19,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static br.com.ufg.listaplic.service.StudentService.STUDENT_NOT_FOUND;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +34,9 @@ public class StudentServiceTest extends BaseTest {
 
     @Mock
     private StudentJpaRepository mockStudentJpaRepository;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void testFindAll() {
@@ -48,7 +56,6 @@ public class StudentServiceTest extends BaseTest {
     @Test
     public void testFindById() {
         // Setup
-        final StudentDTO studentDTO = Fixture.from(StudentDTO.class).gimme(StudentDTOTemplate.TYPES.STUDENT_WITH_ID.name());
         final Student student = Fixture.from(Student.class).gimme(StudentTemplate.TYPES.STUDENT_WITH_ID.name());
         when(mockStudentJpaRepository.findById(any(UUID.class))).thenReturn(Optional.of(student));
 
@@ -56,7 +63,22 @@ public class StudentServiceTest extends BaseTest {
         final StudentDTO result = studentServiceUnderTest.findById(UUID.randomUUID());
 
         // Verify the results
-        assertEquals(studentDTO, result);
+        assertEquals(student.getId(), result.getId());
+        assertEquals(student.getName(), result.getName());
+        assertEquals(student.getEmail(), result.getEmail());
+        assertEquals(student.getPassword(), result.getPassword());
+    }
+
+    @Test
+    public void testFindByIdShouldThrowExceptionWhenNotFound() {
+        // Setup
+        exceptionRule.expect(ResourceNotFoundException.class);
+        exceptionRule.expectMessage(STUDENT_NOT_FOUND);
+
+        when(mockStudentJpaRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        // Run the test
+        studentServiceUnderTest.findById(UUID.randomUUID());
     }
 
     @Test
@@ -70,6 +92,26 @@ public class StudentServiceTest extends BaseTest {
 
         // Verify the results
         assertEquals(student, result.get());
+        assertEquals(student.getId(), result.get().getId());
+        assertEquals(student.getName(), result.get().getName());
+        assertEquals(student.getEmail(), result.get().getEmail());
+        assertEquals(student.getPassword(), result.get().getPassword());
+    }
+
+    @Test
+    public void testFindStudentByEmail() {
+        // Setup
+        final Student student = Fixture.from(Student.class).gimme(StudentTemplate.TYPES.STUDENT_WITH_ID.name());
+        when(mockStudentJpaRepository.findByEmail(anyString())).thenReturn(Optional.of(student));
+
+        // Run the test
+        final StudentDTO result = studentServiceUnderTest.findByEmail(student.getEmail());
+
+        // Verify the results
+        assertEquals(student.getId(), result.getId());
+        assertEquals(student.getName(), result.getName());
+        assertEquals(student.getEmail(), result.getEmail());
+        assertEquals(student.getPassword(), result.getPassword());
     }
 
     @Test
@@ -84,6 +126,10 @@ public class StudentServiceTest extends BaseTest {
 
         // Verify the results
         assertEquals(studentDTO, result);
+        assertEquals(student.getId(), result.getId());
+        assertEquals(student.getName(), result.getName());
+        assertEquals(student.getEmail(), result.getEmail());
+        assertEquals(student.getPassword(), result.getPassword());
     }
 
     @Test
@@ -99,6 +145,9 @@ public class StudentServiceTest extends BaseTest {
 
         // Verify the results
         assertEquals(newStudentDTO, result);
+        assertEquals(newStudentDTO.getName(), result.getName());
+        assertEquals(newStudentDTO.getEmail(), result.getEmail());
+        assertEquals(newStudentDTO.getPassword(), result.getPassword());
     }
 
     @Test

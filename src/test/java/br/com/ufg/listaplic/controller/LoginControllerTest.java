@@ -26,7 +26,7 @@ public class LoginControllerTest extends BaseTest {
     @Test
     public void testAuthenticate() {
         // Setup
-        final LoginDTO loginDTO = Fixture.from(LoginDTO.class).gimme(LoginDTOTemplate.TYPES.LOGIN_DTO.name());
+        final LoginDTO loginDTO = Fixture.from(LoginDTO.class).gimme(LoginDTOTemplate.TYPES.LOGIN_STUDENT.name());
         final UserDTO userDTO = Fixture.from(UserDTO.class).gimme(UserDTOTemplate.TYPES.USER.name());
 
         when(mockLoginService.authenticate(any(LoginDTO.class))).thenReturn(userDTO);

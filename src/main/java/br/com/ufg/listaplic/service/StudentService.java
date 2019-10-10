@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    private static final String STUDENT_NOT_FOUND = "Student not found";
+    protected static final String STUDENT_NOT_FOUND = "Student not found";
 
     @Autowired
     private StudentJpaRepository studentJpaRepository;

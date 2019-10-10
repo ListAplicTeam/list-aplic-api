@@ -11,17 +11,26 @@ public class LoginDTOTemplate implements TemplateLoader {
     private static final String PASSWORD = "password";
 
     public enum TYPES {
-        LOGIN_DTO,
+        LOGIN_STUDENT,
+        LOGIN_INSTRUCTOR,
     }
 
     @Override
     public void load() {
-        buildLoginDTOTemplate();
+        buildLoginStudentTemplate();
+        buildLoginInstructorTemplate();
     }
 
-    private void buildLoginDTOTemplate() {
-        Fixture.of(LoginDTO.class).addTemplate(TYPES.LOGIN_DTO.name(), new Rule() {{
+    private void buildLoginStudentTemplate() {
+        Fixture.of(LoginDTO.class).addTemplate(TYPES.LOGIN_STUDENT.name(), new Rule() {{
             add(EMAIL, "isaias_neto@discente.ufg.br");
+            add(PASSWORD, "nobodyyesdoor");
+        }});
+    }
+
+    private void buildLoginInstructorTemplate() {
+        Fixture.of(LoginDTO.class).addTemplate(TYPES.LOGIN_INSTRUCTOR.name(), new Rule() {{
+            add(EMAIL, "isaias_neto@ufg.br");
             add(PASSWORD, "nobodyyesdoor");
         }});
     }
