@@ -1,7 +1,10 @@
 package br.com.ufg.listaplic.service;
 
+import br.com.ufg.listaplic.converter.UserConverterDTO;
+import br.com.ufg.listaplic.dto.InstructorDTO;
 import br.com.ufg.listaplic.dto.LoginDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.dto.UserDTO;
 import br.com.ufg.listaplic.exception.InvalidPasswordException;
 import br.com.ufg.listaplic.model.Role;
 import br.com.ufg.listaplic.util.EncryptUtil;
@@ -16,31 +19,27 @@ public class LoginService {
     @Autowired
     private StudentService studentService;
 
-    public StudentDTO authenticate(LoginDTO loginDTO) {
-        StudentDTO studentDTO;
+    public UserDTO authenticate(LoginDTO loginDTO) {
+        if (loginDTO.getEmail().contains(Role.DISCENTE.name().toLowerCase())) {
+            StudentDTO studentDTO = studentService.findByEmail(loginDTO.getEmail());
 
-        if (loginDTO.getEmail().contains("discente")) {
-            studentDTO = studentService.findByEmail(loginDTO.getEmail());
-            studentDTO.setRole(Role.DISCENTE);
+            if (!studentDTO.getPassword().equals(EncryptUtil.md5(loginDTO.getPassword()))) {
+                throw new InvalidPasswordException();
+            }
+
+            return UserConverterDTO.fromStudentToUser(studentDTO);
         } else {
-            return teacherAuthentication(loginDTO);
+            InstructorDTO instructorDTO = instructorAuthentication(loginDTO);
+            return UserConverterDTO.fromInstructorToUser(instructorDTO);
         }
-
-        if (!studentDTO.getPassword().equals(EncryptUtil.md5(loginDTO.getPassword()))) {
-            throw new InvalidPasswordException();
-        }
-
-        return studentDTO;
     }
 
-    private StudentDTO teacherAuthentication(LoginDTO loginDTO) {
+    private InstructorDTO instructorAuthentication(LoginDTO loginDTO) {
         // MOCK enquanto a API do ListElab não está pronta
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setId(UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a2"));
-        studentDTO.setEmail(loginDTO.getEmail());
-        studentDTO.setPassword(loginDTO.getPassword());
-        studentDTO.setName("Rubens Ferreira");
-        studentDTO.setRole(Role.DOCENTE);
-        return studentDTO;
+        InstructorDTO instructorDTO = new InstructorDTO();
+        instructorDTO.setId(UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a2"));
+        instructorDTO.setName("Rubens Ferreira");
+        instructorDTO.setEmail(loginDTO.getEmail());
+        return instructorDTO;
     }
 }

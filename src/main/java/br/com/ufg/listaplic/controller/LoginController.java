@@ -1,7 +1,7 @@
 package br.com.ufg.listaplic.controller;
 
 import br.com.ufg.listaplic.dto.LoginDTO;
-import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.dto.UserDTO;
 import br.com.ufg.listaplic.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,15 +24,15 @@ public class LoginController {
 
     @ApiOperation(
             value = "Login",
-            response = StudentDTO.class
+            response = UserDTO.class
     )
     @ApiResponse(
             code = 201,
             message = "Logged in successfully.",
-            response = StudentDTO.class
+            response = UserDTO.class
     )
     @PostMapping
-    public StudentDTO authenticate(@RequestBody @Valid LoginDTO loginDTO) {
+    public UserDTO authenticate(@RequestBody @Valid LoginDTO loginDTO) {
         return loginService.authenticate(loginDTO);
     }
 }
