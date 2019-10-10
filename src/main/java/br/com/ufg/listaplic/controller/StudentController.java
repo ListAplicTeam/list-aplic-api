@@ -92,8 +92,8 @@ public class StudentController {
     @PostMapping("/{id}/enrollment")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity enrollment(@PathVariable("id") UUID id,
-                                     @RequestParam("subjectCode") String subjectCode) {
-        enrollmentService.enrollment(id, subjectCode);
+                                     @RequestParam("code") String code) {
+        enrollmentService.enrollment(id, code);
         return ResponseEntity.ok().build();
     }
 

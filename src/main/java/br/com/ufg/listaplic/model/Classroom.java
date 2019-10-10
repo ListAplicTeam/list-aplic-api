@@ -28,10 +28,13 @@ public class Classroom {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "subject_code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false, unique = true)
+    private String code;
+
+    @Column(name = "subjectCode", nullable = false)
     private String subjectCode;
 
-    @Column(name = "instructor_id", nullable = false, unique = true)
+    @Column(name = "instructor_id", nullable = false)
     private UUID instructorId;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
@@ -51,6 +54,14 @@ public class Classroom {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getSubjectCode() {

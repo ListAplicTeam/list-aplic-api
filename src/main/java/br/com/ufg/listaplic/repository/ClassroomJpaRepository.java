@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface ClassroomJpaRepository extends JpaRepository<Classroom, UUID> {
 
-    Optional<Classroom> findBySubjectCode(String subjectCode);
+    Optional<Classroom> findByCode(String code);
 }

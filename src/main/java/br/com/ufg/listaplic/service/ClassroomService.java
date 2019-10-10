@@ -5,6 +5,7 @@ import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.exception.ResourceNotFoundException;
 import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,8 @@ public class ClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
     }
 
-    public Classroom findBySubjectCode(String subjectCode) {
-        return classroomJpaRepository.findBySubjectCode(subjectCode)
+    public Classroom findByCode(String code) {
+        return classroomJpaRepository.findByCode(code)
                 .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
     }
 
@@ -44,6 +45,7 @@ public class ClassroomService {
     }
 
     public ClassroomDTO save(ClassroomDTO classroomDTO) {
+        classroomDTO.setCode(generateClassroomCode());
         Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
         Classroom classroomSaved = classroomJpaRepository.save(classroom);
         return ClassroomConverterDTO.fromDomainToDTO(classroomSaved);
@@ -60,6 +62,14 @@ public class ClassroomService {
 
     public void deleteById(UUID id) {
         classroomJpaRepository.deleteById(id);
+    }
+
+    private static String generateClassroomCode() {
+        final int stringSize = 3;
+        final int numberSize = 4;
+        String letters = RandomStringUtils.randomAlphabetic(stringSize).toUpperCase();
+        String numbers = RandomStringUtils.randomNumeric(numberSize);
+        return letters.concat(numbers);
     }
 
 }

@@ -22,10 +22,10 @@ public class EnrollmentService {
     @Autowired
     private StudentService studentService;
 
-    public void enrollment(UUID studentId, String subjectCode) {
+    public void enrollment(UUID studentId, String code) {
         Student student = studentService.findStudentById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
-        Classroom classroom = classroomService.findBySubjectCode(subjectCode);
+        Classroom classroom = classroomService.findByCode(code);
         Enrollment enrollment = new Enrollment();
         enrollment.setClassroom(classroom);
         enrollment.setStudent(student);

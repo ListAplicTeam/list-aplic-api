@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -56,6 +57,7 @@ public class ClassroomServiceTest extends BaseTest {
 
         // Verify the results
         assertEquals(classroomDTO.getName(), result.getName());
+        assertEquals(classroomDTO.getCode(), result.getCode());
         assertEquals(classroomDTO.getSubjectCode(), result.getSubjectCode());
         assertEquals(classroomDTO.getInstructorId(), result.getInstructorId());
     }
@@ -72,22 +74,24 @@ public class ClassroomServiceTest extends BaseTest {
         // Verify the results
         assertEquals(classroom, result.get());
         assertEquals(classroom.getName(), result.get().getName());
+        assertEquals(classroom.getCode(), result.get().getCode());
         assertEquals(classroom.getSubjectCode(), result.get().getSubjectCode());
         assertEquals(classroom.getInstructorId(), result.get().getInstructorId());
     }
 
     @Test
-    public void testFindClassroomBySubjectCode() {
+    public void testFindClassroomByCode() {
         // Setup
         final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
-        when(mockClassroomJpaRepository.findBySubjectCode(anyString())).thenReturn(Optional.of(classroom));
+        when(mockClassroomJpaRepository.findByCode(anyString())).thenReturn(Optional.of(classroom));
 
         // Run the test
-        final Classroom result = classroomServiceUnderTest.findBySubjectCode(classroom.getSubjectCode());
+        final Classroom result = classroomServiceUnderTest.findByCode(classroom.getCode());
 
         // Verify the results
         assertEquals(classroom, result);
         assertEquals(classroom.getName(), result.getName());
+        assertEquals(classroom.getCode(), result.getCode());
         assertEquals(classroom.getSubjectCode(), result.getSubjectCode());
         assertEquals(classroom.getInstructorId(), result.getInstructorId());
     }
@@ -103,6 +107,7 @@ public class ClassroomServiceTest extends BaseTest {
         final ClassroomDTO result = classroomServiceUnderTest.save(classroomDTO);
 
         // Verify the results
+        assertNotNull(result.getCode());
         assertEquals(classroomDTO.getName(), result.getName());
         assertEquals(classroomDTO.getSubjectCode(), result.getSubjectCode());
         assertEquals(classroomDTO.getInstructorId(), result.getInstructorId());

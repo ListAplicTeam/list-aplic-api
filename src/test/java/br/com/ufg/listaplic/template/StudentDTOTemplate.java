@@ -31,7 +31,7 @@ public class StudentDTOTemplate implements TemplateLoader {
         Fixture.of(StudentDTO.class).addTemplate(TYPES.STUDENT.name(), new Rule() {{
             add(NAME, "Isaias Tavares da Silva Neto");
             add(EMAIL, "isaias_neto@discente.ufg.br");
-            add(PASSWORD, "nobodyyesdoor");
+            add(PASSWORD, "1e9f258f838afe310eb0da6501e3c354");
         }});
     }
 

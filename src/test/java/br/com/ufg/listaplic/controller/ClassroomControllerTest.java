@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -54,6 +55,7 @@ public class ClassroomControllerTest extends BaseTest {
 
         // Verify the results
         assertEquals(classroomDTO.getName(), result.getName());
+        assertEquals(classroomDTO.getCode(), result.getCode());
         assertEquals(classroomDTO.getSubjectCode(), result.getSubjectCode());
         assertEquals(classroomDTO.getInstructorId(), result.getInstructorId());
     }
@@ -68,7 +70,9 @@ public class ClassroomControllerTest extends BaseTest {
         final ClassroomDTO result = classroomControllerUnderTest.save(classroomDTO);
 
         // Verify the results
+        assertNotNull(result.getCode());
         assertEquals(classroomDTO.getName(), result.getName());
+        assertEquals(classroomDTO.getCode(), result.getCode());
         assertEquals(classroomDTO.getSubjectCode(), result.getSubjectCode());
         assertEquals(classroomDTO.getInstructorId(), result.getInstructorId());
     }
