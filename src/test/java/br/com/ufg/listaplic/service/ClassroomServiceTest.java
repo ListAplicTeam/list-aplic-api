@@ -46,6 +46,32 @@ public class ClassroomServiceTest extends BaseTest {
     }
 
     @Test
+    public void testFindByStudentId() {
+        // Setup
+        final List<Classroom> classrooms = Fixture.from(Classroom.class).gimme(2, ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        when(mockClassroomJpaRepository.findByStudentId(any(UUID.class))).thenReturn(classrooms);
+
+        // Run the test
+        final List<ClassroomDTO> result = classroomServiceUnderTest.findByStudentId(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(classrooms.size(), result.size());
+    }
+
+    @Test
+    public void testFindByInstructorId() {
+        // Setup
+        final List<Classroom> classrooms = Fixture.from(Classroom.class).gimme(2, ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        when(mockClassroomJpaRepository.findByInstructorId(any(UUID.class))).thenReturn(classrooms);
+
+        // Run the test
+        final List<ClassroomDTO> result = classroomServiceUnderTest.findByInstructorId(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(classrooms.size(), result.size());
+    }
+
+    @Test
     public void testFindById() {
         // Setup
         final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());

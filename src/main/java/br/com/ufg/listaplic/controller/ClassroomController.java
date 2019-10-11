@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -60,6 +61,38 @@ public class ClassroomController {
     @ResponseStatus(HttpStatus.OK)
     public ClassroomDTO findById(@PathVariable("id") UUID id) {
         return classroomService.findById(id);
+    }
+
+    @ApiOperation(
+            value = "Get Classrooms by student id",
+            response = ClassroomDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Get Classrooms by student id",
+            responseContainer = "list",
+            response = ClassroomDTO.class
+    )
+    @GetMapping("/student")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ClassroomDTO> findByStudentId(@RequestParam("studentId") UUID studentId) {
+        return classroomService.findByStudentId(studentId);
+    }
+
+    @ApiOperation(
+            value = "Get Classrooms by instructor id",
+            response = ClassroomDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Get Classrooms by instructor id",
+            responseContainer = "list",
+            response = ClassroomDTO.class
+    )
+    @GetMapping("/instructor")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ClassroomDTO> findByInstructorId(@RequestParam("instructorId") UUID instructorId) {
+        return classroomService.findByInstructorId(instructorId);
     }
 
     @ApiOperation(
