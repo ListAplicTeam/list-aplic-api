@@ -45,6 +45,32 @@ public class ClassroomControllerTest extends BaseTest {
     }
 
     @Test
+    public void testFindByStudentId() {
+        // Setup
+        final List<ClassroomDTO> classroomDTOS = Fixture.from(ClassroomDTO.class).gimme(2, ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        when(mockClassroomService.findByStudentId(any(UUID.class))).thenReturn(classroomDTOS);
+
+        // Run the test
+        final List<ClassroomDTO> result = classroomControllerUnderTest.findByStudentId(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(classroomDTOS.size(), result.size());
+    }
+
+    @Test
+    public void testFindByInstructorId() {
+        // Setup
+        final List<ClassroomDTO> classroomDTOS = Fixture.from(ClassroomDTO.class).gimme(2, ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        when(mockClassroomService.findByInstructorId(any(UUID.class))).thenReturn(classroomDTOS);
+
+        // Run the test
+        final List<ClassroomDTO> result = classroomControllerUnderTest.findByInstructorId(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(classroomDTOS.size(), result.size());
+    }
+
+    @Test
     public void testFindById() {
         // Setup
         final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());

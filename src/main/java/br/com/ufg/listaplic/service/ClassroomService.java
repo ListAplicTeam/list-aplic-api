@@ -35,6 +35,20 @@ public class ClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
     }
 
+    public List<ClassroomDTO> findByStudentId(UUID studentId) {
+        return classroomJpaRepository.findByStudentId(studentId)
+                .stream()
+                .map(ClassroomConverterDTO::fromDomainToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ClassroomDTO> findByInstructorId(UUID instructorId) {
+        return classroomJpaRepository.findByInstructorId(instructorId)
+                .stream()
+                .map(ClassroomConverterDTO::fromDomainToDTO)
+                .collect(Collectors.toList());
+    }
+
     public Classroom findByCode(String code) {
         return classroomJpaRepository.findByCode(code)
                 .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
