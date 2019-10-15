@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.UUID;
 
 @Entity
-@Table(name = "enrollment")
+@Table(name = "enrollment", uniqueConstraints = @UniqueConstraint(columnNames = {"classroom_id", "student_id"}, name = "classroom_student"))
 public class Enrollment {
 
     @Id

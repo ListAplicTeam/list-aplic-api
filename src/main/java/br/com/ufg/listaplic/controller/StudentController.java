@@ -1,5 +1,6 @@
 package br.com.ufg.listaplic.controller;
 
+import br.com.ufg.listaplic.dto.EnrollmentDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.service.EnrollmentService;
 import br.com.ufg.listaplic.service.StudentService;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -92,8 +92,8 @@ public class StudentController {
     @PostMapping("/{id}/enrollment")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity enrollment(@PathVariable("id") UUID id,
-                                     @RequestParam("code") String code) {
-        enrollmentService.enrollment(id, code);
+                                     @RequestBody EnrollmentDTO enrollmentDTO) {
+        enrollmentService.enrollment(id, enrollmentDTO);
         return ResponseEntity.ok().build();
     }
 

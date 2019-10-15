@@ -37,6 +37,14 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseError(e.getMessage()));
     }
 
+    @ExceptionHandler(StudentIsAlreadyEnrolledException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ResponseEntity<ResponseError> handleStudentIsAlreadyEnrolledException(final StudentIsAlreadyEnrolledException e) {
+        LOGGER.error(AN_ERROR_OCCURRED, e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseError(e.getMessage()));
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
