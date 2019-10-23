@@ -8,6 +8,7 @@ import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.repository.StudentJpaRepository;
 import br.com.ufg.listaplic.template.StudentDTOTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
+import br.com.ufg.listaplic.util.EncryptUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -23,9 +24,7 @@ import static br.com.ufg.listaplic.service.StudentService.STUDENT_NOT_FOUND;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class StudentServiceTest extends BaseTest {
 
@@ -147,7 +146,7 @@ public class StudentServiceTest extends BaseTest {
         assertEquals(newStudentDTO, result);
         assertEquals(newStudentDTO.getName(), result.getName());
         assertEquals(newStudentDTO.getEmail(), result.getEmail());
-        assertEquals(newStudentDTO.getPassword(), result.getPassword());
+        assertEquals(EncryptUtil.md5(newStudentDTO.getPassword()), result.getPassword());
     }
 
     @Test

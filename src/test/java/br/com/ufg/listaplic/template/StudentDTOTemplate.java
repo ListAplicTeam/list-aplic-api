@@ -31,13 +31,14 @@ public class StudentDTOTemplate implements TemplateLoader {
         Fixture.of(StudentDTO.class).addTemplate(TYPES.STUDENT.name(), new Rule() {{
             add(NAME, "Isaias Tavares da Silva Neto");
             add(EMAIL, "isaias_neto@discente.ufg.br");
-            add(PASSWORD, "1e9f258f838afe310eb0da6501e3c354");
+            add(PASSWORD, "nobodyyesdoor");
         }});
     }
 
     private void buildStudentWithIdTemplate() {
         Fixture.of(StudentDTO.class).addTemplate(TYPES.STUDENT_WITH_ID.name()).inherits(TYPES.STUDENT.name(), new Rule(){{
             add(ID, UUID.randomUUID());
+            add(PASSWORD, "1e9f258f838afe310eb0da6501e3c354");
         }});
     }
 
@@ -45,7 +46,7 @@ public class StudentDTOTemplate implements TemplateLoader {
         Fixture.of(StudentDTO.class).addTemplate(TYPES.ANOTHER_STUDENT.name(), new Rule() {{
             add(NAME, "Another Student");
             add(EMAIL, "another_student@discente.ufg.br");
-            add(PASSWORD, "another_password");
+            add(PASSWORD, "nobodyyesdoor");
         }});
     }
 
