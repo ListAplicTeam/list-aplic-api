@@ -2,6 +2,8 @@ package br.com.ufg.listaplic.converter;
 
 import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.model.Student;
+import br.com.ufg.listaplic.util.EncryptUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public final class StudentConverterDTO {
 
@@ -29,7 +31,9 @@ public final class StudentConverterDTO {
     public static Student updateDTO(Student student, StudentDTO newStudent) {
         student.setName(newStudent.getName());
         student.setEmail(newStudent.getEmail());
-        student.setPassword(newStudent.getPassword());
+        student.setPassword(
+                StringUtils.isBlank(newStudent.getPassword()) ? EncryptUtil.md5(student.getPassword()) : newStudent.getPassword()
+        );
         return student;
     }
 }
