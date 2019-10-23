@@ -32,7 +32,7 @@ public final class StudentConverterDTO {
         student.setName(newStudent.getName());
         student.setEmail(newStudent.getEmail());
         student.setPassword(
-                StringUtils.isBlank(newStudent.getPassword()) ? EncryptUtil.md5(student.getPassword()) : newStudent.getPassword()
+                StringUtils.isBlank(newStudent.getPassword()) ? student.getPassword() : EncryptUtil.md5(newStudent.getPassword())
         );
         return student;
     }
