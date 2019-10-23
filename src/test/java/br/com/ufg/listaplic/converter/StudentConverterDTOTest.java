@@ -6,6 +6,7 @@ import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.template.StudentDTOTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
+import br.com.ufg.listaplic.util.EncryptUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -49,10 +50,10 @@ public class StudentConverterDTOTest extends BaseTest {
         // Run the test
         final Student newStudent = StudentConverterDTO.updateDTO(student, studentDTO);
 
-        // Verify the results
+        // Verify the resultsn
         assertEquals(studentDTO.getName(), newStudent.getName());
         assertEquals(studentDTO.getEmail(), newStudent.getEmail());
-        assertEquals(studentDTO.getPassword(), newStudent.getPassword());
+        assertEquals(EncryptUtil.md5(studentDTO.getPassword()), newStudent.getPassword());
     }
 
 }
