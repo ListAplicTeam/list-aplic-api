@@ -38,6 +38,7 @@ public class StudentDTOTemplate implements TemplateLoader {
     private void buildStudentWithIdTemplate() {
         Fixture.of(StudentDTO.class).addTemplate(TYPES.STUDENT_WITH_ID.name()).inherits(TYPES.STUDENT.name(), new Rule(){{
             add(ID, UUID.randomUUID());
+            add(PASSWORD, "1e9f258f838afe310eb0da6501e3c354");
         }});
     }
 
