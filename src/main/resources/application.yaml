@@ -34,6 +34,15 @@ server:
   servlet:
     context-path: /api
 
+listelab:
+  api:
+    auth:
+      email: admin@ufg.br
+      password: 123456
+    url:
+      auth: http://sifo.tech/api/usuario/login
+      list: http://sifo.tech/api/lista
+
 ---
 spring:
   profiles:
@@ -61,10 +70,10 @@ management:
       exposure:
         include: "*"
   server:
-    port: 8080
+    port: 8089
     context-path: /
 
 server:
-  port: 80
+  port: 8088
   servlet:
     context-path: /api
