@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,28 +23,43 @@ public class ListService {
     @Autowired
     private AnswerService answerService;
 
-    public List<ListDTO> findList(String name, String subjectCode, boolean aleatory) {
+    public List<ListDTO> findList(String name, String subjectCode, boolean aleatory, boolean onlyPending) {
+
+        // todas as listas
+        List<ListDTO> allLists = getAllLists();
+
+        if (onlyPending) {
+            // ids das listas que foram respondidas
+            Set<UUID> answersIdList = answerService.findAll().stream()
+                    .map(Answer::getListId)
+                    .collect(Collectors.toSet());
+
+            // filtra as que estão pendentes
+            allLists = allLists.stream()
+                    .filter(listDTO -> !answersIdList.contains(listDTO.getId()))
+                    .collect(Collectors.toList());
+        }
 
         if (aleatory) {
-            return Collections.singletonList(getLists().stream().findAny().orElse(new ListDTO()));
+            return Collections.singletonList(allLists.stream().findAny().orElse(new ListDTO()));
         }
 
         if (Objects.nonNull(name) && Objects.nonNull(subjectCode)) {
-            return getLists().stream()
+            return allLists.stream()
                     .filter(listDTO -> listDTO.getName().contains(name))
                     .filter(listDTO -> listDTO.getSubjectCode().equals(subjectCode))
                     .collect(Collectors.toList());
         } else if (Objects.nonNull(name)) {
-            return getLists().stream()
+            return allLists.stream()
                     .filter(listDTO -> listDTO.getName().contains(name))
                     .collect(Collectors.toList());
         } else if (Objects.nonNull(subjectCode)) {
-            return getLists().stream()
+            return allLists.stream()
                     .filter(listDTO -> listDTO.getSubjectCode().equals(subjectCode))
                     .collect(Collectors.toList());
         }
 
-        return getLists();
+        return allLists;
     }
 
     public void answeringList(ListDTO listDTO) {
@@ -50,7 +67,7 @@ public class ListService {
         answerService.saveAll(answers);
     }
 
-    private List<ListDTO> getLists() {
+    private List<ListDTO> getAllLists() {
         return listElabNetwork.getLists();
     }
 

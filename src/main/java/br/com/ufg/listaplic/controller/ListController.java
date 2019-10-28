@@ -43,8 +43,9 @@ public class ListController {
     public List<ListDTO> findList(@RequestParam("user") String user,
                                   @RequestParam(value = "name", required = false) String name,
                                   @RequestParam(value = "subjectCode", required = false) String subjectCode,
-                                  @RequestParam(value = "aleatory", required = false) boolean aleatory) {
-        return listService.findList(name, subjectCode, aleatory).stream()
+                                  @RequestParam(value = "aleatory", required = false) boolean aleatory,
+                                  @RequestParam(value = "onlyPending", required = false) boolean onlyPending) {
+        return listService.findList(name, subjectCode, aleatory, onlyPending).stream()
                 .filter(listDTO -> user.equals(listDTO.getUser()))
                 .collect(Collectors.toList());
     }
