@@ -10,7 +10,7 @@ public class DiscursivasIntegrationDTO {
     private String usuario;
     private Long areaDeConhecimento;
     private Integer nivelDificuldade;
-    private Integer disciplina;
+    private DisciplinaIntegrationDTO disciplina;
     private List<String> tags;
     private Integer tipo;
     private Integer TempoMaximoDeResposta;
@@ -55,11 +55,11 @@ public class DiscursivasIntegrationDTO {
         this.nivelDificuldade = nivelDificuldade;
     }
 
-    public Integer getDisciplina() {
+    public DisciplinaIntegrationDTO getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(Integer disciplina) {
+    public void setDisciplina(DisciplinaIntegrationDTO disciplina) {
         this.disciplina = disciplina;
     }
 

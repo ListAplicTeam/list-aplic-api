@@ -1,6 +1,8 @@
 package br.com.ufg.listaplic.service;
 
+import br.com.ufg.listaplic.converter.ListConverterDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.model.Answer;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class ListService {
 
     @Autowired
     private ListElabNetwork listElabNetwork;
+
+    @Autowired
+    private AnswerService answerService;
 
     public List<ListDTO> findList(String name, String subjectCode, boolean aleatory) {
 
@@ -40,7 +45,13 @@ public class ListService {
         return getLists();
     }
 
+    public void answeringList(ListDTO listDTO) {
+        List<Answer> answers = ListConverterDTO.fromListDTOToListAnswer(listDTO);
+        answerService.saveAll(answers);
+    }
+
     private List<ListDTO> getLists() {
         return listElabNetwork.getLists();
     }
+
 }

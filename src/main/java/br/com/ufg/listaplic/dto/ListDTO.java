@@ -3,7 +3,7 @@ package br.com.ufg.listaplic.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.UUID;
 
 @ApiModel(
@@ -15,37 +15,36 @@ public class ListDTO {
     @ApiModelProperty(
             value = "List identification UUID.",
             dataType = "string",
-            example = "91b4a2dd-1797-48bb-8353-1231888129a1",
-            readOnly = true
+            example = "91b4a2dd-1797-48bb-8353-1231888129a1"
     )
     private UUID id;
 
     @ApiModelProperty(
             value = "List's name",
             dataType = "string",
-            example = "Questões sobre expressividade",
-            required = true
+            example = "Questões sobre expressividade"
     )
-    @NotNull(message = "name must be provided")
     private String name;
 
     @ApiModelProperty(
             value = "List's user",
             dataType = "string",
-            example = "professor@ufg.br",
-            required = true
+            example = "professor@ufg.br"
     )
-    @NotNull(message = "user must be provided")
     private String user;
 
     @ApiModelProperty(
             value = "Subject identification code",
             dataType = "string",
-            example = "ARQSOFT2019-1",
-            required = true
+            example = "ARQSOFT2019-1"
     )
-    @NotNull(message = "subjectCode must be provided")
     private String subjectCode;
+
+    @ApiModelProperty(
+            value = "List's Questions",
+            dataType = "List[br.com.ufg.listaplic.dto.QuestionDTO]"
+    )
+    private List<QuestionDTO> questions;
 
     public UUID getId() {
         return id;
@@ -77,5 +76,13 @@ public class ListDTO {
 
     public void setSubjectCode(String subjectCode) {
         this.subjectCode = subjectCode;
+    }
+
+    public List<QuestionDTO> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionDTO> questions) {
+        this.questions = questions;
     }
 }
