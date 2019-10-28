@@ -17,4 +17,8 @@ public class AnswerService {
         answerJpaRepository.saveAll(answers);
     }
 
+    public List<Answer> findAll() {
+        return answerJpaRepository.findAll();
+    }
+
 }
