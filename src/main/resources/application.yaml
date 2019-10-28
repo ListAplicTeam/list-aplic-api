@@ -40,8 +40,8 @@ listelab:
       email: admin@ufg.br
       password: 123456
     url:
-      auth: http://sifo.tech/api/usuario/login
-      list: http://sifo.tech/api/lista
+      auth: http://api.sifo.tech/api/usuario/login
+      list: http://api.sifo.tech/api/lista
 
 ---
 spring:
@@ -70,10 +70,10 @@ management:
       exposure:
         include: "*"
   server:
-    port: 8089
+    port: 8080
     context-path: /
 
 server:
-  port: 8088
+  port: 80
   servlet:
     context-path: /api

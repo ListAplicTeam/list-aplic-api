@@ -8,11 +8,14 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +45,21 @@ public class ListController {
                                   @RequestParam(value = "subjectCode", required = false) String subjectCode,
                                   @RequestParam(value = "aleatory", required = false) boolean aleatory) {
         return listService.findList(name, subjectCode, aleatory).stream()
-                .filter(listDTO -> listDTO.getUser().equals(user))
+                .filter(listDTO -> user.equals(listDTO.getUser()))
                 .collect(Collectors.toList());
+    }
+
+    @ApiOperation(
+            value = "Answering the list"
+    )
+    @ApiResponse(
+            code = 201,
+            message = "Answering the list"
+    )
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void answeringList(@RequestBody @Valid ListDTO listDTO) {
+        listService.answeringList(listDTO);
     }
 
 }

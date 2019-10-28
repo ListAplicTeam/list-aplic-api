@@ -7,10 +7,11 @@ public class ListIntegrationDTO {
 
     private UUID id;
     private String titulo;
+    private String usuario;
     private Long areaDeConhecimento;
     private Integer nivelDificuldade;
     private List<String> tags;
-    private Integer disciplina;
+    private DisciplinaIntegrationDTO disciplina;
     private List<DiscursivasIntegrationDTO> discursivas;
     private List<ObjetivasIntegrationDTO> objetivas;
 
@@ -28,6 +29,14 @@ public class ListIntegrationDTO {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public Long getAreaDeConhecimento() {
@@ -54,11 +63,11 @@ public class ListIntegrationDTO {
         this.tags = tags;
     }
 
-    public Integer getDisciplina() {
+    public DisciplinaIntegrationDTO getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(Integer disciplina) {
+    public void setDisciplina(DisciplinaIntegrationDTO disciplina) {
         this.disciplina = disciplina;
     }
 
