@@ -57,18 +57,23 @@ public class ListElabNetworkImpl implements ListElabNetwork {
         }
     }
 
+    @Override
+    public String login(LoginDTO loginDTO) {
+        HttpEntity<LoginDTO> entity = new HttpEntity<>(loginDTO);
+
+        AuthenticationTokenDTO token = restTemplate.exchange(this.authUrl, HttpMethod.POST, entity, AuthenticationTokenDTO.class).getBody();
+        return Optional.ofNullable(token).map(AuthenticationTokenDTO::getResultado).orElseThrow(() -> new NetworkException("Invalid username or password"));
+    }
+
     private String getApiKey() {
         try {
-            HttpEntity<LoginDTO> entity = new HttpEntity<>(getLogin());
-
-            AuthenticationTokenDTO token = restTemplate.exchange(this.authUrl, HttpMethod.POST, entity, AuthenticationTokenDTO.class).getBody();
-            return Optional.ofNullable(token).map(AuthenticationTokenDTO::getResultado).orElseThrow(() -> new NetworkException("Could not get token"));
+            return login(getLoginAdmin());
         } catch (Exception e) {
             throw new NetworkException("Failed to get token in ListElab service", e);
         }
     }
 
-    private LoginDTO getLogin() {
+    private LoginDTO getLoginAdmin() {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setEmail(this.email);
         loginDTO.setPassword(this.password);
