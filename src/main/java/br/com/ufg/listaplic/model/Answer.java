@@ -28,6 +28,9 @@ public class Answer {
     @Column(name = "question_id", nullable = false)
     private UUID questionId;
 
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
+
     @Column(name = "answer", nullable = false)
     private String answer;
 
@@ -53,6 +56,14 @@ public class Answer {
 
     public void setQuestionId(UUID questionId) {
         this.questionId = questionId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getAnswer() {

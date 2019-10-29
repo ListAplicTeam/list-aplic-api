@@ -7,17 +7,19 @@ import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.dto.UserDTO;
 import br.com.ufg.listaplic.exception.InvalidPasswordException;
 import br.com.ufg.listaplic.model.Role;
+import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.util.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class LoginService {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private ListElabNetwork listElabNetwork;
 
     public UserDTO authenticate(LoginDTO loginDTO) {
         if (loginDTO.getEmail().contains(Role.DISCENTE.name().toLowerCase())) {
@@ -35,10 +37,8 @@ public class LoginService {
     }
 
     private InstructorDTO instructorAuthentication(LoginDTO loginDTO) {
-        // MOCK enquanto a API do ListElab não está pronta
+        listElabNetwork.login(loginDTO);
         InstructorDTO instructorDTO = new InstructorDTO();
-        instructorDTO.setId(UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a2"));
-        instructorDTO.setName("Rubens Ferreira");
         instructorDTO.setEmail(loginDTO.getEmail());
         return instructorDTO;
     }

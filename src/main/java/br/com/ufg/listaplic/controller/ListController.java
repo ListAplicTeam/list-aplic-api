@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/lists")
@@ -28,13 +28,13 @@ public class ListController {
     private ListService listService;
 
     @ApiOperation(
-            value = "Get Lists by Filter",
+            value = "Get Lists by Instructor And Filter",
             responseContainer = "list",
             response = ListDTO.class
     )
     @ApiResponse(
             code = 200,
-            message = "Get Lists by Filter",
+            message = "Get Lists by Instructor And Filter",
             responseContainer = "list",
             response = ListDTO.class
     )
@@ -43,11 +43,8 @@ public class ListController {
     public List<ListDTO> findList(@RequestParam("user") String user,
                                   @RequestParam(value = "name", required = false) String name,
                                   @RequestParam(value = "subjectCode", required = false) String subjectCode,
-                                  @RequestParam(value = "aleatory", required = false) boolean aleatory,
-                                  @RequestParam(value = "onlyPending", required = false) boolean onlyPending) {
-        return listService.findList(name, subjectCode, aleatory, onlyPending).stream()
-                .filter(listDTO -> user.equals(listDTO.getUser()))
-                .collect(Collectors.toList());
+                                  @RequestParam(value = "aleatory", required = false) boolean aleatory) {
+        return listService.findListByInstructor(user, name, subjectCode, aleatory);
     }
 
     @ApiOperation(
@@ -59,8 +56,9 @@ public class ListController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void answeringList(@RequestBody @Valid ListDTO listDTO) {
-        listService.answeringList(listDTO);
+    public void answeringList(@RequestParam("userId") UUID userId,
+                              @RequestBody @Valid ListDTO listDTO) {
+        listService.answeringList(userId, listDTO);
     }
 
 }

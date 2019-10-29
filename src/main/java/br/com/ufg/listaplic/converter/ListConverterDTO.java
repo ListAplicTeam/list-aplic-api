@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class ListConverterDTO {
@@ -19,8 +20,7 @@ public final class ListConverterDTO {
         ListDTO listDTO = new ListDTO();
         listDTO.setId(listIntegrationDTO.getId());
         listDTO.setName(listIntegrationDTO.getTitulo());
-//        listDTO.setUser(listIntegrationDTO.getUsuario());
-        listDTO.setUser(listIntegrationDTO.getDiscursivas().stream().findFirst().get().getUsuario());
+        listDTO.setUser(listIntegrationDTO.getUsuario());
         listDTO.setSubjectCode(listIntegrationDTO.getDisciplina().getCodigo());
 
         List<QuestionDTO> questions = new ArrayList<>();
@@ -41,13 +41,14 @@ public final class ListConverterDTO {
         return listDTO;
     }
 
-    public static List<Answer> fromListDTOToListAnswer(final ListDTO listDTO) {
+    public static List<Answer> fromListDTOToListAnswer(final UUID userId, final ListDTO listDTO) {
         List<Answer> answers = new ArrayList<>();
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
             Answer answer = new Answer();
             answer.setListId(listDTO.getId());
             answer.setQuestionId(questionDTO.getId());
             answer.setAnswer(questionDTO.getAnswer());
+            answer.setUserId(userId);
             answers.add(answer);
         }
         return answers;
