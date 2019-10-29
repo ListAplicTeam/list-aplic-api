@@ -8,6 +8,7 @@ import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.dto.UserDTO;
 import br.com.ufg.listaplic.exception.InvalidPasswordException;
 import br.com.ufg.listaplic.model.Role;
+import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.template.InstructorDTOTemplate;
 import br.com.ufg.listaplic.template.LoginDTOTemplate;
 import br.com.ufg.listaplic.template.StudentDTOTemplate;
@@ -28,6 +29,9 @@ public class LoginServiceTest extends BaseTest {
 
     @Mock
     private StudentService mockStudentService;
+
+    @Mock
+    private ListElabNetwork mockListElabNetwork;
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -56,12 +60,12 @@ public class LoginServiceTest extends BaseTest {
         final LoginDTO loginDTO = Fixture.from(LoginDTO.class).gimme(LoginDTOTemplate.TYPES.LOGIN_INSTRUCTOR.name());
         final InstructorDTO instructorDTO = Fixture.from(InstructorDTO.class).gimme(InstructorDTOTemplate.TYPES.INSTRUCTOR.name());
 
+        when(mockListElabNetwork.login(loginDTO)).thenReturn("TOKEN");
+
         // Run the test
         final UserDTO result = loginServiceUnderTest.authenticate(loginDTO);
 
         // Verify the results
-        assertEquals(instructorDTO.getId(), result.getId());
-        assertEquals(instructorDTO.getName(), result.getName());
         assertEquals(instructorDTO.getEmail(), result.getEmail());
         assertEquals(Role.DOCENTE, result.getRole());
     }
