@@ -1,6 +1,5 @@
 package br.com.ufg.listaplic.model;
 
-import br.com.ufg.listaplic.dto.ListDTO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ public class ListApplication {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "list_id", nullable = false)
-    private ListDTO list;
+    private UUID list;
 
     public UUID getId() {
         return id;
@@ -42,11 +41,11 @@ public class ListApplication {
         this.classroom = classroom;
     }
 
-    public ListDTO getList() {
+    public UUID getList() {
         return list;
     }
 
-    public void setList(ListDTO list) {
+    public void setList(UUID list) {
         this.list = list;
     }
 }

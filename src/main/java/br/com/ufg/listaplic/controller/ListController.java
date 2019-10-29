@@ -72,7 +72,7 @@ public class ListController {
     public ResponseEntity applyListToGroup(@RequestBody Boolean allClassroom,
                                            @RequestBody String group,
                                            @RequestBody UUID classroomId,
-                                           @RequestBody String list) {
+                                           @RequestBody UUID list) {
         listApplicationService.applyListTo(allClassroom, group, classroomId, list);
         return ResponseEntity.ok().build();
     }
