@@ -9,6 +9,7 @@ import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.network.ListElabNetwork;
+import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import br.com.ufg.listaplic.repository.StudentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ListApplicationService {
 
     @Autowired
     private StudentJpaRepository studentJpaRepository;
+
+    @Autowired
+    private ClassroomJpaRepository classroomJpaRepository;
 
     @Autowired
     private ListElabNetwork listElabNetwork;
@@ -55,7 +59,8 @@ public class ListApplicationService {
     }
 
     public List<ListApplicationDTO> getFinishedListsByClassroomId(UUID classroomId) {
-        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroomAndStatus(classroomId, ApplicationListStatus.ENCERRADA);
+        Classroom classroom = classroomJpaRepository.findById(classroomId).orElse(new Classroom());
+        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroomAndStatus(classroom, ApplicationListStatus.ENCERRADA);
         List<Student> students = studentJpaRepository.findStudentsByClassroomId(classroomId);
         List<StudentDTO> studentDTOList = students.stream()
                 .map(StudentConverterDTO::fromDomainToDTO)
