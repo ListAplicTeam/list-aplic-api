@@ -47,13 +47,13 @@ public class ClassroomDTO {
     private String subjectCode;
 
     @ApiModelProperty(
-            value = "Instructor identification UUID",
+            value = "Instructor identification id",
             dataType = "string",
-            example = "91b4a2dd-1797-48bb-8353-1231888129a1",
+            example = "5da3453a5718e904108acc25",
             required = true
     )
     @NotNull(message = "instructorId must be provided")
-    private UUID instructorId;
+    private String instructorId;
 
     public UUID getId() {
         return id;
@@ -87,11 +87,11 @@ public class ClassroomDTO {
         this.subjectCode = subjectCode;
     }
 
-    public UUID getInstructorId() {
+    public String getInstructorId() {
         return instructorId;
     }
 
-    public void setInstructorId(UUID instructorId) {
+    public void setInstructorId(String instructorId) {
         this.instructorId = instructorId;
     }
 }

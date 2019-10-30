@@ -24,9 +24,9 @@ public class InstructorDTOTemplate implements TemplateLoader {
 
     private void buildInstructorTemplate() {
         Fixture.of(InstructorDTO.class).addTemplate(TYPES.INSTRUCTOR.name(), new Rule() {{
-            add(ID, UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a2"));
-            add(NAME, "Rubens Ferreira");
-            add(EMAIL, "isaias_neto@ufg.br");
+            add(ID, "5da3453a5718e904108acc25");
+            add(NAME, "Professor");
+            add(EMAIL, "professor@ufg.br");
         }});
     }
 

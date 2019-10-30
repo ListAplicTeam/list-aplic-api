@@ -26,7 +26,7 @@ public class UserDTOTemplate implements TemplateLoader {
 
     private void buildUserTemplate() {
         Fixture.of(UserDTO.class).addTemplate(TYPES.USER.name(), new Rule() {{
-            add(ID, UUID.randomUUID());
+            add(ID, UUID.randomUUID().toString());
             add(NAME, "Isaias Tavares da Silva Neto");
             add(EMAIL, "isaias_neto@discente.ufg.br");
             add(ROLE, Role.DISCENTE);

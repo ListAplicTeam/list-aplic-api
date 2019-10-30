@@ -17,7 +17,7 @@ public class UserDTO {
             dataType = "string",
             example = "91b4a2dd-1797-48bb-8353-1231888129a1"
     )
-    private UUID id;
+    private String id;
 
     @ApiModelProperty(
             value = "User's name",
@@ -40,11 +40,11 @@ public class UserDTO {
     )
     private Role role;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

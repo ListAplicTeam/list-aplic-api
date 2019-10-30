@@ -3,8 +3,9 @@ package br.com.ufg.listaplic.network.impl;
 import br.com.ufg.listaplic.converter.ListConverterDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.LoginDTO;
-import br.com.ufg.listaplic.dto.listelab.AuthenticationTokenDTO;
+import br.com.ufg.listaplic.dto.listelab.AuthenticationDTO;
 import br.com.ufg.listaplic.dto.listelab.ListElabResultDTO;
+import br.com.ufg.listaplic.dto.listelab.UserIntegrationDTO;
 import br.com.ufg.listaplic.exception.NetworkException;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 
             ListElabResultDTO listElabResultDTO = restTemplate.exchange(apiListUrl, HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
             return listElabResultDTO.getResultado().stream()
-                    .map(ListConverterDTO::fromListIntegrationToDTO)
+                    .map(ListConverterDTO::fromListIntegrationToListDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new NetworkException("Failed to get list in ListElab service", e);
@@ -77,16 +78,16 @@ public class ListElabNetworkImpl implements ListElabNetwork {
     }
 
     @Override
-    public String login(LoginDTO loginDTO) {
+    public UserIntegrationDTO login(LoginDTO loginDTO) {
         HttpEntity<LoginDTO> entity = new HttpEntity<>(loginDTO);
 
-        AuthenticationTokenDTO token = restTemplate.exchange(this.authUrl, HttpMethod.POST, entity, AuthenticationTokenDTO.class).getBody();
-        return Optional.ofNullable(token).map(AuthenticationTokenDTO::getResultado).orElseThrow(() -> new NetworkException("Invalid username or password"));
+        AuthenticationDTO authenticationDTO = restTemplate.exchange(this.authUrl, HttpMethod.POST, entity, AuthenticationDTO.class).getBody();
+        return Optional.ofNullable(authenticationDTO).map(AuthenticationDTO::getResultado).orElseThrow(() -> new NetworkException("Invalid username or password"));
     }
 
     private String getApiKey() {
         try {
-            return login(getLoginAdmin());
+            return login(getLoginAdmin()).getToken();
         } catch (Exception e) {
             throw new NetworkException("Failed to get token in ListElab service", e);
         }

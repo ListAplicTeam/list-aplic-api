@@ -13,7 +13,7 @@ public class DiscursivasIntegrationDTO {
     private DisciplinaIntegrationDTO disciplina;
     private List<String> tags;
     private Integer tipo;
-    private Integer TempoMaximoDeResposta;
+    private Integer tempoMaximoDeResposta;
 
     public UUID getId() {
         return id;
@@ -80,10 +80,10 @@ public class DiscursivasIntegrationDTO {
     }
 
     public Integer getTempoMaximoDeResposta() {
-        return TempoMaximoDeResposta;
+        return tempoMaximoDeResposta;
     }
 
     public void setTempoMaximoDeResposta(Integer tempoMaximoDeResposta) {
-        TempoMaximoDeResposta = tempoMaximoDeResposta;
+        this.tempoMaximoDeResposta = tempoMaximoDeResposta;
     }
 }

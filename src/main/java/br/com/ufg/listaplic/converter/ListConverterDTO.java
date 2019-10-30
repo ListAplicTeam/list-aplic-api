@@ -16,7 +16,7 @@ public final class ListConverterDTO {
     private ListConverterDTO() {
     }
 
-    public static ListDTO fromListIntegrationToDTO(final ListIntegrationDTO listIntegrationDTO) {
+    public static ListDTO fromListIntegrationToListDTO(final ListIntegrationDTO listIntegrationDTO) {
         ListDTO listDTO = new ListDTO();
         listDTO.setId(listIntegrationDTO.getId());
         listDTO.setName(listIntegrationDTO.getTitulo());
@@ -26,13 +26,13 @@ public final class ListConverterDTO {
         List<QuestionDTO> questions = new ArrayList<>();
         if (!CollectionUtils.isEmpty(listIntegrationDTO.getDiscursivas())) {
             questions.addAll(listIntegrationDTO.getDiscursivas().stream()
-                    .map(QuestionConverterDTO::fromDiscursivasIntegrationToDTO)
+                    .map(QuestionConverterDTO::fromDiscursivasIntegrationToQuestionDTO)
                     .collect(Collectors.toList()));
         }
 
         if (!CollectionUtils.isEmpty(listIntegrationDTO.getObjetivas())) {
             questions.addAll(listIntegrationDTO.getObjetivas().stream()
-                    .map(QuestionConverterDTO::fromObjetivasIntegrationToDTO)
+                    .map(QuestionConverterDTO::fromObjetivasIntegrationToQuestionDTO)
                     .collect(Collectors.toList()));
         }
 

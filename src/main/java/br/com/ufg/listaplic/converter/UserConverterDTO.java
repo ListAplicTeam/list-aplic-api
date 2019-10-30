@@ -12,7 +12,7 @@ public final class UserConverterDTO {
 
     public static UserDTO fromStudentToUser(final StudentDTO studentDTO) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(studentDTO.getId());
+        userDTO.setId(studentDTO.getId().toString());
         userDTO.setName(studentDTO.getName());
         userDTO.setEmail(studentDTO.getEmail());
         userDTO.setRole(Role.DISCENTE);

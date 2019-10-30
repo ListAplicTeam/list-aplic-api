@@ -35,7 +35,7 @@ public class Classroom {
     private String subjectCode;
 
     @Column(name = "instructor_id", nullable = false)
-    private UUID instructorId;
+    private String instructorId;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private Set<Enrollment> enrollments;
@@ -72,11 +72,11 @@ public class Classroom {
         this.subjectCode = subjectCode;
     }
 
-    public UUID getInstructorId() {
+    public String getInstructorId() {
         return instructorId;
     }
 
-    public void setInstructorId(UUID instructorId) {
+    public void setInstructorId(String instructorId) {
         this.instructorId = instructorId;
     }
 
