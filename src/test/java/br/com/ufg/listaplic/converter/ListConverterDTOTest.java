@@ -17,9 +17,25 @@ import static org.junit.Assert.assertEquals;
 public class ListConverterDTOTest extends BaseTest {
 
     @Test
-    public void testFromListIntegrationToListsDTO() {
+    public void testFromListIntegrationWithDiscursivesAndObjectivesToListsDTO() {
         // Setup
-        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST.name());
+        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_DISCURSIVES_AND_OBJECTIVES.name());
+
+        // Run the test
+        final ListDTO result = ListConverterDTO.fromListIntegrationToListDTO(listIntegrationDTO);
+
+        // Verify the results
+        assertEquals(listIntegrationDTO.getId(), result.getId());
+        assertEquals(listIntegrationDTO.getTitulo(), result.getName());
+        assertEquals(listIntegrationDTO.getUsuario(), result.getUser());
+        assertEquals(listIntegrationDTO.getDisciplina().getCodigo(), result.getSubjectCode());
+        assertEquals(listIntegrationDTO.getDiscursivas().size() + listIntegrationDTO.getObjetivas().size(), result.getQuestions().size());
+    }
+
+    @Test
+    public void testFromListIntegrationWithDiscursivesToListsDTO() {
+        // Setup
+        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_DISCURSIVES.name());
 
         // Run the test
         final ListDTO result = ListConverterDTO.fromListIntegrationToListDTO(listIntegrationDTO);
@@ -30,6 +46,22 @@ public class ListConverterDTOTest extends BaseTest {
         assertEquals(listIntegrationDTO.getUsuario(), result.getUser());
         assertEquals(listIntegrationDTO.getDisciplina().getCodigo(), result.getSubjectCode());
         assertEquals(listIntegrationDTO.getDiscursivas().size(), result.getQuestions().size());
+    }
+
+    @Test
+    public void testFromListIntegrationWithObjectivesToListsDTO() {
+        // Setup
+        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_OBJECTIVES.name());
+
+        // Run the test
+        final ListDTO result = ListConverterDTO.fromListIntegrationToListDTO(listIntegrationDTO);
+
+        // Verify the results
+        assertEquals(listIntegrationDTO.getId(), result.getId());
+        assertEquals(listIntegrationDTO.getTitulo(), result.getName());
+        assertEquals(listIntegrationDTO.getUsuario(), result.getUser());
+        assertEquals(listIntegrationDTO.getDisciplina().getCodigo(), result.getSubjectCode());
+        assertEquals(listIntegrationDTO.getObjetivas().size(), result.getQuestions().size());
     }
 
     @Test
