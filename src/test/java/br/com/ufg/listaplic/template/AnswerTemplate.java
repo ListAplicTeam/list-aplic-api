@@ -10,8 +10,8 @@ import java.util.UUID;
 public class AnswerTemplate implements TemplateLoader {
 
     private static final String ID = "id";
-    private static final String LIST_ID = "listId";
-    private static final String QUESTION_ID = "listId";
+    private static final String APPLICATION_ID = "applicationId";
+    private static final String QUESTION_ID = "questionId";
     private static final String USER_ID = "userId";
     private static final String ANSWER = "answer";
 
@@ -27,7 +27,7 @@ public class AnswerTemplate implements TemplateLoader {
     private void buildAnswerTemplate() {
         Fixture.of(Answer.class).addTemplate(TYPES.ANSWER.name(), new Rule() {{
             add(ID, UUID.randomUUID());
-            add(LIST_ID, UUID.randomUUID());
+            add(APPLICATION_ID, UUID.randomUUID());
             add(QUESTION_ID, UUID.randomUUID());
             add(USER_ID, UUID.randomUUID());
             add(ANSWER, "Lenda");

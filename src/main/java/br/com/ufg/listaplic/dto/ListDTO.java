@@ -20,6 +20,13 @@ public class ListDTO {
     private UUID id;
 
     @ApiModelProperty(
+            value = "List Application identification UUID.",
+            dataType = "string",
+            example = "1291440f-c8ff-4d5c-baf7-5f843bf546bf"
+    )
+    private UUID listApplicationId;
+
+    @ApiModelProperty(
             value = "List's name",
             dataType = "string",
             example = "Questões sobre expressividade"
@@ -52,6 +59,14 @@ public class ListDTO {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getListApplicationId() {
+        return listApplicationId;
+    }
+
+    public void setListApplicationId(UUID listApplicationId) {
+        this.listApplicationId = listApplicationId;
     }
 
     public String getName() {

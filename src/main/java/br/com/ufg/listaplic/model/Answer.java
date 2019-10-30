@@ -22,8 +22,8 @@ public class Answer {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "list_id", nullable = false)
-    private UUID listId;
+    @Column(name = "application_id", nullable = false)
+    private UUID applicationId;
 
     @Column(name = "question_id", nullable = false)
     private UUID questionId;
@@ -42,12 +42,12 @@ public class Answer {
         this.id = id;
     }
 
-    public UUID getListId() {
-        return listId;
+    public UUID getApplicationId() {
+        return applicationId;
     }
 
-    public void setListId(UUID listId) {
-        this.listId = listId;
+    public void setApplicationId(UUID applicationId) {
+        this.applicationId = applicationId;
     }
 
     public UUID getQuestionId() {

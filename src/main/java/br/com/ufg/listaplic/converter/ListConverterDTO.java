@@ -45,7 +45,7 @@ public final class ListConverterDTO {
         List<Answer> answers = new ArrayList<>();
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
             Answer answer = new Answer();
-            answer.setListId(listDTO.getId());
+            answer.setApplicationId(listDTO.getListApplicationId());
             answer.setQuestionId(questionDTO.getId());
             answer.setAnswer(questionDTO.getAnswer());
             answer.setUserId(userId);
