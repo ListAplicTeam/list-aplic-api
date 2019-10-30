@@ -19,6 +19,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,10 +62,10 @@ public class ClassroomControllerTest extends BaseTest {
     public void testFindByInstructorId() {
         // Setup
         final List<ClassroomDTO> classroomDTOS = Fixture.from(ClassroomDTO.class).gimme(2, ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
-        when(mockClassroomService.findByInstructorId(any(UUID.class))).thenReturn(classroomDTOS);
+        when(mockClassroomService.findByInstructorId(anyString())).thenReturn(classroomDTOS);
 
         // Run the test
-        final List<ClassroomDTO> result = classroomControllerUnderTest.findByInstructorId(UUID.randomUUID());
+        final List<ClassroomDTO> result = classroomControllerUnderTest.findByInstructorId("5da3453a5718e904108acc25");
 
         // Verify the results
         assertEquals(classroomDTOS.size(), result.size());

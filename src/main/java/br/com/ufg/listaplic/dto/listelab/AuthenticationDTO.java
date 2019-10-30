@@ -1,12 +1,12 @@
 package br.com.ufg.listaplic.dto.listelab;
 
-public class AuthenticationTokenDTO {
+public class AuthenticationDTO {
 
     private String mensagem;
 
     private Boolean sucesso;
 
-    private String resultado;
+    private UserIntegrationDTO resultado;
 
     public String getMensagem() {
         return mensagem;
@@ -24,11 +24,11 @@ public class AuthenticationTokenDTO {
         this.sucesso = sucesso;
     }
 
-    public String getResultado() {
+    public UserIntegrationDTO getResultado() {
         return resultado;
     }
 
-    public void setResultado(String resultado) {
+    public void setResultado(UserIntegrationDTO resultado) {
         this.resultado = resultado;
     }
 }

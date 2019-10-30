@@ -36,7 +36,7 @@ public class SubjectController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<SubjectDTO> findAll() {
-        return subjectService.getSubjects();
+        return subjectService.findAll();
     }
 
 }
