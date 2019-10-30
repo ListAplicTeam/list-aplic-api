@@ -1,9 +1,12 @@
 package br.com.ufg.listaplic.dto;
 
+import br.com.ufg.listaplic.model.ApplicationListStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @ApiModel(
@@ -37,4 +40,18 @@ public class ListApplicationDTO {
     )
     @NotNull(message = "listId must be provided")
     private UUID listId;
+
+    @NotNull(message = "status must be provided")
+    private ApplicationListStatus status;
+
+    @NotNull(message = "applicationDateTime must be provided")
+    private Timestamp applicationDateTime;
+
+    @ApiModelProperty(
+            value = "Students",
+            dataType = "List[br.com.ufg.listaplic.dto.StudentDTO]",
+            required = true
+    )
+    @NotNull(message = "studentList must be provided")
+    private List<StudentDTO> studentList;
 }
