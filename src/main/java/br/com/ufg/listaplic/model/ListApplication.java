@@ -26,10 +26,10 @@ public class ListApplication {
     @Column(name = "list_id", nullable = false)
     private UUID list;
 
-    @Column(name = "application_date_time", nullable = false)
+    @Column(name = "application_date_time", nullable = true)
     private Timestamp applicationDateTime;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = true)
     @Enumerated(value = EnumType.STRING)
     private ApplicationListStatus status = ApplicationListStatus.EM_ANDAMENTO;
 
