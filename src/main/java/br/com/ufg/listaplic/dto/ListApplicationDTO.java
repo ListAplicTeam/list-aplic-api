@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.dto;
 
 import br.com.ufg.listaplic.model.ApplicationListStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
         value = "Application",
         description = "Model of a application."
 )
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ListApplicationDTO {
 
     @ApiModelProperty(
@@ -55,6 +57,12 @@ public class ListApplicationDTO {
     )
     @NotNull(message = "studentList must be provided")
     private List<StudentDTO> studentList;
+
+    @ApiModelProperty(
+            value = "Anwsers",
+            dataType = "List[br.com.ufg.listaplic.dto.AnswerDTO]"
+    )
+    private List<AnswerDTO> answerList;
 
     public UUID getId() {
         return id;
@@ -102,5 +110,13 @@ public class ListApplicationDTO {
 
     public void setStudentList(List<StudentDTO> studentList) {
         this.studentList = studentList;
+    }
+
+    public List<AnswerDTO> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<AnswerDTO> answerList) {
+        this.answerList = answerList;
     }
 }

@@ -21,10 +21,4 @@ public interface ListApplicationJpaRepository extends JpaRepository<ListApplicat
 
     List<ListApplication> findByClassroomAndStatus(Classroom classroom, ApplicationListStatus status);
 
-    /*@Query(value = "SELECT ap.id, ap.list_id, classroom_id, question_id, answer, user_id" +
-            "FROM application ap" +
-            "JOIN answer aw on ap.list_id = aw.application_id" +
-            "WHERE ap.classroom_id IN (:classroomsId)", nativeQuery = true)
-    List<ListApplication> findByList(UUID listId);*/
-
 }
