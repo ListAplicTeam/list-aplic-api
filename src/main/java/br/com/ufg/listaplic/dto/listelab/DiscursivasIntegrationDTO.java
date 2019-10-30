@@ -8,7 +8,7 @@ public class DiscursivasIntegrationDTO {
     private UUID id;
     private String enunciado;
     private String usuario;
-    private Long areaDeConhecimento;
+    private AreaDoConhecimentoDTO areaDeConhecimento;
     private Integer nivelDificuldade;
     private DisciplinaIntegrationDTO disciplina;
     private List<String> tags;
@@ -39,11 +39,11 @@ public class DiscursivasIntegrationDTO {
         this.usuario = usuario;
     }
 
-    public Long getAreaDeConhecimento() {
+    public AreaDoConhecimentoDTO getAreaDeConhecimento() {
         return areaDeConhecimento;
     }
 
-    public void setAreaDeConhecimento(Long areaDeConhecimento) {
+    public void setAreaDeConhecimento(AreaDoConhecimentoDTO areaDeConhecimento) {
         this.areaDeConhecimento = areaDeConhecimento;
     }
 

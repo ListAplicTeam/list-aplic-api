@@ -1,5 +1,6 @@
 package br.com.ufg.listaplic.controller;
 
+import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
@@ -69,11 +70,8 @@ public class ListController {
     )
     @PostMapping("/apply")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity applyListToGroup(@RequestBody Boolean allClassroom,
-                                           @RequestBody String group,
-                                           @RequestBody UUID classroomId,
-                                           @RequestBody UUID list) {
-        listApplicationService.applyListTo(allClassroom, group, classroomId, list);
+    public ResponseEntity applyListToGroup(@RequestBody @Valid ApplyDTO applyDTO) {
+        listApplicationService.applyListTo(applyDTO);
         return ResponseEntity.ok().build();
     }
 

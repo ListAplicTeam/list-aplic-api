@@ -5,6 +5,7 @@ import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.LoginDTO;
 import br.com.ufg.listaplic.dto.listelab.AuthenticationDTO;
 import br.com.ufg.listaplic.dto.listelab.ListElabResultDTO;
+import br.com.ufg.listaplic.dto.listelab.ListElabSingleResultDTO;
 import br.com.ufg.listaplic.dto.listelab.UserIntegrationDTO;
 import br.com.ufg.listaplic.exception.NetworkException;
 import br.com.ufg.listaplic.network.ListElabNetwork;
@@ -66,12 +67,11 @@ public class ListElabNetworkImpl implements ListElabNetwork {
             headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ListElabResultDTO listElabResultDTO = restTemplate.exchange(apiListUrl + "/" + id, HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
+            ListElabSingleResultDTO listElabSingleResultDTO = restTemplate.exchange(apiListUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleResultDTO.class).getBody();
 
-            assert listElabResultDTO != null;
-            return listElabResultDTO.getResultado().stream()
-                    .map(ListConverterDTO::fromListIntegrationToDTO)
-                    .collect(Collectors.toList()).get(0);
+            assert listElabSingleResultDTO != null;
+
+            return ListConverterDTO.fromListIntegrationToListDTO(listElabSingleResultDTO.getResultado());
         } catch (Exception e) {
             throw new NetworkException("Failed to get list in ListElab service", e);
         }

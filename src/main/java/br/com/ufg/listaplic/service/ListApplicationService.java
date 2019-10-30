@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.service;
 
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
+import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.model.Classroom;
@@ -9,8 +10,6 @@ import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class ListApplicationService {
@@ -24,10 +23,10 @@ public class ListApplicationService {
     @Autowired
     private ListElabNetwork listElabNetwork;
 
-    public void applyListTo(Boolean allClassroom, String group, UUID classroomId, UUID list) {
-        if (allClassroom) {
-            ClassroomDTO classroomDTO = classroomService.findById(classroomId);
-            ListDTO listDTO = listElabNetwork.getListById(list);
+    public void applyListTo(ApplyDTO applyDTO) {
+        if (applyDTO.getAllClassroom()) {
+            ClassroomDTO classroomDTO = classroomService.findById(applyDTO.getClassroomId());
+            ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
 
             Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
 
