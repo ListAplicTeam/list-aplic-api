@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class ListControllerTest extends BaseTest {
@@ -23,13 +24,13 @@ public class ListControllerTest extends BaseTest {
     private ListService mockListService;
 
     @Test
-    public void testFindAll() {
+    public void testGetListsByFilter() {
         // Setup
         final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-        when(mockListService.findListByInstructor("professor@ufg.br", null, null, false)).thenReturn(listDTOS);
+        when(mockListService.getListsByFilter(anyString(), anyString())).thenReturn(listDTOS);
 
         // Run the test
-        final List<ListDTO> result = listControllerUnderTest.findList("professor@ufg.br", null, null, false);
+        final List<ListDTO> result = listControllerUnderTest.getListsByFilter("Lista", "INF0233");
 
         // Verify the results
         assertEquals(listDTOS.size(), result.size());

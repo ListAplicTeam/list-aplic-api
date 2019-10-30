@@ -30,9 +30,9 @@ public class ListDTOTemplate implements TemplateLoader {
     private void buildListWithOneQuestionTemplate() {
         Fixture.of(ListDTO.class).addTemplate(TYPES.LIST_WITH_ONE_QUESTION.name(), new Rule() {{
             add(ID, UUID.randomUUID());
-            add(NAME, "Lista de Teste");
+            add(NAME, "Lista de Teste com uma questão");
             add(USER, "professor@ufg.br");
-            add(SUBJECT_CODE, "INF0233");
+            add(SUBJECT_CODE, "INF0150");
             add(QUESTIONS, has(1).of(QuestionDTO.class, QuestionDTOTemplate.TYPES.QUESTION.name()));
         }});
     }
@@ -40,7 +40,7 @@ public class ListDTOTemplate implements TemplateLoader {
     private void buildListWithTwoQuestionTemplate() {
         Fixture.of(ListDTO.class).addTemplate(TYPES.LIST_WITH_TWO_QUESTION.name(), new Rule() {{
             add(ID, UUID.randomUUID());
-            add(NAME, "Lista de Teste");
+            add(NAME, "Lista de Teste com duas questões");
             add(USER, "professor@ufg.br");
             add(SUBJECT_CODE, "INF0233");
             add(QUESTIONS, has(2).of(QuestionDTO.class, QuestionDTOTemplate.TYPES.QUESTION.name()));

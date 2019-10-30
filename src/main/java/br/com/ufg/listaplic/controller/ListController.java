@@ -10,7 +10,13 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,23 +34,21 @@ public class ListController {
     private ListApplicationService listApplicationService;
 
     @ApiOperation(
-            value = "Get Lists by Instructor And Filter",
+            value = "Get lists by filter",
             responseContainer = "list",
             response = ListDTO.class
     )
     @ApiResponse(
             code = 200,
-            message = "Get Lists by Instructor And Filter",
+            message = "Get lists by filter",
             responseContainer = "list",
             response = ListDTO.class
     )
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ListDTO> findList(@RequestParam("user") String user,
-                                  @RequestParam(value = "name", required = false) String name,
-                                  @RequestParam(value = "subjectCode", required = false) String subjectCode,
-                                  @RequestParam(value = "aleatory", required = false) boolean aleatory) {
-        return listService.findListByInstructor(user, name, subjectCode, aleatory);
+    public List<ListDTO> getListsByFilter(@RequestParam(value = "name", required = false) String name,
+                                          @RequestParam(value = "subjectCode", required = false) String subjectCode) {
+        return listService.getListsByFilter(name, subjectCode);
     }
 
     @ApiOperation(
