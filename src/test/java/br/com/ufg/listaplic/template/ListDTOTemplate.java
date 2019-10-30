@@ -11,6 +11,7 @@ import java.util.UUID;
 public class ListDTOTemplate implements TemplateLoader {
 
     private static final String ID = "id";
+    private static final String LIST_APPLICATION_ID = "listApplicationId";
     private static final String NAME = "name";
     private static final String USER = "user";
     private static final String SUBJECT_CODE = "subjectCode";
@@ -30,6 +31,7 @@ public class ListDTOTemplate implements TemplateLoader {
     private void buildListWithOneQuestionTemplate() {
         Fixture.of(ListDTO.class).addTemplate(TYPES.LIST_WITH_ONE_QUESTION.name(), new Rule() {{
             add(ID, UUID.randomUUID());
+            add(LIST_APPLICATION_ID, UUID.randomUUID());
             add(NAME, "Lista de Teste com uma questão");
             add(USER, "professor@ufg.br");
             add(SUBJECT_CODE, "INF0150");
@@ -40,6 +42,7 @@ public class ListDTOTemplate implements TemplateLoader {
     private void buildListWithTwoQuestionTemplate() {
         Fixture.of(ListDTO.class).addTemplate(TYPES.LIST_WITH_TWO_QUESTION.name(), new Rule() {{
             add(ID, UUID.randomUUID());
+            add(LIST_APPLICATION_ID, UUID.randomUUID());
             add(NAME, "Lista de Teste com duas questões");
             add(USER, "professor@ufg.br");
             add(SUBJECT_CODE, "INF0233");

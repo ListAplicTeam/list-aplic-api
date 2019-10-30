@@ -75,7 +75,7 @@ public class ListConverterDTOTest extends BaseTest {
 
         // Verify the results
         Answer answer = result.get(0);
-        assertEquals(listDTO.getId(), answer.getListId());
+        assertEquals(listDTO.getListApplicationId(), answer.getApplicationId());
         assertEquals(listDTO.getQuestions().stream().findFirst().get().getId(), answer.getQuestionId());
         assertEquals(userId, answer.getUserId());
         assertEquals(listDTO.getQuestions().stream().findFirst().get().getAnswer(), answer.getAnswer());

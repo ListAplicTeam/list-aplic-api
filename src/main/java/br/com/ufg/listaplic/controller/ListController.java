@@ -52,17 +52,34 @@ public class ListController {
     }
 
     @ApiOperation(
+            value = "Get pending lists by student",
+            responseContainer = "list",
+            response = ListDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Get pending lists by student",
+            responseContainer = "list",
+            response = ListDTO.class
+    )
+    @GetMapping("/pending")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ListDTO> getPendingListsByStudent(@RequestParam(value = "student_id", required = false) UUID studentId) {
+        return listService.getPendingListsByStudent(studentId);
+    }
+
+    @ApiOperation(
             value = "Answering the list"
     )
     @ApiResponse(
             code = 201,
             message = "Answering the list"
     )
-    @PostMapping
+    @PostMapping("/answer")
     @ResponseStatus(HttpStatus.CREATED)
-    public void answeringList(@RequestParam("userId") UUID userId,
+    public void answeringList(@RequestParam("studentId") UUID studentId,
                               @RequestBody @Valid ListDTO listDTO) {
-        listService.answeringList(userId, listDTO);
+        listService.answeringList(studentId, listDTO);
     }
 
     @ApiOperation(
@@ -78,6 +95,5 @@ public class ListController {
         listApplicationService.applyListTo(applyDTO);
         return ResponseEntity.ok().build();
     }
-
 
 }
