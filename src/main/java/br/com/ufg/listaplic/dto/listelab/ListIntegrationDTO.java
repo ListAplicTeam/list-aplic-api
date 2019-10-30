@@ -8,7 +8,7 @@ public class ListIntegrationDTO {
     private UUID id;
     private String titulo;
     private String usuario;
-    private Long areaDeConhecimento;
+    private AreaDoConhecimentoDTO areaDeConhecimento;
     private Integer nivelDificuldade;
     private List<String> tags;
     private DisciplinaIntegrationDTO disciplina;
@@ -39,11 +39,11 @@ public class ListIntegrationDTO {
         this.usuario = usuario;
     }
 
-    public Long getAreaDeConhecimento() {
+    public AreaDoConhecimentoDTO getAreaDeConhecimento() {
         return areaDeConhecimento;
     }
 
-    public void setAreaDeConhecimento(Long areaDeConhecimento) {
+    public void setAreaDeConhecimento(AreaDoConhecimentoDTO areaDeConhecimento) {
         this.areaDeConhecimento = areaDeConhecimento;
     }
 

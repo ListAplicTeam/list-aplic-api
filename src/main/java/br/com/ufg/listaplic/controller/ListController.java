@@ -1,19 +1,16 @@
 package br.com.ufg.listaplic.controller;
 
+import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,6 +23,9 @@ public class ListController {
 
     @Autowired
     private ListService listService;
+
+    @Autowired
+    private ListApplicationService listApplicationService;
 
     @ApiOperation(
             value = "Get Lists by Instructor And Filter",
@@ -60,5 +60,20 @@ public class ListController {
                               @RequestBody @Valid ListDTO listDTO) {
         listService.answeringList(userId, listDTO);
     }
+
+    @ApiOperation(
+            value = "Apply list to determinated group"
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Applied list to group."
+    )
+    @PostMapping("/apply")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity applyListToGroup(@RequestBody @Valid ApplyDTO applyDTO) {
+        listApplicationService.applyListTo(applyDTO);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
