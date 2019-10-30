@@ -7,6 +7,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/list-aplic-api
     username: postgre-user-test
     password: postgre-passwd-test
+    hikari:
+      maximum-pool-size: 5
+      idle-timeout: 10000
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
@@ -52,6 +55,9 @@ spring:
     url: jdbc:postgresql://ec2-174-129-227-80.compute-1.amazonaws.com:5432/d3uarnndt4a614
     username: iveyjqvenbpcnb
     password: 1be32ab15089ad0244636e64699c4e2717f55a3925926d648274b8ae0372bb6b
+    hikari:
+      maximum-pool-size: 5
+      idle-timeout: 10000
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect

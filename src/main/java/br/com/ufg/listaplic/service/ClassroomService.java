@@ -42,7 +42,7 @@ public class ClassroomService {
                 .collect(Collectors.toList());
     }
 
-    public List<ClassroomDTO> findByInstructorId(UUID instructorId) {
+    public List<ClassroomDTO> findByInstructorId(String instructorId) {
         return classroomJpaRepository.findByInstructorId(instructorId)
                 .stream()
                 .map(ClassroomConverterDTO::fromDomainToDTO)

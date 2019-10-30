@@ -2,36 +2,34 @@ package br.com.ufg.listaplic.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.UUID;
-
 public class InstructorDTO {
 
     @ApiModelProperty(
-            value = "Student identification UUID.",
+            value = "Instructor identification id.",
             dataType = "string",
-            example = "91b4a2dd-1797-48bb-8353-1231888129a1"
+            example = "5da3453a5718e904108acc25"
     )
-    private UUID id;
+    private String id;
 
     @ApiModelProperty(
-            value = "Student's name",
+            value = "Instructor's name",
             dataType = "string",
             example = "Isaias Tavares da Silva Neto"
     )
     private String name;
 
     @ApiModelProperty(
-            value = "Student's email",
+            value = "Instructor's email",
             dataType = "string",
-            example = "isaias_neto@discente.ufg.br"
+            example = "professor@ufg.br"
     )
     private String email;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

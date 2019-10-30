@@ -5,6 +5,7 @@ import br.com.ufg.listaplic.dto.InstructorDTO;
 import br.com.ufg.listaplic.dto.LoginDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.dto.UserDTO;
+import br.com.ufg.listaplic.dto.listelab.UserIntegrationDTO;
 import br.com.ufg.listaplic.exception.InvalidPasswordException;
 import br.com.ufg.listaplic.model.Role;
 import br.com.ufg.listaplic.network.ListElabNetwork;
@@ -37,9 +38,11 @@ public class LoginService {
     }
 
     private InstructorDTO instructorAuthentication(LoginDTO loginDTO) {
-        listElabNetwork.login(loginDTO);
+        UserIntegrationDTO user = listElabNetwork.login(loginDTO);
         InstructorDTO instructorDTO = new InstructorDTO();
-        instructorDTO.setEmail(loginDTO.getEmail());
+        instructorDTO.setId(user.getId());
+        instructorDTO.setName(user.getName());
+        instructorDTO.setEmail(user.getEmail());
         return instructorDTO;
     }
 }

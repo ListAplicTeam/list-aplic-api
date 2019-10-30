@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Service
 public class SubjectService {
 
-    public List<SubjectDTO> getSubjects() {
+    public List<SubjectDTO> findAll() {
         return Arrays.asList(SubjectType.values()).stream()
                 .map(subjectType -> new SubjectDTO(subjectType.getName(), subjectType.getCode()))
                 .collect(Collectors.toList());

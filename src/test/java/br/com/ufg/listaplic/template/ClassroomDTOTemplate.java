@@ -33,7 +33,7 @@ public class ClassroomDTOTemplate implements TemplateLoader {
             add(NAME, "Engenharia de Software - Turma A");
             add(CODE, "FLA0214");
             add(SUBJECT_CODE, "ARQSOFT2019-1");
-            add(INSTRUCTOR_ID, UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a1"));
+            add(INSTRUCTOR_ID, "5da3453a5718e904108acc25");
         }});
     }
 
@@ -48,7 +48,7 @@ public class ClassroomDTOTemplate implements TemplateLoader {
             add(NAME, "Another Classroom");
             add(CODE, "ANO0123");
             add(SUBJECT_CODE, "ANOT_CODE_2019-1");
-            add(INSTRUCTOR_ID, UUID.fromString("91b4a2dd-1797-48bb-8353-1231888129a1"));
+            add(INSTRUCTOR_ID, "5da3453a5718e904108acc25");
         }});
     }
 

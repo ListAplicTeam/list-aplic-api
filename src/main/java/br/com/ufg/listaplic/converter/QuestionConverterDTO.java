@@ -12,7 +12,7 @@ public final class QuestionConverterDTO {
     private QuestionConverterDTO() {
     }
 
-    public static QuestionDTO fromDiscursivasIntegrationToDTO(final DiscursivasIntegrationDTO discursivasIntegrationDTO) {
+    public static QuestionDTO fromDiscursivasIntegrationToQuestionDTO(final DiscursivasIntegrationDTO discursivasIntegrationDTO) {
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setId(discursivasIntegrationDTO.getId());
         questionDTO.setName(discursivasIntegrationDTO.getEnunciado());
@@ -20,7 +20,7 @@ public final class QuestionConverterDTO {
         return questionDTO;
     }
 
-    public static QuestionDTO fromObjetivasIntegrationToDTO(final ObjetivasIntegrationDTO objetivasIntegrationDTO) {
+    public static QuestionDTO fromObjetivasIntegrationToQuestionDTO(final ObjetivasIntegrationDTO objetivasIntegrationDTO) {
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setId(objetivasIntegrationDTO.getId());
         questionDTO.setName(objetivasIntegrationDTO.getEnunciado());

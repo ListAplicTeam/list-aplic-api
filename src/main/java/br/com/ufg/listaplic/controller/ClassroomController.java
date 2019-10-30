@@ -91,7 +91,7 @@ public class ClassroomController {
     )
     @GetMapping("/instructor")
     @ResponseStatus(HttpStatus.OK)
-    public List<ClassroomDTO> findByInstructorId(@RequestParam("instructorId") UUID instructorId) {
+    public List<ClassroomDTO> findByInstructorId(@RequestParam("instructorId") String instructorId) {
         return classroomService.findByInstructorId(instructorId);
     }
 
