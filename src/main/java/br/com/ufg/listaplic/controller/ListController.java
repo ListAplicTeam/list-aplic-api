@@ -64,7 +64,7 @@ public class ListController {
     )
     @GetMapping("/pending")
     @ResponseStatus(HttpStatus.OK)
-    public List<ListDTO> getPendingListsByStudent(@RequestParam(value = "student_id", required = false) UUID studentId) {
+    public List<ListDTO> getPendingListsByStudent(@RequestParam(value = "studentId") UUID studentId) {
         return listService.getPendingListsByStudent(studentId);
     }
 
