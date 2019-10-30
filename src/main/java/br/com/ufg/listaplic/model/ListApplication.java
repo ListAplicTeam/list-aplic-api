@@ -3,6 +3,7 @@ package br.com.ufg.listaplic.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +25,13 @@ public class ListApplication {
 
     @Column(name = "list_id", nullable = false)
     private UUID list;
+
+    @Column(name = "application_date_time", nullable = false)
+    private Timestamp applicationDateTime;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private ApplicationListStatus status = ApplicationListStatus.EM_ANDAMENTO;
 
     public UUID getId() {
         return id;
@@ -47,5 +55,21 @@ public class ListApplication {
 
     public void setList(UUID list) {
         this.list = list;
+    }
+
+    public Timestamp getApplicationDateTime() {
+        return applicationDateTime;
+    }
+
+    public void setApplicationDateTime(Timestamp applicationDateTime) {
+        this.applicationDateTime = applicationDateTime;
+    }
+
+    public ApplicationListStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationListStatus status) {
+        this.status = status;
     }
 }
