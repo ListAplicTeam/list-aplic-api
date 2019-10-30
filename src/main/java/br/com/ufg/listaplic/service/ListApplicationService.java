@@ -1,8 +1,10 @@
 package br.com.ufg.listaplic.service;
 
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
+import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
 import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ListApplicationService {
@@ -43,5 +48,13 @@ public class ListApplicationService {
         } else {
             //do stuff
         }
+    }
+
+    public List<ListApplicationDTO> getFinishedListsByClassroomId(UUID classroomId) {
+        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroomId(classroomId);
+
+        return listApplications.stream()
+                .map(ListApplicationConverterDTO::fromListApplicationToListApplicationDTO)
+                .collect(Collectors.toList());
     }
 }

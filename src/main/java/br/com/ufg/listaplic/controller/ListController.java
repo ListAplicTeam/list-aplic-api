@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.controller;
 
 import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
@@ -66,6 +67,12 @@ public class ListController {
     @ResponseStatus(HttpStatus.OK)
     public List<ListDTO> getPendingListsByStudent(@RequestParam(value = "studentId") UUID studentId) {
         return listService.getPendingListsByStudent(studentId);
+    }
+
+    @GetMapping("/applications/byClassroom")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ListApplicationDTO> getFinishedApplicationsByClassroomId(@RequestParam(value = "classroomId") UUID classroomId) {
+        return listApplicationService.getFinishedListsByClassroomId(classroomId);
     }
 
     @ApiOperation(

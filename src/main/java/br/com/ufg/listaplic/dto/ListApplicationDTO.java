@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ListApplicationDTO {
 
     @ApiModelProperty(
-            value = "Classroom identification UUID.",
+            value = "Application identification UUID.",
             dataType = "string",
             example = "91b4a2dd-1797-48bb-8353-1231888129a1",
             readOnly = true
@@ -37,4 +37,6 @@ public class ListApplicationDTO {
     )
     @NotNull(message = "listId must be provided")
     private UUID listId;
+
+
 }
