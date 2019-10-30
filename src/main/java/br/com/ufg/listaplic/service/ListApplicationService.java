@@ -2,14 +2,15 @@ package br.com.ufg.listaplic.service;
 
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
-import br.com.ufg.listaplic.dto.ApplyDTO;
-import br.com.ufg.listaplic.dto.ClassroomDTO;
-import br.com.ufg.listaplic.dto.ListApplicationDTO;
-import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.converter.StudentConverterDTO;
+import br.com.ufg.listaplic.dto.*;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
 import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
+import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
+import br.com.ufg.listaplic.repository.StudentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class ListApplicationService {
 
     @Autowired
     private ListApplicationJpaRepository listApplicationJpaRepository;
+
+    @Autowired
+    private StudentJpaRepository studentJpaRepository;
 
     @Autowired
     private ListElabNetwork listElabNetwork;
@@ -51,10 +55,16 @@ public class ListApplicationService {
     }
 
     public List<ListApplicationDTO> getFinishedListsByClassroomId(UUID classroomId) {
-        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroomId(classroomId);
+        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroomAndStatus(classroomId, ApplicationListStatus.ENCERRADA);
+        List<Student> students = studentJpaRepository.findStudentsByClassroomId(classroomId);
+        List<StudentDTO> studentDTOList = students.stream()
+                .map(StudentConverterDTO::fromDomainToDTO)
+                .collect(Collectors.toList());
 
         return listApplications.stream()
-                .map(ListApplicationConverterDTO::fromListApplicationToListApplicationDTO)
+                .map(a -> {
+                    return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(a, studentDTOList);
+                })
                 .collect(Collectors.toList());
     }
 }

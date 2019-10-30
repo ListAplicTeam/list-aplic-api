@@ -56,4 +56,51 @@ public class ListApplicationDTO {
     @NotNull(message = "studentList must be provided")
     private List<StudentDTO> studentList;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(UUID groupId) {
+        this.groupId = groupId;
+    }
+
+    public UUID getListId() {
+        return listId;
+    }
+
+    public void setListId(UUID listId) {
+        this.listId = listId;
+    }
+
+    public ApplicationListStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationListStatus status) {
+        this.status = status;
+    }
+
+    public Timestamp getApplicationDateTime() {
+        return applicationDateTime;
+    }
+
+    public void setApplicationDateTime(Timestamp applicationDateTime) {
+        this.applicationDateTime = applicationDateTime;
+    }
+
+    public List<StudentDTO> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<StudentDTO> studentList) {
+        this.studentList = studentList;
+    }
 }
