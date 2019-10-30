@@ -11,6 +11,8 @@ import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class ListApplicationService {
 
@@ -33,6 +35,9 @@ public class ListApplicationService {
             ListApplication listApplication = new ListApplication();
             listApplication.setClassroom(classroom);
             listApplication.setList(listDTO.getId());
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            listApplication.setApplicationDateTime(timestamp);
 
             listApplicationJpaRepository.save(listApplication);
         } else {
