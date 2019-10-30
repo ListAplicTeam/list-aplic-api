@@ -5,7 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Table(name = "application", uniqueConstraints = @UniqueConstraint(columnNames = {"classroom_id", "list_id"}, name = "classroom_list"))
+@Entity
+@Table(name = "application")
 public class ListApplication {
 
     @Id
@@ -21,8 +22,7 @@ public class ListApplication {
     @JoinColumn(name = "classroom_id", nullable = false)
     private Classroom classroom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "list_id", nullable = false)
+    @Column(name = "list_id", nullable = false)
     private UUID list;
 
     public UUID getId() {
