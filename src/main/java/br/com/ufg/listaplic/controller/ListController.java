@@ -69,6 +69,12 @@ public class ListController {
         return listApplicationService.getFinishedListsByClassroomId(classroomId);
     }
 
+    @GetMapping("/application/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ListApplicationDTO getApplicationDetailById(@PathVariable("id") UUID applicationId) {
+        return listApplicationService.getListApplicationDetail(applicationId);
+    }
+
     @ApiOperation(
             value = "Answering the list"
     )

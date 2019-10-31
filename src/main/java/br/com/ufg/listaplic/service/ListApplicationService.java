@@ -1,14 +1,13 @@
 package br.com.ufg.listaplic.service;
 
+import br.com.ufg.listaplic.converter.AnswerConverterDTO;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
 import br.com.ufg.listaplic.converter.StudentConverterDTO;
 import br.com.ufg.listaplic.dto.*;
-import br.com.ufg.listaplic.model.ApplicationListStatus;
-import br.com.ufg.listaplic.model.Classroom;
-import br.com.ufg.listaplic.model.ListApplication;
-import br.com.ufg.listaplic.model.Student;
+import br.com.ufg.listaplic.model.*;
 import br.com.ufg.listaplic.network.ListElabNetwork;
+import br.com.ufg.listaplic.repository.AnswerJpaRepository;
 import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import br.com.ufg.listaplic.repository.StudentJpaRepository;
@@ -34,6 +33,9 @@ public class ListApplicationService {
 
     @Autowired
     private ClassroomJpaRepository classroomJpaRepository;
+
+    @Autowired
+    private AnswerJpaRepository answerJpaRepository;
 
     @Autowired
     private ListElabNetwork listElabNetwork;
@@ -71,5 +73,20 @@ public class ListApplicationService {
                     return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(a, studentDTOList, null);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public ListApplicationDTO getListApplicationDetail(UUID applicationId) {
+        ListApplication application = listApplicationJpaRepository.findById(applicationId).orElse(new ListApplication());
+        List<Answer> answers = answerJpaRepository.findByApplicationId(applicationId);
+        List<Student> students = studentJpaRepository.findStudentsByClassroomId(application.getClassroom().getId());
+        List<StudentDTO> studentDTOList = students.stream()
+                .map(StudentConverterDTO::fromDomainToDTO)
+                .collect(Collectors.toList());
+        List<AnswerDTO> answerDTOList = answers.stream().map(a -> AnswerConverterDTO.fromDomainAndListIdToAnswerDTO(a, application.getList()))
+                .collect(Collectors.toList());
+
+        return  ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(application,
+                studentDTOList,
+                answerDTOList);
     }
 }
