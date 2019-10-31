@@ -16,5 +16,4 @@ public class AnswerService {
     public void saveAll(List<Answer> answers) {
         answerJpaRepository.saveAll(answers);
     }
-
 }

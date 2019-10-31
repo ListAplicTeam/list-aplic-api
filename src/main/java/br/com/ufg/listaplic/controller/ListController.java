@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.controller;
 
 import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
@@ -10,13 +11,7 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -66,6 +61,18 @@ public class ListController {
     @ResponseStatus(HttpStatus.OK)
     public List<ListDTO> getPendingListsByStudent(@RequestParam(value = "studentId") UUID studentId) {
         return listService.getPendingListsByStudent(studentId);
+    }
+
+    @GetMapping("/applications/by-classroom")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ListApplicationDTO> getFinishedApplicationsByClassroomId(@RequestParam(value = "classroomId") UUID classroomId) {
+        return listApplicationService.getFinishedListsByClassroomId(classroomId);
+    }
+
+    @GetMapping("/application/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ListApplicationDTO getApplicationDetailById(@PathVariable("id") UUID applicationId) {
+        return listApplicationService.getListApplicationDetail(applicationId);
     }
 
     @ApiOperation(
