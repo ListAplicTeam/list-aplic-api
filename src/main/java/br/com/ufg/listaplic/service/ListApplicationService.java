@@ -82,10 +82,10 @@ public class ListApplicationService {
         List<StudentDTO> studentDTOList = students.stream()
                 .map(StudentConverterDTO::fromDomainToDTO)
                 .collect(Collectors.toList());
-        List<AnswerDTO> answerDTOList = answers.stream().map(a -> AnswerConverterDTO.fromDomainAndListIdToAnswerDTO(a, application.getList()))
+        List<AnswerDTO> answerDTOList = answers.isEmpty() ? null : answers.stream().map(a -> AnswerConverterDTO.fromDomainAndListIdToAnswerDTO(a, application.getList()))
                 .collect(Collectors.toList());
 
-        return  ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(application,
+        return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(application,
                 studentDTOList,
                 answerDTOList);
     }
