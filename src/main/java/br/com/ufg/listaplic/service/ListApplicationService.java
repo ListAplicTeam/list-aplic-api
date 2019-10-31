@@ -68,7 +68,7 @@ public class ListApplicationService {
 
         return listApplications.stream()
                 .map(a -> {
-                    return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(a, studentDTOList);
+                    return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(a, studentDTOList, null);
                 })
                 .collect(Collectors.toList());
     }
