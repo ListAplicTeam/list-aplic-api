@@ -8,20 +8,50 @@ import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+
 import java.util.UUID;
 
 public class ListApplicationTemplate implements TemplateLoader {
 
-	private static final String ID = "id";
-	private static final String CLASSROOM = "classroom";
-	private static final String LIST = "list";
-	private static final String APPLICATION_DATE_TIME = "applicationDateTime";
-	private static final String STATUS = "status";
+    private String ID = "id";
+    private String CLASSROOM = "classroom";
+    private String LIST = "list";
+    private String APPLICATION_DATE_TIME = "applicationDateTime";
+    private String STATUS = "status";
 
-	@Override
-	public void load() {
-		buildListApplicationTemplate();
-	}
+    public enum TYPES {
+        FINISHED_APPLICATION,
+        UNFINISHED_APPLICATION,
+        LIST_APPLICATION
+    }
+
+    @Override
+    public void load() {
+        buildFinishedApplication();
+        buildUnfinishedApplication();
+        buildListApplicationTemplate();
+    }
+
+    private void buildFinishedApplication() {
+        Fixture.of(ListApplication.class).addTemplate(TYPES.FINISHED_APPLICATION.name(), new Rule() {{
+            add(ID, UUID.randomUUID());
+            add(CLASSROOM, one(Classroom.class,ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name()));
+            add(LIST, UUID.randomUUID());
+            add(STATUS, ApplicationListStatus.ENCERRADA);
+            add(APPLICATION_DATE_TIME, Timestamp.from(Instant.now()));
+        }});
+    }
+
+    private void buildUnfinishedApplication() {
+        Fixture.of(ListApplication.class).addTemplate(TYPES.UNFINISHED_APPLICATION.name(), new Rule() {{
+            add(ID, UUID.randomUUID());
+            add(CLASSROOM, one(Classroom.class,ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name()));
+            add(LIST, UUID.randomUUID());
+            add(STATUS, ApplicationListStatus.EM_ANDAMENTO);
+            add(APPLICATION_DATE_TIME, Timestamp.from(Instant.now()));
+        }});
+    }
 
 	private void buildListApplicationTemplate() {
 		Fixture.of(ListApplication.class).addTemplate(TYPES.LIST_APPLICATION.name(), new Rule() {{
@@ -32,9 +62,4 @@ public class ListApplicationTemplate implements TemplateLoader {
 			add(STATUS, ApplicationListStatus.EM_ANDAMENTO);
 		}});
 	}
-
-	public enum TYPES {
-		LIST_APPLICATION
-	}
-
 }
