@@ -3,8 +3,10 @@ package br.com.ufg.listaplic.template;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
+import br.com.ufg.listaplic.dto.AnswerDTO;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.model.Answer;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
 
 import java.sql.Timestamp;
@@ -29,6 +31,7 @@ public class ListApplicationDTOTemplate implements TemplateLoader {
     @Override
     public void load() {
         buildApplicationDTOWithoutAnswers();
+        buildApplicationDTOWithAnswers();
     }
 
     private void buildApplicationDTOWithoutAnswers() {
@@ -36,9 +39,21 @@ public class ListApplicationDTOTemplate implements TemplateLoader {
             add(ID, UUID.randomUUID());
             add(GROUP_ID, UUID.randomUUID());
             add(LIST_ID, UUID.randomUUID());
-            add(STATUS, ApplicationListStatus.ENCERRADA.name());
+            add(STATUS, ApplicationListStatus.ENCERRADA);
             add(APPLICATION_DATE_TIME, Timestamp.from(Instant.now()));
             add(STUDENT_LIST, has(1).of(StudentDTO.class, StudentDTOTemplate.TYPES.STUDENT_WITH_ID.name()));
+        }});
+    }
+
+    private void buildApplicationDTOWithAnswers() {
+        Fixture.of(ListApplicationDTO.class).addTemplate(TYPES.APPLICATIONDTO_WITH_ANSWERS.name(), new Rule() {{
+            add(ID, UUID.randomUUID());
+            add(GROUP_ID, UUID.randomUUID());
+            add(LIST_ID, UUID.randomUUID());
+            add(STATUS, ApplicationListStatus.ENCERRADA);
+            add(APPLICATION_DATE_TIME, Timestamp.from(Instant.now()));
+            add(STUDENT_LIST, has(1).of(StudentDTO.class, StudentDTOTemplate.TYPES.STUDENT_WITH_ID.name()));
+            add(ANSWER_LIST, has(2).of(AnswerDTO.class, AnswerDTOTemplate.TYPES.ANSWER_DTO.name()));
         }});
     }
 }
