@@ -12,7 +12,13 @@ import br.com.ufg.listaplic.template.AnswerTemplate;
 import br.com.ufg.listaplic.template.ClassroomTemplate;
 import br.com.ufg.listaplic.template.ListApplicationTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
-import org.junit.Before;
+import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.network.ListElabNetwork;
+import br.com.ufg.listaplic.template.ApplyDTOTemplate;
+import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
+import br.com.ufg.listaplic.template.ListDTOTemplate;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +28,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ListApplicationServiceTest extends BaseTest {
 
@@ -37,6 +43,10 @@ public class ListApplicationServiceTest extends BaseTest {
     private StudentJpaRepository mockStudentJpaRepository;
     @Mock
     private AnswerJpaRepository mockAnswerJpaRepository;
+	@Mock
+	private ClassroomService classroomService;
+	@Mock
+	private ListElabNetwork mockListElabNetwork;
 
     @Test
     public void testGetFinishedListsByClassroomId() {
@@ -74,4 +84,58 @@ public class ListApplicationServiceTest extends BaseTest {
         assertEquals(application.getClassroom().getId(), result.getGroupId());
         assertEquals(answers.size(), result.getAnswerList().size());
     }
+
+	@Test
+	public void testApplyListTo() {
+		// Setup
+		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
+		final ListDTO list = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name());
+		final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
+
+		when(mockListElabNetwork.getListById(applyDto.getListId())).thenReturn(list);
+		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(classroomDTO);
+
+		// Run the test
+		listApplicationServiceUnderTest.applyListTo(applyDto);
+
+		// Verify the results
+		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
+		verify(mockListElabNetwork, times(1)).getListById(applyDto.getListId());
+
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testApplyListToWithoutClassroom() {
+		// Setup
+		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
+
+		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(null);
+
+		// Run the test
+		listApplicationServiceUnderTest.applyListTo(applyDto);
+
+		// Verify the results
+		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
+
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testApplyListToWithoutList() {
+		// Setup
+		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
+		final ListDTO list = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name());
+		final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
+
+		when(mockListElabNetwork.getListById(applyDto.getListId())).thenReturn(null);
+		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(classroomDTO);
+
+		// Run the test
+		listApplicationServiceUnderTest.applyListTo(applyDto);
+
+		// Verify the results
+		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
+		verify(mockListElabNetwork, times(1)).getListById(applyDto.getListId());
+
+	}
+
 }
