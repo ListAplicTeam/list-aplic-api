@@ -4,29 +4,6 @@ spring:
   profiles:
     active: ${PROFILE_ACTIVE:dev}
 
-listelab:
-  api:
-    auth:
-      email: admin@ufg.br
-      password: 123456
-    url:
-      auth: http://api.sifo.tech/api/usuario/login
-      list: http://api.sifo.tech/api/lista
-
-#'dev' profile only
----
-
-spring:
-  profiles: dev
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/list-aplic-api
-    username: ${DEV_DATASOURCE_USERNAME:postgre-user-test}
-    password: ${DEV_DATASOURCE_PASSWORD:postgre-passwd-test}
-    hikari:
-      maximum-pool-size: 10
-      idle-timeout: 10000
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     show-sql: true
@@ -34,44 +11,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
-    properties:
-      temp:
-        use_jdbc_metadata_defaults: false
-
-management:
-  endpoints:
-    web:
-      base-path: /
-      exposure:
-        include: "*"
-  server:
-    port: ${HEALTH_PORT:8080}
-    context-path: /
-
-server:
-  port: ${SERVER_PORT:80}
-  servlet:
-    context-path: /api
-
-#'prod' profile only
----
-
-spring:
-  profiles: prod
-
-  datasource:
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
-    hikari:
-      maximum-pool-size: 5
-      idle-timeout: 10000
-
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    show-sql: true
-    hibernate:
-      ddl-auto: none
     properties:
       hibernate:
         temp:
@@ -91,3 +30,40 @@ server:
   port: ${SERVER_PORT:80}
   servlet:
     context-path: /api
+
+listelab:
+  api:
+    auth:
+      email: admin@ufg.br
+      password: 123456
+    url:
+      auth: http://api.sifo.tech/api/usuario/login
+      list: http://api.sifo.tech/api/lista
+
+#'dev' profile only
+---
+
+spring:
+  profiles: dev
+
+  datasource:
+    url: ${DEV_DATASOURCE_URL}
+    username: ${DEV_DATASOURCE_USERNAME}
+    password: ${DEV_DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      idle-timeout: 10000
+
+#'prod' profile only
+---
+
+spring:
+  profiles: prod
+
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      idle-timeout: 10000
