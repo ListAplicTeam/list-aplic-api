@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: test
+    default: test
+
+  embeddedpostgres:
+    enable: true
+    port: 5433
+    database: ifood-service-promotion
+    datadir: target
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false

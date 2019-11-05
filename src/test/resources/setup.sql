@@ -1,0 +1,1 @@
+INSERT INTO student (id, email, name, password) VALUES ('fa8789f1-17a8-4937-b7db-5910471cc61b', 'isaias_neto@discente.ufg.br', 'Isaias Tavares da Silva Neto', '1e9f258f838afe310eb0da6501e3c354');
