@@ -20,7 +20,7 @@ public class EnrollmentDTOTemplate implements TemplateLoader {
 
     private void buildEnrollmentDTOTemplate() {
         Fixture.of(EnrollmentDTO.class).addTemplate(TYPES.ENROLLMENT.name(), new Rule() {{
-            add(CODE,  "FLA0214");
+            add(CODE,  "LCF5540");
         }});
     }
 

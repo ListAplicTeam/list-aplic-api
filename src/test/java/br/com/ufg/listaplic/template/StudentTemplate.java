@@ -16,13 +16,15 @@ public class StudentTemplate implements TemplateLoader {
 
     public enum TYPES {
         STUDENT,
-        STUDENT_WITH_ID
+        STUDENT_WITH_ID,
+        NEW_STUDENT
     }
 
     @Override
     public void load() {
         buildStudentTemplate();
         buildStudentWithIdTemplate();
+        buildNewStudentTemplate();
     }
 
     private void buildStudentTemplate() {
@@ -33,9 +35,17 @@ public class StudentTemplate implements TemplateLoader {
         }});
     }
 
+    private void buildNewStudentTemplate() {
+        Fixture.of(Student.class).addTemplate(TYPES.NEW_STUDENT.name(), new Rule() {{
+            add(NAME, "New Student");
+            add(EMAIL, "new_student@discente.ufg.br");
+            add(PASSWORD, "123456");
+        }});
+    }
+
     private void buildStudentWithIdTemplate() {
         Fixture.of(Student.class).addTemplate(TYPES.STUDENT_WITH_ID.name()).inherits(TYPES.STUDENT.name(), new Rule(){{
-            add(ID, UUID.randomUUID());
+            add(ID, UUID.fromString("fa8789f1-17a8-4937-b7db-5910471cc61b"));
         }});
     }
 

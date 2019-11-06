@@ -28,16 +28,16 @@ public class ClassroomTemplate implements TemplateLoader {
 
     private void buildClassroomTemplate() {
         Fixture.of(Classroom.class).addTemplate(TYPES.CLASSROOM.name(), new Rule() {{
-            add(NAME, "Engenharia de Software - Turma A");
-            add(CODE, "FLA0214");
-            add(SUBJECT_CODE, "ARQSOFT2019-1");
+            add(NAME, "Integração 2 2018-1");
+            add(CODE, "CWS4558");
+            add(SUBJECT_CODE, "INF0089");
             add(INSTRUCTOR_ID, "5da3453a5718e904108acc25");
         }});
     }
 
     private void buildClassroomWithIdTemplate() {
         Fixture.of(Classroom.class).addTemplate(TYPES.CLASSROOM_WITH_ID.name()).inherits(TYPES.CLASSROOM.name(), new Rule(){{
-            add(ID, UUID.randomUUID());
+            add(ID, UUID.fromString("dd4164a8-4cf1-467a-af34-0d48d9d2b699"));
         }});
     }
 
