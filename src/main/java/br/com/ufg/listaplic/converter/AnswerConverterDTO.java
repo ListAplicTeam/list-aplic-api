@@ -5,7 +5,10 @@ import br.com.ufg.listaplic.model.Answer;
 
 import java.util.UUID;
 
-public class AnswerConverterDTO {
+public final class AnswerConverterDTO {
+
+    public AnswerConverterDTO() {
+    }
 
     public static AnswerDTO fromDomainAndListIdToAnswerDTO(Answer answer, UUID listId) {
         AnswerDTO answerDTO = new AnswerDTO();
