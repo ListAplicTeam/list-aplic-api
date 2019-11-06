@@ -125,7 +125,7 @@ public class ListServiceTest extends BaseTest {
     public void testGetPendingListsByStudent() {
         // Setup
         final List<ClassroomDTO> classrooms = Fixture.from(ClassroomDTO.class).gimme(2, ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
-        final List<ListApplication> listApplications = Fixture.from(ListApplication.class).gimme(2, ListApplicationTemplate.TYPES.LIST_APPLICATION_WITH_ID.name());
+        final List<ListApplication> listApplications = Fixture.from(ListApplication.class).gimme(2, ListApplicationTemplate.TYPES.LIST_APPLICATION.name());
         final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
         when(mockClassroomService.findByStudentId(any(UUID.class))).thenReturn(classrooms);
