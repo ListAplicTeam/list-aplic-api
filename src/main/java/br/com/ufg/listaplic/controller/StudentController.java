@@ -83,21 +83,6 @@ public class StudentController {
     }
 
     @ApiOperation(
-            value = "Enroll Student"
-    )
-    @ApiResponse(
-            code = 200,
-            message = "Student enrolled successfully."
-    )
-    @PostMapping("/{id}/enrollment")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity enrollment(@PathVariable("id") UUID id,
-                                     @RequestBody EnrollmentDTO enrollmentDTO) {
-        enrollmentService.enrollment(id, enrollmentDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @ApiOperation(
             value = "Update Student",
             response = StudentDTO.class
     )
@@ -128,6 +113,21 @@ public class StudentController {
                     studentService.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @ApiOperation(
+            value = "Enroll Student"
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Student enrolled successfully."
+    )
+    @PostMapping("/{id}/enrollment")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity enrollment(@PathVariable("id") UUID id,
+                                     @RequestBody EnrollmentDTO enrollmentDTO) {
+        enrollmentService.enrollment(id, enrollmentDTO);
+        return ResponseEntity.ok().build();
     }
 
 }
