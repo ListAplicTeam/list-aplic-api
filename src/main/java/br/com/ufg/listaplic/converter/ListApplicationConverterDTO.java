@@ -8,7 +8,10 @@ import org.springframework.lang.Nullable;
 
 import java.util.List;
 
-public class ListApplicationConverterDTO {
+public final class ListApplicationConverterDTO {
+
+    private ListApplicationConverterDTO() {
+    }
 
     public static ListApplicationDTO fromListApplicationAndStudentsToListApplicationDTO(
             ListApplication listApplication,

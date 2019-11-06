@@ -12,6 +12,7 @@ import br.com.ufg.listaplic.template.ListDTOTemplate;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,8 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ListControllerTest extends BaseTest {
@@ -71,4 +74,29 @@ public class ListControllerTest extends BaseTest {
         assertEquals(listApplicationDTO.getGroupId(), result.getGroupId());
         assertEquals(listApplicationDTO.getStatus(), result.getStatus());
     }
+    @Test
+    public void testGetPendingListsByStudent() {
+        // Setup
+        final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+        when(mockListService.getPendingListsByStudent(any(UUID.class))).thenReturn(listDTOS);
+
+        // Run the test
+        final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(listDTOS.size(), result.size());
+    }
+
+    @Test
+    public void testAnsweringList() {
+        // Setup
+        Mockito.doNothing().when(mockListService).answeringList(any(UUID.class), any(ListDTO.class));
+
+        // Run the test
+        listControllerUnderTest.answeringList(UUID.randomUUID(), new ListDTO());
+
+        // Verify the results
+        verify(mockListService, times(1)).answeringList(any(UUID.class), any(ListDTO.class));
+    }
+
 }

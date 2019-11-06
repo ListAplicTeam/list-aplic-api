@@ -34,7 +34,6 @@ public class ListService {
 
     public List<ListDTO> getListsByFilter(String name, String subjectCode) {
 
-        // todas as listas
         List<ListDTO> allLists = getAllLists();
 
         if (Objects.nonNull(name)) {
