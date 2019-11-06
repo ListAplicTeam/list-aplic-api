@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public final class AnswerConverterDTO {
 
-    public AnswerConverterDTO() {
+    private AnswerConverterDTO() {
     }
 
     public static AnswerDTO fromDomainAndListIdToAnswerDTO(Answer answer, UUID listId) {
