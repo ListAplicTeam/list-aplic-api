@@ -23,7 +23,7 @@ public class ClassroomDTO {
     @ApiModelProperty(
             value = "Classroom's name",
             dataType = "string",
-            example = "Engenharia de Software - Turma A",
+            example = "Integração 2 2018-1",
             required = true
     )
     @NotNull(message = "name must be provided")
@@ -32,7 +32,7 @@ public class ClassroomDTO {
     @ApiModelProperty(
             value = "Classroom identification code",
             dataType = "string",
-            example = "FLA0214",
+            example = "CWS4558",
             readOnly = true
     )
     private String code;
@@ -40,7 +40,7 @@ public class ClassroomDTO {
     @ApiModelProperty(
             value = "Subject identification code",
             dataType = "string",
-            example = "ARQSOFT2019-1",
+            example = "INF0089",
             required = true
     )
     @NotNull(message = "subjectCode must be provided")

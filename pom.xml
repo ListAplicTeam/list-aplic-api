@@ -24,6 +24,7 @@
 
         <springfox.version>2.9.2</springfox.version>
         <fixture.version>3.1.0</fixture.version>
+        <maven.plugin.failsafe.version>2.22.2</maven.plugin.failsafe.version>
         <apache.commons.lang.version>3.9</apache.commons.lang.version>
     </properties>
 
@@ -109,6 +110,33 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven.plugin.failsafe.version}</version>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${project.build.directory}/classes
+                                </additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
+                            <forkCount>1</forkCount>
+                            <reuseForks>false</reuseForks>
+                            <useSystemClassLoader>false</useSystemClassLoader>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

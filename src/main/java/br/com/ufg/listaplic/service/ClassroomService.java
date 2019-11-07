@@ -59,7 +59,7 @@ public class ClassroomService {
     }
 
     public ClassroomDTO save(ClassroomDTO classroomDTO) {
-        classroomDTO.setCode(generateClassroomCode());
+        classroomDTO.setCode(getClassroomCode());
         Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
         Classroom classroomSaved = classroomJpaRepository.save(classroom);
         return ClassroomConverterDTO.fromDomainToDTO(classroomSaved);
@@ -76,6 +76,14 @@ public class ClassroomService {
 
     public void deleteById(UUID id) {
         classroomJpaRepository.deleteById(id);
+    }
+
+    private String getClassroomCode() {
+        String classroomCode = generateClassroomCode();
+
+        while (classroomJpaRepository.existsByCode(classroomCode)) {
+            classroomCode = generateClassroomCode();
+        } return classroomCode;
     }
 
     private static String generateClassroomCode() {

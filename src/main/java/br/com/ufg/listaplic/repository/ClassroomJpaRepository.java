@@ -14,6 +14,8 @@ public interface ClassroomJpaRepository extends JpaRepository<Classroom, UUID> {
 
     Optional<Classroom> findByCode(String code);
 
+    boolean existsByCode(String code);
+
     List<Classroom> findByInstructorId(String instructorId);
 
     @Query("SELECT c FROM Classroom c " +
