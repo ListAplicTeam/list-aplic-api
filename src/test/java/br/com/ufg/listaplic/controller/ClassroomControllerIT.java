@@ -3,12 +3,10 @@ package br.com.ufg.listaplic.controller;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.AbstractIT;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
-import br.com.ufg.listaplic.dto.EnrollmentDTO;
 import br.com.ufg.listaplic.dto.InstructorDTO;
 import br.com.ufg.listaplic.exception.ExceptionHandlerController;
 import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
-import br.com.ufg.listaplic.template.EnrollmentDTOTemplate;
 import br.com.ufg.listaplic.template.InstructorDTOTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -173,18 +171,6 @@ public class ClassroomControllerIT extends AbstractIT {
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.message", is("Classroom not found")));
-    }
-
-    @Test
-    public void shouldEnrollmentStudentWithSuccess() throws Exception {
-        final Student student = Fixture.from(Student.class).gimme(StudentTemplate.TYPES.STUDENT_WITH_ID.name());
-        final EnrollmentDTO enrollmentDTO = Fixture.from(EnrollmentDTO.class).gimme(EnrollmentDTOTemplate.TYPES.ENROLLMENT.name());
-
-        mvc.perform(MockMvcRequestBuilders.post((BASE_PATH + "/" + student.getId() + "/enrollment"))
-                .content(mapper.writeValueAsString(enrollmentDTO))
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().is2xxSuccessful());
     }
 
 }
