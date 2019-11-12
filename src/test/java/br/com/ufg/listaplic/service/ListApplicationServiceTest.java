@@ -2,23 +2,24 @@ package br.com.ufg.listaplic.service;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
+import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
-import br.com.ufg.listaplic.model.*;
+import br.com.ufg.listaplic.model.Answer;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.ListApplication;
+import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.repository.AnswerJpaRepository;
 import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import br.com.ufg.listaplic.repository.StudentJpaRepository;
 import br.com.ufg.listaplic.template.AnswerTemplate;
+import br.com.ufg.listaplic.template.ApplyDTOTemplate;
+import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
 import br.com.ufg.listaplic.template.ClassroomTemplate;
 import br.com.ufg.listaplic.template.ListApplicationTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
-import br.com.ufg.listaplic.dto.ApplyDTO;
-import br.com.ufg.listaplic.dto.ClassroomDTO;
-import br.com.ufg.listaplic.dto.ListDTO;
-import br.com.ufg.listaplic.network.ListElabNetwork;
-import br.com.ufg.listaplic.template.ApplyDTOTemplate;
-import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
-import br.com.ufg.listaplic.template.ListDTOTemplate;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,7 +29,9 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ListApplicationServiceTest extends BaseTest {
 
@@ -45,8 +48,6 @@ public class ListApplicationServiceTest extends BaseTest {
     private AnswerJpaRepository mockAnswerJpaRepository;
 	@Mock
 	private ClassroomService classroomService;
-	@Mock
-	private ListElabNetwork mockListElabNetwork;
 
     @Test
     public void testGetFinishedListsByClassroomId() {
@@ -89,10 +90,8 @@ public class ListApplicationServiceTest extends BaseTest {
 	public void testApplyListTo() {
 		// Setup
 		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
-		final ListDTO list = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name());
 		final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
 
-		when(mockListElabNetwork.getListById(applyDto.getListId())).thenReturn(list);
 		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(classroomDTO);
 
 		// Run the test
@@ -100,8 +99,6 @@ public class ListApplicationServiceTest extends BaseTest {
 
 		// Verify the results
 		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
-		verify(mockListElabNetwork, times(1)).getListById(applyDto.getListId());
-
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -116,25 +113,6 @@ public class ListApplicationServiceTest extends BaseTest {
 
 		// Verify the results
 		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
-
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testApplyListToWithoutList() {
-		// Setup
-		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
-		final ListDTO list = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name());
-		final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
-
-		when(mockListElabNetwork.getListById(applyDto.getListId())).thenReturn(null);
-		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(classroomDTO);
-
-		// Run the test
-		listApplicationServiceUnderTest.applyListTo(applyDto);
-
-		// Verify the results
-		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
-		verify(mockListElabNetwork, times(1)).getListById(applyDto.getListId());
 
 	}
 
