@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -128,6 +129,23 @@ public class StudentController {
                                      @RequestBody EnrollmentDTO enrollmentDTO) {
         enrollmentService.enrollment(id, enrollmentDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(
+            value = "Get Students by Classroom",
+            responseContainer = "list",
+            response = StudentDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Get Students by Classroom",
+            responseContainer = "list",
+            response = StudentDTO.class
+    )
+    @GetMapping("/enrollment")
+    @ResponseStatus(HttpStatus.OK)
+    public List<StudentDTO> getStudentsByClassroom(@RequestParam UUID classroomId) {
+        return studentService.getStudentsByClassroom(classroomId);
     }
 
 }

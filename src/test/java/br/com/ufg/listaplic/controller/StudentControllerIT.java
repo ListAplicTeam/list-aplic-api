@@ -4,7 +4,9 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.AbstractIT;
 import br.com.ufg.listaplic.dto.EnrollmentDTO;
 import br.com.ufg.listaplic.exception.ExceptionHandlerController;
+import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.Student;
+import br.com.ufg.listaplic.template.ClassroomTemplate;
 import br.com.ufg.listaplic.template.EnrollmentDTOTemplate;
 import br.com.ufg.listaplic.template.StudentTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -178,6 +180,24 @@ public class StudentControllerIT extends AbstractIT {
                 .andExpect(status().isConflict())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.message", is("Student is already enrolled")));
+    }
+
+    @Test
+    public void shouldGetStudentsByClassroom() throws Exception {
+        final Student student = Fixture.from(Student.class).gimme(StudentTemplate.TYPES.STUDENT_WITH_ID.name());
+        final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+
+        mvc.perform(MockMvcRequestBuilders.get((BASE_PATH + "/enrollment"))
+                .param("classroomId", classroom.getId().toString())
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$.*.id", hasItem(is(student.getId().toString()))))
+                .andExpect(jsonPath("$.*.name", hasItem(is(student.getName()))))
+                .andExpect(jsonPath("$.*.email", hasItem(is(student.getEmail()))));
     }
 
 }
