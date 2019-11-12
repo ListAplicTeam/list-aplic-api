@@ -4,8 +4,17 @@ import br.com.ufg.listaplic.converter.AnswerConverterDTO;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
 import br.com.ufg.listaplic.converter.StudentConverterDTO;
-import br.com.ufg.listaplic.dto.*;
-import br.com.ufg.listaplic.model.*;
+import br.com.ufg.listaplic.dto.AnswerDTO;
+import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
+import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.model.Answer;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.ListApplication;
+import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.repository.AnswerJpaRepository;
 import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
@@ -43,16 +52,17 @@ public class ListApplicationService {
     public void applyListTo(ApplyDTO applyDTO) {
         if (applyDTO.getAllClassroom()) {
             ClassroomDTO classroomDTO = classroomService.findById(applyDTO.getClassroomId());
-            ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
-
             Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
 
             ListApplication listApplication = new ListApplication();
             listApplication.setClassroom(classroom);
-            listApplication.setList(listDTO.getId());
+            listApplication.setList(applyDTO.getListId());
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             listApplication.setApplicationDateTime(timestamp);
+
+            listApplication.setStartDate(applyDTO.getStartDate());
+            listApplication.setFinalDate(applyDTO.getFinalDate());
 
             listApplicationJpaRepository.save(listApplication);
         } else {
@@ -69,9 +79,7 @@ public class ListApplicationService {
                 .collect(Collectors.toList());
 
         return listApplications.stream()
-                .map(a -> {
-                    return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(a, studentDTOList, null);
-                })
+                .map(listApplication -> ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(listApplication, studentDTOList, null))
                 .collect(Collectors.toList());
     }
 
