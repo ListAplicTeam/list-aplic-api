@@ -24,7 +24,9 @@ import static br.com.ufg.listaplic.service.StudentService.STUDENT_NOT_FOUND;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StudentServiceTest extends BaseTest {
 
@@ -159,5 +161,20 @@ public class StudentServiceTest extends BaseTest {
 
         // Verify the results
         verify(mockStudentJpaRepository, times(1)).deleteById(any(UUID.class));
+    }
+
+    @Test
+    public void testGetStudentsByClassroom() {
+        // Setup
+        final List<StudentDTO> studentsDTO = Fixture.from(StudentDTO.class).gimme(2, StudentDTOTemplate.TYPES.STUDENT_WITH_ID.name());
+        final List<Student> students = Fixture.from(Student.class).gimme(2, StudentTemplate.TYPES.STUDENT_WITH_ID.name());
+        when(mockStudentJpaRepository.findStudentsByClassroomId(any(UUID.class))).thenReturn(students);
+
+        // Run the test
+        final List<StudentDTO> result = studentServiceUnderTest.getStudentsByClassroom(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(students.size(), result.size());
+        assertEquals(studentsDTO, result);
     }
 }

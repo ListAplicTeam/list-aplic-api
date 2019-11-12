@@ -23,6 +23,8 @@ public final class ListApplicationConverterDTO {
         listApplicationDTO.setGroupId(listApplication.getClassroom().getId());
         listApplicationDTO.setListId(listApplication.getList());
         listApplicationDTO.setApplicationDateTime(listApplication.getApplicationDateTime());
+        listApplicationDTO.setStartDate(listApplication.getStartDate());
+        listApplicationDTO.setFinalDate(listApplication.getFinalDate());
         listApplicationDTO.setStatus(listApplication.getStatus());
         listApplicationDTO.setStudentList(students);
         listApplicationDTO.setAnswerList(answers);

@@ -2,8 +2,19 @@ package br.com.ufg.listaplic.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -29,9 +40,15 @@ public class ListApplication {
     @Column(name = "application_date_time", nullable = false)
     private Timestamp applicationDateTime;
 
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
+
+    @Column(name = "final_date", nullable = false)
+    private LocalDateTime finalDate;
+
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private ApplicationListStatus status = ApplicationListStatus.EM_ANDAMENTO;
+    private ApplicationListStatus status = ApplicationListStatus.APLICADA;
 
     public UUID getId() {
         return id;
@@ -63,6 +80,22 @@ public class ListApplication {
 
     public void setApplicationDateTime(Timestamp applicationDateTime) {
         this.applicationDateTime = applicationDateTime;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(LocalDateTime finalDate) {
+        this.finalDate = finalDate;
     }
 
     public ApplicationListStatus getStatus() {

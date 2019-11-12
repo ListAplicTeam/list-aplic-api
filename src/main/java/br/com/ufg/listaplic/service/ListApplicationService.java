@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,20 +44,22 @@ public class ListApplicationService {
     public void applyListTo(ApplyDTO applyDTO) {
         if (applyDTO.getAllClassroom()) {
             ClassroomDTO classroomDTO = classroomService.findById(applyDTO.getClassroomId());
-            ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
-
             Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
 
             ListApplication listApplication = new ListApplication();
             listApplication.setClassroom(classroom);
-            listApplication.setList(listDTO.getId());
+            listApplication.setList(applyDTO.getListId());
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             listApplication.setApplicationDateTime(timestamp);
 
+            listApplication.setStartDate(applyDTO.getStartDate());
+            listApplication.setFinalDate(applyDTO.getFinalDate());
+
             ListApplication savedApplication = listApplicationJpaRepository.save(listApplication);
 
             if(savedApplication != null && savedApplication.getId() != null) {
+                ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
                 this.countQuestions(classroom.getInstructorId(), listDTO.getQuestions());
             }
         } else {
@@ -103,9 +107,7 @@ public class ListApplicationService {
                 .collect(Collectors.toList());
 
         return listApplications.stream()
-                .map(a -> {
-                    return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(a, studentDTOList, null);
-                })
+                .map(listApplication -> ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(listApplication, studentDTOList, null))
                 .collect(Collectors.toList());
     }
 

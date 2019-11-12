@@ -1,12 +1,15 @@
 package br.com.ufg.listaplic.dto;
 
 import br.com.ufg.listaplic.model.ApplicationListStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,12 +46,31 @@ public class ListApplicationDTO {
     @NotNull(message = "listId must be provided")
     private UUID listId;
 
-
     @NotNull(message = "status must be provided")
     private ApplicationListStatus status;
 
     @NotNull(message = "applicationDateTime must be provided")
     private Timestamp applicationDateTime;
+
+    @ApiModelProperty(
+            value = "List's start date",
+            example = "2019-11-11 00:00:00",
+            required = true
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @NotNull(message = "startDate must be provided")
+    private LocalDateTime startDate;
+
+    @ApiModelProperty(
+            value = "List's final date",
+            example = "2019-11-11 23:59:59",
+            required = true
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @NotNull(message = "finalDate must be provided")
+    private LocalDateTime finalDate;
 
     @ApiModelProperty(
             value = "Students",
@@ -102,6 +124,22 @@ public class ListApplicationDTO {
 
     public void setApplicationDateTime(Timestamp applicationDateTime) {
         this.applicationDateTime = applicationDateTime;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(LocalDateTime finalDate) {
+        this.finalDate = finalDate;
     }
 
     public List<StudentDTO> getStudentList() {
