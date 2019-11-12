@@ -1,12 +1,11 @@
 package br.com.ufg.listaplic.network.impl;
 
 import br.com.ufg.listaplic.converter.ListConverterDTO;
+import br.com.ufg.listaplic.converter.QuestionConverterDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.LoginDTO;
-import br.com.ufg.listaplic.dto.listelab.AuthenticationDTO;
-import br.com.ufg.listaplic.dto.listelab.ListElabResultDTO;
-import br.com.ufg.listaplic.dto.listelab.ListElabSingleResultDTO;
-import br.com.ufg.listaplic.dto.listelab.UserIntegrationDTO;
+import br.com.ufg.listaplic.dto.QuestionDTO;
+import br.com.ufg.listaplic.dto.listelab.*;
 import br.com.ufg.listaplic.exception.NetworkException;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,12 @@ public class ListElabNetworkImpl implements ListElabNetwork {
     @Value("${listelab.api.url.list}")
     private String apiListUrl;
 
+    @Value("${listelab.api.url.discursive-question}")
+    private String apiDiscursiveQuestionUrl;
+
+    @Value("${listelab.api.url.objective-question}")
+    private String apiObjectiveQuestionUrl;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -74,6 +79,27 @@ public class ListElabNetworkImpl implements ListElabNetwork {
             return ListConverterDTO.fromListIntegrationToListDTO(listElabSingleResultDTO.getResultado());
         } catch (Exception e) {
             throw new NetworkException("Failed to get list in ListElab service", e);
+        }
+    }
+
+    @Override
+    public QuestionDTO getQuestionById(UUID id) {
+        try {
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ListElabSingleDiscursiveResultDTO discursiveResultDTO = restTemplate.exchange(apiDiscursiveQuestionUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleDiscursiveResultDTO.class).getBody();
+
+            if (discursiveResultDTO != null) {
+                return QuestionConverterDTO.fromDiscursivasIntegrationToQuestionDTO(discursiveResultDTO.getResultado());
+            }
+
+            ListElabSingleObjectiveResultDTO objectiveResultDTO = restTemplate.exchange(apiObjectiveQuestionUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleObjectiveResultDTO.class).getBody();
+            assert objectiveResultDTO != null;
+            return QuestionConverterDTO.fromObjetivasIntegrationToQuestionDTO(objectiveResultDTO.getResultado());
+        } catch (Exception e) {
+            throw new NetworkException("Failed to get question in ListElab service", e);
         }
     }
 

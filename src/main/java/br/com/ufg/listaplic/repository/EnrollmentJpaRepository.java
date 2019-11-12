@@ -14,4 +14,6 @@ public interface EnrollmentJpaRepository extends JpaRepository<Enrollment, UUID>
             "WHERE e.student.id = :studentId " +
             "AND e.classroom.id = :classroomId")
     boolean isEnrolled(UUID classroomId, UUID studentId);
+
+    Integer countStudentsByClassroomId(UUID classroomId);
 }

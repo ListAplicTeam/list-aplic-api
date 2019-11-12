@@ -4,26 +4,15 @@ import br.com.ufg.listaplic.converter.AnswerConverterDTO;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
 import br.com.ufg.listaplic.converter.StudentConverterDTO;
-import br.com.ufg.listaplic.dto.AnswerDTO;
-import br.com.ufg.listaplic.dto.ApplyDTO;
-import br.com.ufg.listaplic.dto.ClassroomDTO;
-import br.com.ufg.listaplic.dto.ListApplicationDTO;
-import br.com.ufg.listaplic.dto.ListDTO;
-import br.com.ufg.listaplic.dto.StudentDTO;
-import br.com.ufg.listaplic.model.Answer;
-import br.com.ufg.listaplic.model.ApplicationListStatus;
-import br.com.ufg.listaplic.model.Classroom;
-import br.com.ufg.listaplic.model.ListApplication;
-import br.com.ufg.listaplic.model.Student;
+import br.com.ufg.listaplic.dto.*;
+import br.com.ufg.listaplic.model.*;
 import br.com.ufg.listaplic.network.ListElabNetwork;
-import br.com.ufg.listaplic.repository.AnswerJpaRepository;
-import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
-import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
-import br.com.ufg.listaplic.repository.StudentJpaRepository;
+import br.com.ufg.listaplic.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -49,6 +38,9 @@ public class ListApplicationService {
     @Autowired
     private ListElabNetwork listElabNetwork;
 
+    @Autowired
+    private QuestionCountJpaRepository questionCountJpaRepository;
+
     public void applyListTo(ApplyDTO applyDTO) {
         if (applyDTO.getAllClassroom()) {
             ClassroomDTO classroomDTO = classroomService.findById(applyDTO.getClassroomId());
@@ -64,10 +56,46 @@ public class ListApplicationService {
             listApplication.setStartDate(applyDTO.getStartDate());
             listApplication.setFinalDate(applyDTO.getFinalDate());
 
-            listApplicationJpaRepository.save(listApplication);
+            ListApplication savedApplication = listApplicationJpaRepository.save(listApplication);
+
+            if(savedApplication != null && savedApplication.getId() != null) {
+                ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
+                this.countQuestions(classroom.getInstructorId(), listDTO.getQuestions());
+            }
         } else {
             //do stuff
         }
+    }
+
+    private void countQuestions(String instructorId, List<QuestionDTO> questions) {
+        HashMap<UUID, Integer> questionCountMap = new HashMap<>();
+
+        List<QuestionCount> questionCountList = questionCountJpaRepository
+                .findAllByQuestionsAndInstructor(questions.stream()
+                .map(QuestionDTO::getId)
+                .collect(Collectors.toList()), instructorId);
+
+        questionCountList.forEach(count -> {
+            questionCountMap.put(count.getQuestion(), count.getCounter());
+        });
+
+        questions.forEach(q -> {
+            if (questionCountMap.containsKey(q.getId())) {
+                questionCountMap.replace(q.getId(), questionCountMap.get(q.getId()) + 1);
+            } else {
+                questionCountMap.put(q.getId(), 1);
+            }
+        });
+
+        questionCountMap.forEach((key, value) -> {
+            QuestionCount newQuestionCount = new QuestionCount(key, instructorId, value);
+
+            if (!questionCountJpaRepository.findByQuestionAndInstructor(key, instructorId).isPresent()) {
+                questionCountJpaRepository.save(newQuestionCount);
+            } else {
+                questionCountJpaRepository.updateCounter(newQuestionCount.getQuestion(), newQuestionCount.getCounter());
+            }
+        });
     }
 
     public List<ListApplicationDTO> getFinishedListsByClassroomId(UUID classroomId) {

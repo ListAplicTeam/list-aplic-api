@@ -63,12 +63,32 @@ public class ListController {
         return listService.getPendingListsByStudent(studentId);
     }
 
+    @ApiOperation(
+            value = "Get finished applications by group",
+            responseContainer = "list",
+            response = ListApplicationDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Finished applications by group.",
+            responseContainer = "list",
+            response = ListApplicationDTO.class
+    )
     @GetMapping("/applications/by-classroom")
     @ResponseStatus(HttpStatus.OK)
     public List<ListApplicationDTO> getFinishedApplicationsByClassroomId(@RequestParam(value = "classroomId") UUID classroomId) {
         return listApplicationService.getFinishedListsByClassroomId(classroomId);
     }
 
+    @ApiOperation(
+            value = "Get list application detail",
+            response = ListApplicationDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "List application detail.",
+            response = ListApplicationDTO.class
+    )
     @GetMapping("/application/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ListApplicationDTO getApplicationDetailById(@PathVariable("id") UUID applicationId) {
