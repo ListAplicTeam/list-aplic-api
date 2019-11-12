@@ -20,17 +20,32 @@ public class StatisticsController {
     StatisticsService statisticsService;
 
     @ApiOperation(
-            value = "Get answer percentage by classroom"
-            //response = StatisticsDTO.class
+            value = "Get classroom statistics",
+            response = StatisticsDTO.class
     )
     @ApiResponse(
             code = 200,
-            message = "Answer percentage"
-            //response = StatisticsDTO.class
+            message = "Classroom statistics",
+            response = StatisticsDTO.class
     )
     @GetMapping("/classroom/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StatisticsDTO getClassroomStatistics(@PathVariable("id") UUID classroomId) {
         return statisticsService.calculateClassroomStatistics(classroomId);
+    }
+
+    @ApiOperation(
+            value = "Get instructor statistics",
+            response = StatisticsDTO.class
+    )
+    @ApiResponse(
+            code = 200,
+            message = "Instructor statistics",
+            response = StatisticsDTO.class
+    )
+    @GetMapping("/instructor/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public StatisticsDTO getInstructorStatistics(@PathVariable("id") String instructorId) {
+        return statisticsService.calculateInstructorStatistics(instructorId);
     }
 }

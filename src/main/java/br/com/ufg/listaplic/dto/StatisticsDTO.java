@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.List;
+
 @ApiModel(
         value = "Statistics",
         description = "Statistics model."
@@ -20,6 +22,12 @@ public class StatisticsDTO {
     private Float completionPercentage;
 
     @ApiModelProperty(
+            value = "Instructor's 5 most applied questions",
+            dataType = "List[br.com.ufg.listaplic.dto.QuestionCountDTO]"
+    )
+    private List<QuestionCountDTO> topFiveQuestions;
+
+    @ApiModelProperty(
             value = "Error message",
             dataType = "string"
     )
@@ -31,6 +39,14 @@ public class StatisticsDTO {
 
     public void setCompletionPercentage(Float completionPercentage) {
         this.completionPercentage = completionPercentage;
+    }
+
+    public List<QuestionCountDTO> getTopFiveQuestions() {
+        return topFiveQuestions;
+    }
+
+    public void setTopFiveQuestions(List<QuestionCountDTO> topFiveQuestions) {
+        this.topFiveQuestions = topFiveQuestions;
     }
 
     public String getErrorMessage() {
