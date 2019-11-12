@@ -53,6 +53,7 @@ public class ApplyDTO {
 
     @ApiModelProperty(
             value = "List's start date",
+            example = "2019-11-11 00:00:00",
             required = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -62,6 +63,7 @@ public class ApplyDTO {
 
     @ApiModelProperty(
             value = "List's final date",
+            example = "2019-11-11 23:59:59",
             required = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
