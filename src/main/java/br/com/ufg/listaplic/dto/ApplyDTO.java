@@ -1,9 +1,13 @@
 package br.com.ufg.listaplic.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @ApiModel(
@@ -47,6 +51,24 @@ public class ApplyDTO {
     @NotNull(message = "listId must be provided")
     private UUID listId;
 
+    @ApiModelProperty(
+            value = "List's start date",
+            required = true
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @NotNull(message = "startDate must be provided")
+    private LocalDateTime startDate;
+
+    @ApiModelProperty(
+            value = "List's final date",
+            required = true
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @NotNull(message = "finalDate must be provided")
+    private LocalDateTime finalDate;
+
     public Boolean getAllClassroom() {
         return allClassroom;
     }
@@ -77,5 +99,21 @@ public class ApplyDTO {
 
     public void setListId(UUID listId) {
         this.listId = listId;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(LocalDateTime finalDate) {
+        this.finalDate = finalDate;
     }
 }
