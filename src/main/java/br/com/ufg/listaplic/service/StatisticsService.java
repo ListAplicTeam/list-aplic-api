@@ -1,6 +1,5 @@
 package br.com.ufg.listaplic.service;
 
-import br.com.ufg.listaplic.dto.AnswerCountDTO;
 import br.com.ufg.listaplic.dto.QuestionCountDTO;
 import br.com.ufg.listaplic.dto.StatisticsDTO;
 import br.com.ufg.listaplic.model.QuestionCount;
@@ -9,6 +8,7 @@ import br.com.ufg.listaplic.repository.AnswerJpaRepository;
 import br.com.ufg.listaplic.repository.EnrollmentJpaRepository;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import br.com.ufg.listaplic.repository.QuestionCountJpaRepository;
+import br.com.ufg.listaplic.util.AnswerCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class StatisticsService {
         StatisticsDTO statisticsDTO = new StatisticsDTO();
 
         Integer totalAnswerCount = answerJpaRepository.findAnswerCountsByClassroomId(classroomId)
-                .stream().map(AnswerCountDTO::getQuantity).reduce(0, Integer::sum);
+                .stream().map(AnswerCount::getQuantity).reduce(0, Integer::sum);
 
         Integer studentCount = enrollmentJpaRepository.countStudentsByClassroomId(classroomId);
 
