@@ -2,15 +2,25 @@ package br.com.ufg.listaplic.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = "answer")
+@SqlResultSetMapping(
+        name = "answer_count",
+                        columns = {
+                                @ColumnResult(name = "application", type = String.class),
+                                @ColumnResult(name = "quantity", type = Integer.class)
+                        }
+)
+@NamedNativeQuery(
+        name = "Answer.findAnswerCountsByClassroomId",
+        query = "SELECT CAST(a.application_id AS VARCHAR(40)) AS application, CAST(COUNT(DISTINCT a.user_id) AS INTEGER) AS quantity FROM answer a " +
+                "INNER JOIN application p ON p.id = a.application_id " +
+                "WHERE p.classroom_id = :classroomId " +
+                "GROUP BY a.application_id",
+        resultSetMapping = "answer_count")
 public class Answer {
 
     @Id
