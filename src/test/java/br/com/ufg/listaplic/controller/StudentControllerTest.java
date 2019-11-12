@@ -129,4 +129,18 @@ public class StudentControllerTest extends BaseTest {
         assertEquals(ResponseEntity.notFound().build(), result);
         verify(mockStudentService, times(0)).deleteById(any(UUID.class));
     }
+
+    @Test
+    public void testGetStudentsByClassroom() {
+        // Setup
+        final List<StudentDTO> studentsDTO = Fixture.from(StudentDTO.class).gimme(2, StudentDTOTemplate.TYPES.STUDENT_WITH_ID.name());
+        when(mockStudentService.getStudentsByClassroom(any(UUID.class))).thenReturn(studentsDTO);
+
+        // Run the test
+        final List<StudentDTO> result = studentControllerUnderTest.getStudentsByClassroom(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(studentsDTO.size(), result.size());
+        assertEquals(studentsDTO, result);
+    }
 }

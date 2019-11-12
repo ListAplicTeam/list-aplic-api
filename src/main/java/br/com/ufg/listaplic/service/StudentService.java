@@ -64,4 +64,10 @@ public class StudentService {
     public void deleteById(UUID id) {
         studentJpaRepository.deleteById(id);
     }
+
+    public List<StudentDTO> getStudentsByClassroom(UUID classroomId) {
+        return studentJpaRepository.findStudentsByClassroomId(classroomId).stream()
+                .map(StudentConverterDTO::fromDomainToDTO)
+                .collect(Collectors.toList());
+    }
 }
