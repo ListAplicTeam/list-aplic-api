@@ -12,6 +12,6 @@ public class QuestionCountKey implements Serializable {
 
     public QuestionCountKey(UUID question, String instructor) {
         this.question = question;
-        instructor = instructor;
+        this.instructor = instructor;
     }
 }
