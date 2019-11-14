@@ -4,12 +4,12 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
-import br.com.ufg.listaplic.dto.listelab.DiscursivasIntegrationDTO;
+import br.com.ufg.listaplic.dto.listelab.QuestaoIntegrationDTO;
 
 import java.util.Arrays;
 import java.util.UUID;
 
-public class DiscursivasIntegrationDTOTemplate implements TemplateLoader {
+public class QuestaoIntegrationDTOTemplate implements TemplateLoader {
 
     private static final String ID = "id";
     private static final String ENUNCIADO = "enunciado";
@@ -31,7 +31,7 @@ public class DiscursivasIntegrationDTOTemplate implements TemplateLoader {
     }
 
     private void buildQuestion1Template() {
-        Fixture.of(DiscursivasIntegrationDTO.class).addTemplate(TYPES.QUESTION_1.name(), new Rule() {{
+        Fixture.of(QuestaoIntegrationDTO.class).addTemplate(TYPES.QUESTION_1.name(), new Rule() {{
             add(ID, UUID.randomUUID());
             add(ENUNCIADO, "Qual dos fatores de qualidade de um software, avalia a capacidade de o sistema funcionar mesmo em condições anormais?");
             add(USUARIO, "professor@ufg.br");

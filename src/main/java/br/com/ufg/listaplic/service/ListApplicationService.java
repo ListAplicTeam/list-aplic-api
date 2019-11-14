@@ -4,10 +4,25 @@ import br.com.ufg.listaplic.converter.AnswerConverterDTO;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
 import br.com.ufg.listaplic.converter.StudentConverterDTO;
-import br.com.ufg.listaplic.dto.*;
-import br.com.ufg.listaplic.model.*;
+import br.com.ufg.listaplic.dto.AnswerDTO;
+import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
+import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.dto.QuestionDTO;
+import br.com.ufg.listaplic.dto.StudentDTO;
+import br.com.ufg.listaplic.model.Answer;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.ListApplication;
+import br.com.ufg.listaplic.model.QuestionCount;
+import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.network.ListElabNetwork;
-import br.com.ufg.listaplic.repository.*;
+import br.com.ufg.listaplic.repository.AnswerJpaRepository;
+import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
+import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
+import br.com.ufg.listaplic.repository.QuestionCountJpaRepository;
+import br.com.ufg.listaplic.repository.StudentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +55,10 @@ public class ListApplicationService {
 
     @Autowired
     private QuestionCountJpaRepository questionCountJpaRepository;
+
+    public List<ListApplication> findAll() {
+        return listApplicationJpaRepository.findAll();
+    }
 
     public void applyListTo(ApplyDTO applyDTO) {
         if (applyDTO.getAllClassroom()) {
@@ -124,5 +143,9 @@ public class ListApplicationService {
         return ListApplicationConverterDTO.fromListApplicationAndStudentsToListApplicationDTO(application,
                 studentDTOList,
                 answerDTOList);
+    }
+
+    public ListApplication save(ListApplication listApplication) {
+        return listApplicationJpaRepository.save(listApplication);
     }
 }

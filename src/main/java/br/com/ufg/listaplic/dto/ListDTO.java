@@ -41,13 +41,6 @@ public class ListDTO {
     private String user;
 
     @ApiModelProperty(
-            value = "Subject identification code",
-            dataType = "string",
-            example = "ARQSOFT2019-1"
-    )
-    private String subjectCode;
-
-    @ApiModelProperty(
             value = "List's Questions",
             dataType = "List[br.com.ufg.listaplic.dto.QuestionDTO]"
     )
@@ -83,14 +76,6 @@ public class ListDTO {
 
     public void setUser(String user) {
         this.user = user;
-    }
-
-    public String getSubjectCode() {
-        return subjectCode;
-    }
-
-    public void setSubjectCode(String subjectCode) {
-        this.subjectCode = subjectCode;
     }
 
     public List<QuestionDTO> getQuestions() {
