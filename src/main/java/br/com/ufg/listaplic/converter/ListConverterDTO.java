@@ -21,18 +21,11 @@ public final class ListConverterDTO {
         listDTO.setId(listIntegrationDTO.getId());
         listDTO.setName(listIntegrationDTO.getTitulo());
         listDTO.setUser(listIntegrationDTO.getUsuario());
-        listDTO.setSubjectCode(listIntegrationDTO.getDisciplina().getCodigo());
 
         List<QuestionDTO> questions = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(listIntegrationDTO.getDiscursivas())) {
-            questions.addAll(listIntegrationDTO.getDiscursivas().stream()
-                    .map(QuestionConverterDTO::fromDiscursivasIntegrationToQuestionDTO)
-                    .collect(Collectors.toList()));
-        }
-
-        if (!CollectionUtils.isEmpty(listIntegrationDTO.getObjetivas())) {
-            questions.addAll(listIntegrationDTO.getObjetivas().stream()
-                    .map(QuestionConverterDTO::fromObjetivasIntegrationToQuestionDTO)
+        if (!CollectionUtils.isEmpty(listIntegrationDTO.getQuestoes())) {
+            questions.addAll(listIntegrationDTO.getQuestoes().stream()
+                    .map(QuestionConverterDTO::fromDomainToDTO)
                     .collect(Collectors.toList()));
         }
 

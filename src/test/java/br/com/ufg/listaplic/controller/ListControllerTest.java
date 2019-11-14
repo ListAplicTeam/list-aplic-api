@@ -4,7 +4,6 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
-import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
 import br.com.ufg.listaplic.template.ListApplicationDTOTemplate;
@@ -74,6 +73,7 @@ public class ListControllerTest extends BaseTest {
         assertEquals(listApplicationDTO.getGroupId(), result.getGroupId());
         assertEquals(listApplicationDTO.getStatus(), result.getStatus());
     }
+
     @Test
     public void testGetPendingListsByStudent() {
         // Setup

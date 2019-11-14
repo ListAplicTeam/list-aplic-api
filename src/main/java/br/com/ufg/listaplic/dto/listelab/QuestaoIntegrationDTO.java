@@ -3,7 +3,7 @@ package br.com.ufg.listaplic.dto.listelab;
 import java.util.List;
 import java.util.UUID;
 
-public class DiscursivasIntegrationDTO {
+public class QuestaoIntegrationDTO {
 
     private UUID id;
     private String enunciado;

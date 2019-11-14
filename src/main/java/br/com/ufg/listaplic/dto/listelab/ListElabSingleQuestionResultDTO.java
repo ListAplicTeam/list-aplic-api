@@ -3,10 +3,10 @@ package br.com.ufg.listaplic.dto.listelab;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ListElabSingleDiscursiveResultDTO {
+public class ListElabSingleQuestionResultDTO {
     private String mensagem;
     private Boolean sucesso;
-    private DiscursivasIntegrationDTO resultado;
+    private QuestaoIntegrationDTO resultado;
 
     public String getMensagem() {
         return mensagem;
@@ -24,11 +24,11 @@ public class ListElabSingleDiscursiveResultDTO {
         this.sucesso = sucesso;
     }
 
-    public DiscursivasIntegrationDTO getResultado() {
+    public QuestaoIntegrationDTO getResultado() {
         return resultado;
     }
 
-    public void setResultado(DiscursivasIntegrationDTO resultado) {
+    public void setResultado(QuestaoIntegrationDTO resultado) {
         this.resultado = resultado;
     }
 }

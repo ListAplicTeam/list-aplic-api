@@ -76,22 +76,6 @@ public class ListServiceTest extends BaseTest {
     }
 
     @Test
-    public void testGetListsBySujectCode() {
-        // Setup
-        final List<ListDTO> lists = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name(), ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-
-        when(mockListElabNetwork.getLists()).thenReturn(lists);
-
-        // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter(null, "INF0150");
-
-        // Verify the results
-        verify(mockListElabNetwork, times(1)).getLists();
-
-        assertEquals(1, result.size());
-    }
-
-    @Test
     public void testGetListsByNameAndSujectCode() {
         // Setup
         final List<ListDTO> lists = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name(), ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
