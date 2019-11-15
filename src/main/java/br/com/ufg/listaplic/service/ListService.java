@@ -64,6 +64,7 @@ public class ListService {
     private ListDTO getListById(ListApplication listApplication) {
         ListDTO listDTO = listElabNetwork.getListById(listApplication.getList());
         listDTO.setListApplicationId(listApplication.getId());
+        listDTO.setStatus(listApplication.getStatus());
         return listDTO;
     }
 

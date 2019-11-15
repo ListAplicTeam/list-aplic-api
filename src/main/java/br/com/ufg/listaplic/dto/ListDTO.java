@@ -1,9 +1,13 @@
 package br.com.ufg.listaplic.dto;
 
+import br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO;
+import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @ApiModel(
@@ -41,10 +45,43 @@ public class ListDTO {
     private String user;
 
     @ApiModelProperty(
+            value = "List's difficulty level",
+            dataType = "int",
+            example = "3"
+    )
+    private int difficultyLevel;
+
+    @ApiModelProperty(
+            value = "List's subjects",
+            dataType = "Set[br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO]"
+    )
+    private Set<DisciplinaIntegrationDTO> subjects;
+
+    @ApiModelProperty(
+            value = "List's knowledge areas",
+            dataType = "Set[br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO]"
+    )
+    private Set<AreaDoConhecimentoDTO> knowledgeAreas;
+
+    @ApiModelProperty(
+            value = "List's tags",
+            dataType = "Set[java.lang.String]"
+    )
+    private Set<String> tags;
+
+    @ApiModelProperty(
             value = "List's Questions",
             dataType = "List[br.com.ufg.listaplic.dto.QuestionDTO]"
     )
     private List<QuestionDTO> questions;
+
+    @ApiModelProperty(
+            value = "List's Status",
+            dataType = "br.com.ufg.listaplic.model.ApplicationListStatus",
+            example = "NAO_INICIADA",
+            allowableValues = "NAO_INICIADA, EM_ANDAMENTO, ENCERRADA"
+    )
+    private ApplicationListStatus status;
 
     public UUID getId() {
         return id;
@@ -78,11 +115,51 @@ public class ListDTO {
         this.user = user;
     }
 
+    public int getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(int difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+    }
+
+    public Set<DisciplinaIntegrationDTO> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<DisciplinaIntegrationDTO> subjects) {
+        this.subjects = subjects;
+    }
+
+    public Set<AreaDoConhecimentoDTO> getKnowledgeAreas() {
+        return knowledgeAreas;
+    }
+
+    public void setKnowledgeAreas(Set<AreaDoConhecimentoDTO> knowledgeAreas) {
+        this.knowledgeAreas = knowledgeAreas;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
     public List<QuestionDTO> getQuestions() {
         return questions;
     }
 
     public void setQuestions(List<QuestionDTO> questions) {
         this.questions = questions;
+    }
+
+    public ApplicationListStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationListStatus status) {
+        this.status = status;
     }
 }

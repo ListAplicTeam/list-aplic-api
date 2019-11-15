@@ -43,7 +43,7 @@ public class ListIntegrationDTOTemplate implements TemplateLoader {
             add(TITULO, "Lista de Teste");
             add(USUARIO, "professor@ufg.br");
             add(PRONTA_PARA_APLICACAO, true);
-            add(QUESTOES, has(2).of(QuestaoIntegrationDTO.class, QuestaoIntegrationDTOTemplate.TYPES.QUESTION_1.name()));
+            add(QUESTOES, has(2).of(QuestaoIntegrationDTO.class, QuestaoIntegrationDTOTemplate.TYPES.QUESTION_1.name(), QuestaoIntegrationDTOTemplate.TYPES.QUESTION_2.name()));
         }});
     }
 
