@@ -29,6 +29,10 @@ public class ListConverterDTOTest extends BaseTest {
         assertEquals(listIntegrationDTO.getTitulo(), result.getName());
         assertEquals(listIntegrationDTO.getUsuario(), result.getUser());
         assertEquals(listIntegrationDTO.getQuestoes().size(), result.getQuestions().size());
+        assertEquals(2, result.getDifficultyLevel());
+        assertEquals(1, result.getSubjects().size());
+        assertEquals(2, result.getTags().size());
+        assertEquals(1, result.getKnowledgeAreas().size());
     }
 
     @Test
