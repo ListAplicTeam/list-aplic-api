@@ -2,12 +2,17 @@ package br.com.ufg.listaplic.converter;
 
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.QuestionDTO;
+import br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO;
+import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
 import br.com.ufg.listaplic.dto.listelab.ListIntegrationDTO;
+import br.com.ufg.listaplic.dto.listelab.QuestaoIntegrationDTO;
 import br.com.ufg.listaplic.model.Answer;
-import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -21,22 +26,34 @@ public final class ListConverterDTO {
         listDTO.setId(listIntegrationDTO.getId());
         listDTO.setName(listIntegrationDTO.getTitulo());
         listDTO.setUser(listIntegrationDTO.getUsuario());
-        listDTO.setSubjectCode(listIntegrationDTO.getDisciplina().getCodigo());
 
-        List<QuestionDTO> questions = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(listIntegrationDTO.getDiscursivas())) {
-            questions.addAll(listIntegrationDTO.getDiscursivas().stream()
-                    .map(QuestionConverterDTO::fromDiscursivasIntegrationToQuestionDTO)
-                    .collect(Collectors.toList()));
-        }
+        List<QuestaoIntegrationDTO> questions = listIntegrationDTO.getQuestoes();
 
-        if (!CollectionUtils.isEmpty(listIntegrationDTO.getObjetivas())) {
-            questions.addAll(listIntegrationDTO.getObjetivas().stream()
-                    .map(QuestionConverterDTO::fromObjetivasIntegrationToQuestionDTO)
-                    .collect(Collectors.toList()));
-        }
+        Double averageDifficultyLevel = questions.stream()
+                .mapToInt(QuestaoIntegrationDTO::getNivelDificuldade)
+                .average()
+                .orElse(BigDecimal.ZERO.doubleValue());
+        listDTO.setDifficultyLevel(averageDifficultyLevel.intValue());
 
-        listDTO.setQuestions(questions);
+        Set<DisciplinaIntegrationDTO> subjects = questions.stream()
+                .map(QuestaoIntegrationDTO::getDisciplina)
+                .collect(Collectors.toSet());
+        listDTO.setSubjects(subjects);
+
+        Set<AreaDoConhecimentoDTO> knowledgeAreas = questions.stream()
+                .map(QuestaoIntegrationDTO::getAreaDeConhecimento)
+                .collect(Collectors.toSet());
+        listDTO.setKnowledgeAreas(knowledgeAreas);
+
+        Set<String> tags = questions.stream()
+                .map(QuestaoIntegrationDTO::getTags)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        listDTO.setTags(tags);
+
+        listDTO.setQuestions(listIntegrationDTO.getQuestoes().stream()
+                .map(QuestionConverterDTO::fromDomainToDTO)
+                .collect(Collectors.toList()));
 
         return listDTO;
     }

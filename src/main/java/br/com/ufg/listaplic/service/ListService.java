@@ -33,7 +33,6 @@ public class ListService {
     private ListApplicationJpaRepository listApplicationJpaRepository;
 
     public List<ListDTO> getListsByFilter(String name, String subjectCode) {
-
         List<ListDTO> allLists = getAllLists();
 
         if (Objects.nonNull(name)) {
@@ -42,11 +41,7 @@ public class ListService {
                     .collect(Collectors.toList());
         }
 
-        if (Objects.nonNull(subjectCode)) {
-            allLists = allLists.stream()
-                    .filter(listDTO -> listDTO.getSubjectCode().equals(subjectCode))
-                    .collect(Collectors.toList());
-        }
+        //TODO filter by subjectCode
 
         return allLists;
     }
@@ -69,6 +64,7 @@ public class ListService {
     private ListDTO getListById(ListApplication listApplication) {
         ListDTO listDTO = listElabNetwork.getListById(listApplication.getList());
         listDTO.setListApplicationId(listApplication.getId());
+        listDTO.setStatus(listApplication.getStatus());
         return listDTO;
     }
 

@@ -8,12 +8,8 @@ public class ListIntegrationDTO {
     private UUID id;
     private String titulo;
     private String usuario;
-    private AreaDoConhecimentoDTO areaDeConhecimento;
-    private Integer nivelDificuldade;
-    private List<String> tags;
-    private DisciplinaIntegrationDTO disciplina;
-    private List<DiscursivasIntegrationDTO> discursivas;
-    private List<ObjetivasIntegrationDTO> objetivas;
+    private Boolean prontaParaAplicacao;
+    private List<QuestaoIntegrationDTO> questoes;
 
     public UUID getId() {
         return id;
@@ -39,51 +35,19 @@ public class ListIntegrationDTO {
         this.usuario = usuario;
     }
 
-    public AreaDoConhecimentoDTO getAreaDeConhecimento() {
-        return areaDeConhecimento;
+    public Boolean getProntaParaAplicacao() {
+        return prontaParaAplicacao;
     }
 
-    public void setAreaDeConhecimento(AreaDoConhecimentoDTO areaDeConhecimento) {
-        this.areaDeConhecimento = areaDeConhecimento;
+    public void setProntaParaAplicacao(Boolean prontaParaAplicacao) {
+        this.prontaParaAplicacao = prontaParaAplicacao;
     }
 
-    public Integer getNivelDificuldade() {
-        return nivelDificuldade;
+    public List<QuestaoIntegrationDTO> getQuestoes() {
+        return questoes;
     }
 
-    public void setNivelDificuldade(Integer nivelDificuldade) {
-        this.nivelDificuldade = nivelDificuldade;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public DisciplinaIntegrationDTO getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(DisciplinaIntegrationDTO disciplina) {
-        this.disciplina = disciplina;
-    }
-
-    public List<DiscursivasIntegrationDTO> getDiscursivas() {
-        return discursivas;
-    }
-
-    public void setDiscursivas(List<DiscursivasIntegrationDTO> discursivas) {
-        this.discursivas = discursivas;
-    }
-
-    public List<ObjetivasIntegrationDTO> getObjetivas() {
-        return objetivas;
-    }
-
-    public void setObjetivas(List<ObjetivasIntegrationDTO> objetivas) {
-        this.objetivas = objetivas;
+    public void setQuestoes(List<QuestaoIntegrationDTO> questoes) {
+        this.questoes = questoes;
     }
 }
