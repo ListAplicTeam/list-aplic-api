@@ -17,7 +17,7 @@ public class StatisticsDTO {
     @ApiModelProperty(
             value = "Percentage of answered lists by classroom",
             dataType = "float",
-            example = "74.3"
+            example = "0.75"
     )
     private Float completionPercentage;
 
