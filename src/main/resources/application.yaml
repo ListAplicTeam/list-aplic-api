@@ -1,0 +1,75 @@
+#Used for all profiles
+
+spring:
+  profiles:
+    active: ${PROFILE_ACTIVE:dev}
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
+  server:
+    port: ${HEALTH_PORT:8080}
+    context-path: /
+
+server:
+  port: ${SERVER_PORT:80}
+  servlet:
+    context-path: /api
+
+listelab:
+  api:
+    auth:
+      email: admin@ufg.br
+      password: 123456
+    url:
+      auth: http://api.sifo.tech/api/usuario/login
+      list: http://api.sifo.tech/api/lista
+      discursive-question: http://api.sifo.tech/api/QuestaoDiscursiva
+      objective-question: http://api.sifo.tech/api/QuestaoObjetiva
+
+#'dev' profile only
+---
+
+spring:
+  profiles: dev
+
+  datasource:
+    url: ${DEV_DATASOURCE_URL}
+    username: ${DEV_DATASOURCE_USERNAME}
+    password: ${DEV_DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      idle-timeout: 10000
+
+#'prod' profile only
+---
+
+spring:
+  profiles: prod
+
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      idle-timeout: 10000
