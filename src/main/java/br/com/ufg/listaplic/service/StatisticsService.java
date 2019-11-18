@@ -35,6 +35,9 @@ public class StatisticsService {
     @Autowired
     private ListElabNetwork listElabNetwork;
 
+    public static final String STUDENT_ERROR = "No students in group";
+    public static final String APPLICATION_ERROR = "No list applications for group";
+
     public StatisticsDTO calculateClassroomStatistics(UUID classroomId) {
         StatisticsDTO statisticsDTO = new StatisticsDTO();
 
@@ -44,14 +47,14 @@ public class StatisticsService {
         Integer studentCount = enrollmentJpaRepository.countStudentsByClassroomId(classroomId);
 
         if (studentCount == 0) {
-            statisticsDTO.setErrorMessage("No students in group");
+            statisticsDTO.setErrorMessage(STUDENT_ERROR);
             return statisticsDTO;
         }
 
         Integer applicationCount = listApplicationJpaRepository.countByClassroomId(classroomId);
 
         if (applicationCount == 0) {
-            statisticsDTO.setErrorMessage("No list applications for group");
+            statisticsDTO.setErrorMessage(APPLICATION_ERROR);
             return statisticsDTO;
         }
 
