@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NoOneStudentOnClassroomException extends RuntimeException {
 
 	public NoOneStudentOnClassroomException() {
-		super("There's no Student enrollment on this classroom");
+		super("There's no student enrollment on this classroom");
 	}
 
 }

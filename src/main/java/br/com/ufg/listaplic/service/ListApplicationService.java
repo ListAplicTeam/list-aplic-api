@@ -77,8 +77,8 @@ public class ListApplicationService {
         }
     }
 
-    private boolean checkIfTheresStudentsOnClassroom(Classroom classroom) {
-        final Set<Enrollment> enrollments = classroom.getEnrollments();
+    public boolean checkIfTheresStudentsOnClassroom(Classroom classroom) {
+        final Set<Enrollment> enrollments = classroomService.findEnrollments(classroom);
         return enrollments != null && !enrollments.isEmpty();
     }
 
