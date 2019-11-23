@@ -6,8 +6,10 @@ import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
+import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.exception.NoOneStudentOnClassroomException;
 import br.com.ufg.listaplic.model.*;
+import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.repository.*;
 import br.com.ufg.listaplic.template.*;
 import org.junit.Test;
@@ -40,6 +42,8 @@ public class ListApplicationServiceTest extends BaseTest {
 	private ClassroomService classroomService;
 	@Mock
 	private QuestionCountJpaRepository questionCountJpaRepository;
+	@Mock
+	private ListElabNetwork listElabNetwork;
 
 	@Test
 	public void testGetFinishedListsByClassroomId() {
@@ -50,9 +54,10 @@ public class ListApplicationServiceTest extends BaseTest {
 		when(mockClassroomJpaRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(classroom));
 		when(mockListApplicationJpaRepository.findByClassroomAndStatus(any(Classroom.class), any(ApplicationListStatus.class))).thenReturn(applications);
 		when(mockStudentJpaRepository.findStudentsByClassroomId(any(UUID.class))).thenReturn(students);
+		when(listElabNetwork.getListById(any(UUID.class))).thenReturn(new ListDTO());
 
 		// Run the Test
-		final List<ListApplicationDTO> result = listApplicationServiceUnderTest.getFinishedListsByClassroomId(classroom.getId());
+		final List<ListApplicationDTO> result = listApplicationServiceUnderTest.getListsByClassroom(classroom.getId(), ApplicationListStatus.ENCERRADA);
 
 		// Verify the results
 		assertEquals(applications.size(), result.size());
@@ -67,6 +72,7 @@ public class ListApplicationServiceTest extends BaseTest {
 		when(mockListApplicationJpaRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(application));
 		when(mockAnswerJpaRepository.findByApplicationId(any(UUID.class))).thenReturn(answers);
 		when(mockStudentJpaRepository.findStudentsByClassroomId(any(UUID.class))).thenReturn(students);
+		when(listElabNetwork.getListById(any(UUID.class))).thenReturn(new ListDTO());
 
 		// Run the Test
 		final ListApplicationDTO result = listApplicationServiceUnderTest.getListApplicationDetail(application.getId());

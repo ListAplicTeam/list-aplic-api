@@ -2,6 +2,7 @@ package br.com.ufg.listaplic.converter;
 
 import br.com.ufg.listaplic.dto.AnswerDTO;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
+import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.StudentDTO;
 import br.com.ufg.listaplic.model.ListApplication;
 import org.springframework.lang.Nullable;
@@ -13,10 +14,11 @@ public final class ListApplicationConverterDTO {
     private ListApplicationConverterDTO() {
     }
 
-    public static ListApplicationDTO fromListApplicationAndStudentsToListApplicationDTO(
+    public static ListApplicationDTO fromDomainToDTO(
             ListApplication listApplication,
             List<StudentDTO> students,
-            @Nullable List<AnswerDTO> answers
+            @Nullable List<AnswerDTO> answers,
+            ListDTO listDTO
     ) {
         ListApplicationDTO listApplicationDTO = new ListApplicationDTO();
         listApplicationDTO.setId(listApplication.getId());
@@ -28,6 +30,9 @@ public final class ListApplicationConverterDTO {
         listApplicationDTO.setStatus(listApplication.getStatus());
         listApplicationDTO.setStudentList(students);
         listApplicationDTO.setAnswerList(answers);
+        listApplicationDTO.setName(listDTO.getName());
+        listApplicationDTO.setKnowledgeAreas(listDTO.getKnowledgeAreas());
+        listApplicationDTO.setSubjects(listDTO.getSubjects());
 
         return listApplicationDTO;
     }

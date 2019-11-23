@@ -26,96 +26,94 @@ import java.util.stream.Collectors;
 @Component
 public class ListElabNetworkImpl implements ListElabNetwork {
 
-    private static final String BEARER = "Bearer ";
+	private static final String BEARER = "Bearer ";
 
-    @Value("${listelab.api.auth.email}")
-    private String email;
+	@Value("${listelab.api.auth.email}")
+	private String email;
 
-    @Value("${listelab.api.auth.password}")
-    private String password;
+	@Value("${listelab.api.auth.password}")
+	private String password;
 
-    @Value("${listelab.api.url.auth}")
-    private String authUrl;
+	@Value("${listelab.api.url.auth}")
+	private String authUrl;
 
-    @Value("${listelab.api.url.list}")
-    private String apiListUrl;
+	@Value("${listelab.api.url.list}")
+	private String apiListUrl;
 
-    @Value("${listelab.api.url.discursive-question}")
-    private String apiDiscursiveQuestionUrl;
+	@Value("${listelab.api.url.discursive-question}")
+	private String apiDiscursiveQuestionUrl;
 
-    @Value("${listelab.api.url.objective-question}")
-    private String apiObjectiveQuestionUrl;
+	@Value("${listelab.api.url.objective-question}")
+	private String apiObjectiveQuestionUrl;
 
-    @Autowired
-    private RestTemplate restTemplate;
+	@Autowired
+	private RestTemplate restTemplate;
 
-    @Override
-    public List<ListDTO> getLists() {
-        try {
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-            headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
-            HttpEntity<String> entity = new HttpEntity<>(headers);
+	@Override
+	public List<ListDTO> getLists() {
+		try {
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+			headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
+			HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ListElabResultDTO listElabResultDTO = restTemplate.exchange(apiListUrl, HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
-            return listElabResultDTO.getResultado().stream()
-                    .map(ListConverterDTO::fromListIntegrationToListDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new NetworkException("Failed to get list in ListElab service", e);
-        }
-    }
+			ListElabResultDTO listElabResultDTO = restTemplate.exchange(apiListUrl, HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
+			return listElabResultDTO.getResultado().stream()
+					.map(ListConverterDTO::fromListIntegrationToListDTO)
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw new NetworkException("Failed to get list in ListElab service", e);
+		}
+	}
 
-    @Override
-    public ListDTO getListById(UUID id) {
-        try {
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-            headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
-            HttpEntity<String> entity = new HttpEntity<>(headers);
+	@Override
+	public ListDTO getListById(UUID id) {
+		try {
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+			headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
+			HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ListElabSingleResultDTO listElabSingleResultDTO = restTemplate.exchange(apiListUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleResultDTO.class).getBody();
+			ListElabSingleResultDTO listElabSingleResultDTO = restTemplate.exchange(apiListUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleResultDTO.class).getBody();
 
-            assert listElabSingleResultDTO != null;
+			return ListConverterDTO.fromListIntegrationToListDTO(listElabSingleResultDTO.getResultado());
+		} catch (Exception e) {
+			throw new NetworkException("Failed to get list in ListElab service", e);
+		}
+	}
 
-            return ListConverterDTO.fromListIntegrationToListDTO(listElabSingleResultDTO.getResultado());
-        } catch (Exception e) {
-            throw new NetworkException("Failed to get list in ListElab service", e);
-        }
-    }
-
-    @Override
-    public QuestionDTO getQuestionById(UUID id) {
-        try {
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-            headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
-            HttpEntity<String> entity = new HttpEntity<>(headers);
+	@Override
+	public QuestionDTO getQuestionById(UUID id) {
+		try {
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+			headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
+			HttpEntity<String> entity = new HttpEntity<>(headers);
 			ListElabSingleQuestionResultDTO questionResultDTO = restTemplate.exchange(apiDiscursiveQuestionUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleQuestionResultDTO.class).getBody();
 			return questionResultDTO.getResultado() != null ? QuestionConverterDTO.fromDomainToDTO(questionResultDTO.getResultado()) : new QuestionDTO();
-        } catch (Exception e) {
-            throw new NetworkException("Failed to get question in ListElab service", e);
-        }
-    }
+		} catch (Exception e) {
+			throw new NetworkException("Failed to get question in ListElab service", e);
+		}
+	}
 
-    @Override
-    public UserIntegrationDTO login(LoginDTO loginDTO) {
-        HttpEntity<LoginDTO> entity = new HttpEntity<>(loginDTO);
+	@Override
+	public UserIntegrationDTO login(LoginDTO loginDTO) {
+		HttpEntity<LoginDTO> entity = new HttpEntity<>(loginDTO);
 
-        AuthenticationDTO authenticationDTO = restTemplate.exchange(this.authUrl, HttpMethod.POST, entity, AuthenticationDTO.class).getBody();
-        return Optional.ofNullable(authenticationDTO).map(AuthenticationDTO::getResultado).orElseThrow(() -> new NetworkException("Invalid username or password"));
-    }
+		AuthenticationDTO authenticationDTO = restTemplate.exchange(this.authUrl, HttpMethod.POST, entity, AuthenticationDTO.class).getBody();
+		return Optional.ofNullable(authenticationDTO).map(AuthenticationDTO::getResultado).orElseThrow(() -> new NetworkException("Invalid username or password"));
+	}
 
-    private String getApiKey() {
-        try {
-            return login(getLoginAdmin()).getToken();
-        } catch (Exception e) {
-            throw new NetworkException("Failed to get token in ListElab service", e);
-        }
-    }
+	private String getApiKey() {
+		try {
+			return login(getLoginAdmin()).getToken();
+		} catch (Exception e) {
+			throw new NetworkException("Failed to get token in ListElab service", e);
+		}
+	}
 
-    private LoginDTO getLoginAdmin() {
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setEmail(this.email);
-        loginDTO.setPassword(this.password);
-        return loginDTO;
-    }
+	private LoginDTO getLoginAdmin() {
+		LoginDTO loginDTO = new LoginDTO();
+		loginDTO.setEmail(this.email);
+		loginDTO.setPassword(this.password);
+		return loginDTO;
+	}
 
 }
