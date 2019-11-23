@@ -4,13 +4,16 @@ import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.exception.ResourceNotFoundException;
 import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.Enrollment;
 import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
+import br.com.ufg.listaplic.repository.EnrollmentJpaRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,9 @@ public class ClassroomService {
 
     @Autowired
     private ClassroomJpaRepository classroomJpaRepository;
+
+    @Autowired
+    private EnrollmentJpaRepository enrollmentJpaRepository;
 
     public List<ClassroomDTO> findAll() {
         return classroomJpaRepository.findAll()
@@ -33,6 +39,10 @@ public class ClassroomService {
         return classroomJpaRepository.findById(id)
                 .map(ClassroomConverterDTO::fromDomainToDTO)
                 .orElseThrow(() -> new ResourceNotFoundException(CLASSROOM_NOT_FOUND));
+    }
+
+    public Set<Enrollment> findEnrollments(Classroom classroom) {
+        return enrollmentJpaRepository.findAllByClassroom(classroom);
     }
 
     public List<ClassroomDTO> findByStudentId(UUID studentId) {

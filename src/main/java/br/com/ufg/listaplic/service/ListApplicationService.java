@@ -4,31 +4,18 @@ import br.com.ufg.listaplic.converter.AnswerConverterDTO;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
 import br.com.ufg.listaplic.converter.ListApplicationConverterDTO;
 import br.com.ufg.listaplic.converter.StudentConverterDTO;
-import br.com.ufg.listaplic.dto.AnswerDTO;
-import br.com.ufg.listaplic.dto.ApplyDTO;
-import br.com.ufg.listaplic.dto.ClassroomDTO;
-import br.com.ufg.listaplic.dto.ListApplicationDTO;
-import br.com.ufg.listaplic.dto.ListDTO;
-import br.com.ufg.listaplic.dto.QuestionDTO;
-import br.com.ufg.listaplic.dto.StudentDTO;
-import br.com.ufg.listaplic.model.Answer;
-import br.com.ufg.listaplic.model.ApplicationListStatus;
-import br.com.ufg.listaplic.model.Classroom;
-import br.com.ufg.listaplic.model.ListApplication;
-import br.com.ufg.listaplic.model.QuestionCount;
-import br.com.ufg.listaplic.model.Student;
+import br.com.ufg.listaplic.dto.*;
+import br.com.ufg.listaplic.exception.NoOneStudentOnClassroomException;
+import br.com.ufg.listaplic.model.*;
 import br.com.ufg.listaplic.network.ListElabNetwork;
-import br.com.ufg.listaplic.repository.AnswerJpaRepository;
-import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
-import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
-import br.com.ufg.listaplic.repository.QuestionCountJpaRepository;
-import br.com.ufg.listaplic.repository.StudentJpaRepository;
+import br.com.ufg.listaplic.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -65,6 +52,10 @@ public class ListApplicationService {
             ClassroomDTO classroomDTO = classroomService.findById(applyDTO.getClassroomId());
             Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
 
+            if (!this.checkIfTheresStudentsOnClassroom(classroom)) {
+                throw new NoOneStudentOnClassroomException();
+            }
+
             ListApplication listApplication = new ListApplication();
             listApplication.setClassroom(classroom);
             listApplication.setList(applyDTO.getListId());
@@ -84,6 +75,11 @@ public class ListApplicationService {
         } else {
             //do stuff
         }
+    }
+
+    public boolean checkIfTheresStudentsOnClassroom(Classroom classroom) {
+        final Set<Enrollment> enrollments = classroomService.findEnrollments(classroom);
+        return enrollments != null && !enrollments.isEmpty();
     }
 
     private void countQuestions(String instructorId, List<QuestionDTO> questions) {
