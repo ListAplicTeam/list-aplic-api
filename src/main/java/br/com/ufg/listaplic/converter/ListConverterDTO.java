@@ -9,11 +9,7 @@ import br.com.ufg.listaplic.dto.listelab.QuestaoIntegrationDTO;
 import br.com.ufg.listaplic.model.Answer;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class ListConverterDTO {
@@ -54,6 +50,11 @@ public final class ListConverterDTO {
         listDTO.setQuestions(listIntegrationDTO.getQuestoes().stream()
                 .map(QuestionConverterDTO::fromDomainToDTO)
                 .collect(Collectors.toList()));
+
+		Integer answerTime = questions.stream()
+				.mapToInt(QuestaoIntegrationDTO::getTempoMaximoDeResposta)
+				.sum();
+		listDTO.setAnswerTime(answerTime);
 
         return listDTO;
     }

@@ -20,11 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 public class ListServiceTest extends BaseTest {
 
@@ -48,13 +45,13 @@ public class ListServiceTest extends BaseTest {
         // Setup
         final List<ListDTO> lists = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name(), ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
-        when(mockListElabNetwork.getLists()).thenReturn(lists);
+		when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter(null, null);
+		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
 
         // Verify the results
-        verify(mockListElabNetwork, times(1)).getLists();
+		verify(mockListElabNetwork, times(1)).getListsByFilter(any());
 
         assertEquals(lists.size(), result.size());
     }
@@ -64,13 +61,13 @@ public class ListServiceTest extends BaseTest {
         // Setup
         final List<ListDTO> lists = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name(), ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
-        when(mockListElabNetwork.getLists()).thenReturn(lists);
+		when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter("Duas Questões", null);
+		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
 
         // Verify the results
-        verify(mockListElabNetwork, times(1)).getLists();
+		verify(mockListElabNetwork, times(1)).getListsByFilter(any());
 
         assertEquals(1, result.size());
     }
@@ -80,13 +77,13 @@ public class ListServiceTest extends BaseTest {
         // Setup
         final List<ListDTO> lists = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name(), ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
-        when(mockListElabNetwork.getLists()).thenReturn(lists);
+		when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter("Duas Questões", "INF0233");
+		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
 
         // Verify the results
-        verify(mockListElabNetwork, times(1)).getLists();
+		verify(mockListElabNetwork, times(1)).getListsByFilter(any());
 
         assertEquals(1, result.size());
     }

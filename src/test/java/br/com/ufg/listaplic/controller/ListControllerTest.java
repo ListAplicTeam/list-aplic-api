@@ -23,80 +23,78 @@ import static org.mockito.Mockito.*;
 
 public class ListControllerTest extends BaseTest {
 
-    @InjectMocks
-    private ListController listControllerUnderTest;
+	@Mock
+	ListApplicationService mockListApplicationService;
+	@InjectMocks
+	private ListController listControllerUnderTest;
+	@Mock
+	private ListService mockListService;
 
-    @Mock
-    private ListService mockListService;
+	@Test
+	public void testGetListsByFilter() {
+		// Setup
+		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+		when(mockListService.getListsByFilter(anyString(), anyString(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
 
-    @Mock
-    ListApplicationService mockListApplicationService;
+		// Run the test
+		final List<ListDTO> result = listControllerUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
 
-    @Test
-    public void testGetListsByFilter() {
-        // Setup
-        final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-        when(mockListService.getListsByFilter(anyString(), anyString())).thenReturn(listDTOS);
+		// Verify the results
+		assertEquals(listDTOS.size(), result.size());
+	}
 
-        // Run the test
-        final List<ListDTO> result = listControllerUnderTest.getListsByFilter("Lista", "INF0233");
+	@Test
+	public void testGetFinishedApplicationsByClassroomId() {
+		// Setup
+		final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
+				.gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
+		final ApplicationListStatus status = ApplicationListStatus.ENCERRADA;
 
-        // Verify the results
-        assertEquals(listDTOS.size(), result.size());
-    }
+		when(mockListApplicationService.getListsByClassroom(any(UUID.class), eq(status))).thenReturn(listApplicationDTOS);
 
-    @Test
-    public void testGetFinishedApplicationsByClassroomId() {
-        // Setup
-        final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
-                .gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
-        final ApplicationListStatus status = ApplicationListStatus.ENCERRADA;
+		// Run the test
+		final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), status.name());
 
-        when(mockListApplicationService.getListsByClassroom(any(UUID.class), eq(status))).thenReturn(listApplicationDTOS);
+		// Verify the results
+		assertEquals(listApplicationDTOS.size(), result.size());
+	}
 
-        // Run the test
-        final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), status.name());
+	@Test
+	public void testGetApplicationDetailById() {
+		final ListApplicationDTO listApplicationDTO = Fixture.from(ListApplicationDTO.class)
+				.gimme(ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
+		when(mockListApplicationService.getListApplicationDetail(any(UUID.class))).thenReturn(listApplicationDTO);
 
-        // Verify the results
-        assertEquals(listApplicationDTOS.size(), result.size());
-    }
+		final ListApplicationDTO result = listControllerUnderTest.getApplicationDetailById(UUID.randomUUID());
 
-    @Test
-    public void testGetApplicationDetailById() {
-        final ListApplicationDTO listApplicationDTO = Fixture.from(ListApplicationDTO.class)
-                .gimme(ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
-        when(mockListApplicationService.getListApplicationDetail(any(UUID.class))).thenReturn(listApplicationDTO);
+		assertEquals(listApplicationDTO.getListId(), result.getListId());
+		assertEquals(listApplicationDTO.getGroupId(), result.getGroupId());
+		assertEquals(listApplicationDTO.getStatus(), result.getStatus());
+	}
 
-        final ListApplicationDTO result = listControllerUnderTest.getApplicationDetailById(UUID.randomUUID());
+	@Test
+	public void testGetPendingListsByStudent() {
+		// Setup
+		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+		when(mockListService.getPendingListsByStudent(any(UUID.class))).thenReturn(listDTOS);
 
-        assertEquals(listApplicationDTO.getListId(), result.getListId());
-        assertEquals(listApplicationDTO.getGroupId(), result.getGroupId());
-        assertEquals(listApplicationDTO.getStatus(), result.getStatus());
-    }
+		// Run the test
+		final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID());
 
-    @Test
-    public void testGetPendingListsByStudent() {
-        // Setup
-        final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-        when(mockListService.getPendingListsByStudent(any(UUID.class))).thenReturn(listDTOS);
+		// Verify the results
+		assertEquals(listDTOS.size(), result.size());
+	}
 
-        // Run the test
-        final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID());
+	@Test
+	public void testAnsweringList() {
+		// Setup
+		Mockito.doNothing().when(mockListService).answeringList(any(UUID.class), any(ListDTO.class));
 
-        // Verify the results
-        assertEquals(listDTOS.size(), result.size());
-    }
+		// Run the test
+		listControllerUnderTest.answeringList(UUID.randomUUID(), new ListDTO());
 
-    @Test
-    public void testAnsweringList() {
-        // Setup
-        Mockito.doNothing().when(mockListService).answeringList(any(UUID.class), any(ListDTO.class));
-
-        // Run the test
-        listControllerUnderTest.answeringList(UUID.randomUUID(), new ListDTO());
-
-        // Verify the results
-        verify(mockListService, times(1)).answeringList(any(UUID.class), any(ListDTO.class));
-    }
+		// Verify the results
+		verify(mockListService, times(1)).answeringList(any(UUID.class), any(ListDTO.class));
+	}
 
 }

@@ -45,6 +45,7 @@ listelab:
       list: http://api.sifo.tech/api/lista
       discursive-question: http://api.sifo.tech/api/QuestaoDiscursiva
       objective-question: http://api.sifo.tech/api/QuestaoObjetiva
+      knowledge-area: http://api.sifo.tech/api/AreaDeConhecimento
 
 #'dev' profile only
 ---
