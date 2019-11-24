@@ -7,6 +7,8 @@ import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaDTO;
 
 import java.util.stream.Collectors;
 
+import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
+
 public final class QuestionConverterDTO {
 
 	private QuestionConverterDTO() {
@@ -18,7 +20,7 @@ public final class QuestionConverterDTO {
 		questionDTO.setName(questaoIntegrationDTO.getEnunciado());
 		questionDTO.setType(QuestionType.DISCURSIVE);
 
-		String answer = questaoIntegrationDTO.getRespostaEsperada().stream()
+		String answer = emptyIfNull(questaoIntegrationDTO.getRespostaEsperada()).stream()
 				.map(RespostaEsperadaDTO::getDescricao)
 				.collect(Collectors.joining(", "));
 		questionDTO.setAnswer(answer);

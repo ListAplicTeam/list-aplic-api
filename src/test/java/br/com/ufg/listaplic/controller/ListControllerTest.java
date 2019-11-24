@@ -37,7 +37,7 @@ public class ListControllerTest extends BaseTest {
 		when(mockListService.getListsByFilter(anyString(), anyString(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
 
 		// Run the test
-		final List<ListDTO> result = listControllerUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
+		final List<ListDTO> result = listControllerUnderTest.getListsByFilter(anyString(), anyString(), anyString(), anyInt(), anyList());
 
 		// Verify the results
 		assertEquals(listDTOS.size(), result.size());
