@@ -34,7 +34,7 @@ public class ListService {
 	private ListApplicationJpaRepository listApplicationJpaRepository;
 
 	public List<ListDTO> getListsByFilter(@Nullable String subjectCode,
-										  @Nullable String difficultyLevel,
+										  @Nullable Integer difficultyLevel,
 										  @Nullable String knowledgeAreaCode,
 										  @Nullable Integer answerTime,
 										  @Nullable List<String> tags) {
@@ -82,16 +82,16 @@ public class ListService {
 
 	private FilterList buildFilterList(
 			@Nullable String subjectCode,
-			@Nullable String difficultyLevel,
+			@Nullable Integer difficultyLevel,
 			@Nullable String knowledgeAreaCode,
 			@Nullable Integer answerTime,
 			@Nullable List<String> tags
 	) {
 		FilterList filterList = new FilterList();
-		filterList.setAnswerTime(answerTime);
-		filterList.setDifficultyLevel(difficultyLevel);
-		filterList.setKnowledgeAreaCode(knowledgeAreaCode);
-		filterList.setSubjectCode(subjectCode);
+		filterList.setTempoEsperadoResposta(answerTime);
+		filterList.setNivelDificuldade(difficultyLevel);
+		filterList.setAreaDeConhecimento(knowledgeAreaCode);
+		filterList.setDisciplina(subjectCode);
 		filterList.setTags(tags);
 
 		return filterList;

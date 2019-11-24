@@ -51,7 +51,7 @@ public class ListServiceTest extends BaseTest {
         when(mockListElabNetwork.getListsByFilter(any(FilterList.class))).thenReturn(lists);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter(any(), anyString(), anyString(), anyInt(), anyList());
+		List<ListDTO> result = listServiceUnderTest.getListsByFilter(any(), anyInt(), anyString(), anyInt(), anyList());
 
         // Verify the results
         verify(mockListElabNetwork, times(1)).getListsByFilter(any(FilterList.class));
@@ -68,7 +68,7 @@ public class ListServiceTest extends BaseTest {
         when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
+		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", anyInt(), anyString(), anyInt(), anyList());
 
         // Verify the results
         verify(mockListElabNetwork, times(1)).getListsByFilter(any());
@@ -85,7 +85,7 @@ public class ListServiceTest extends BaseTest {
         when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", "INF0233", anyString(), anyInt(), anyList());
+		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", anyInt(), anyString(), anyInt(), anyList());
 
         // Verify the results
         verify(mockListElabNetwork, times(1)).getListsByFilter(any());

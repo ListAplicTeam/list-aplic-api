@@ -34,10 +34,10 @@ public class ListControllerTest extends BaseTest {
 	public void testGetListsByFilter() {
 		// Setup
 		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-		when(mockListService.getListsByFilter(anyString(), anyString(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
+		when(mockListService.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
 
 		// Run the test
-		final List<ListDTO> result = listControllerUnderTest.getListsByFilter(anyString(), anyString(), anyString(), anyInt(), anyList());
+		final List<ListDTO> result = listControllerUnderTest.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList());
 
 		// Verify the results
 		assertEquals(listDTOS.size(), result.size());

@@ -43,7 +43,7 @@ public class ListController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<ListDTO> getListsByFilter(@RequestParam(value = "subjectCode", required = false) String subjectCode,
-										  @RequestParam(value = "difficultyLevel", required = false) String difficultyLevel,
+										  @RequestParam(value = "difficultyLevel", required = false) Integer difficultyLevel,
 										  @RequestParam(value = "knowledgeAreaCode", required = false) String knowledgeAreaCode,
 										  @RequestParam(value = "answerTime", required = false) Integer answerTime,
 										  @RequestParam(value = "tags", required = false) List<String> tags) {

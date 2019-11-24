@@ -4,42 +4,42 @@ import java.util.List;
 
 public class FilterList {
 
-	private String subjectCode;
-	private String difficultyLevel;
-	private String knowledgeAreaCode;
-	private Integer answerTime;
+	private String disciplina;
+	private Integer nivelDificuldade;
+	private String areaDeConhecimento;
+	private Integer tempoEsperadoResposta;
 	private List<String> tags;
 
-	public String getSubjectCode() {
-		return subjectCode;
+	public String getDisciplina() {
+		return disciplina;
 	}
 
-	public void setSubjectCode(String subjectCode) {
-		this.subjectCode = subjectCode;
+	public void setDisciplina(String disciplina) {
+		this.disciplina = disciplina;
 	}
 
-	public String getDifficultyLevel() {
-		return difficultyLevel;
+	public Integer getNivelDificuldade() {
+		return nivelDificuldade;
 	}
 
-	public void setDifficultyLevel(String difficultyLevel) {
-		this.difficultyLevel = difficultyLevel;
+	public void setNivelDificuldade(Integer nivelDificuldade) {
+		this.nivelDificuldade = nivelDificuldade;
 	}
 
-	public String getKnowledgeAreaCode() {
-		return knowledgeAreaCode;
+	public String getAreaDeConhecimento() {
+		return areaDeConhecimento;
 	}
 
-	public void setKnowledgeAreaCode(String knowledgeAreaCode) {
-		this.knowledgeAreaCode = knowledgeAreaCode;
+	public void setAreaDeConhecimento(String areaDeConhecimento) {
+		this.areaDeConhecimento = areaDeConhecimento;
 	}
 
-	public Integer getAnswerTime() {
-		return answerTime;
+	public Integer getTempoEsperadoResposta() {
+		return tempoEsperadoResposta;
 	}
 
-	public void setAnswerTime(Integer answerTime) {
-		this.answerTime = answerTime;
+	public void setTempoEsperadoResposta(Integer tempoEsperadoResposta) {
+		this.tempoEsperadoResposta = tempoEsperadoResposta;
 	}
 
 	public List<String> getTags() {
