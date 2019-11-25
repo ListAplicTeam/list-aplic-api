@@ -25,7 +25,7 @@ public class QuestionConverterDTOTest extends BaseTest {
         assertEquals(questaoIntegrationDTO.getEnunciado(), result.getName());
         assertEquals(QuestionType.DISCURSIVE, result.getType());
         assertEquals(null, result.getOptions());
-        assertEquals(null, result.getAnswer());
+        assertEquals("", result.getAnswer());
     }
 
 }

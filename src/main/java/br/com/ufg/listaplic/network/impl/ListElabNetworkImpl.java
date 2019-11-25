@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,23 +41,32 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 	@Value("${listelab.api.url.list}")
 	private String apiListUrl;
 
+	@Value("${listelab.api.url.filter-list}")
+	private String apiFilterListUrl;
+
 	@Value("${listelab.api.url.discursive-question}")
 	private String apiDiscursiveQuestionUrl;
 
 	@Value("${listelab.api.url.objective-question}")
 	private String apiObjectiveQuestionUrl;
 
+	@Value("${listelab.api.url.knowledge-area}")
+	private String apiKnowledgeAreaUrl;
+
 	@Autowired
 	private RestTemplate restTemplate;
 
 	@Override
-	public List<ListDTO> getLists() {
+	public List<ListDTO> getListsByFilter(FilterList filterList) {
 		try {
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 			headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
-			HttpEntity<String> entity = new HttpEntity<>(headers);
 
-			ListElabResultDTO listElabResultDTO = restTemplate.exchange(apiListUrl, HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
+			HttpEntity<?> entity = new HttpEntity<>(headers);
+
+			UriComponentsBuilder builder = buildUriComponentsBuilderForFilterList(filterList, apiFilterListUrl);
+
+			ListElabResultDTO listElabResultDTO = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
 			return listElabResultDTO.getResultado().stream()
 					.map(ListConverterDTO::fromListIntegrationToListDTO)
 					.collect(Collectors.toList());
@@ -75,6 +85,21 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 			ListElabSingleResultDTO listElabSingleResultDTO = restTemplate.exchange(apiListUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleResultDTO.class).getBody();
 
 			return ListConverterDTO.fromListIntegrationToListDTO(listElabSingleResultDTO.getResultado());
+		} catch (Exception e) {
+			throw new NetworkException("Failed to get list in ListElab service", e);
+		}
+	}
+
+	@Override
+	public List<AreaDoConhecimentoDTO> getAllKnowledgeAreas() {
+		try {
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+			headers.add(HttpHeaders.AUTHORIZATION, BEARER + getApiKey());
+			HttpEntity<String> entity = new HttpEntity<>(headers);
+
+			ListElabKnowledgeAreaResultDTO areaDoConhecimentoDTOS = restTemplate.exchange(apiKnowledgeAreaUrl, HttpMethod.GET, entity, ListElabKnowledgeAreaResultDTO.class).getBody();
+
+			return areaDoConhecimentoDTOS.getResultado();
 		} catch (Exception e) {
 			throw new NetworkException("Failed to get list in ListElab service", e);
 		}
@@ -114,6 +139,32 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 		loginDTO.setEmail(this.email);
 		loginDTO.setPassword(this.password);
 		return loginDTO;
+	}
+
+	private UriComponentsBuilder buildUriComponentsBuilderForFilterList(FilterList filterList, String apiUrl) {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiFilterListUrl);
+
+		if (filterList.getAreaDeConhecimento() != null) {
+			builder.queryParam("areaDeConhecimento", filterList.getAreaDeConhecimento());
+		}
+
+		if (filterList.getDisciplina() != null) {
+			builder.queryParam("disciplina", filterList.getDisciplina());
+		}
+
+		if (filterList.getNivelDificuldade() != null) {
+			builder.queryParam("nivelDificuldade", filterList.getNivelDificuldade());
+		}
+
+		if (filterList.getTempoEsperadoResposta() != null) {
+			builder.queryParam("tempoEsperadoResposta", filterList.getTempoEsperadoResposta());
+		}
+
+		if (filterList.getTags() != null && filterList.getTags().size() > 0) {
+			builder.queryParam("tags", filterList.getTags());
+		}
+
+		return builder;
 	}
 
 }

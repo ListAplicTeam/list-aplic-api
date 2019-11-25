@@ -42,9 +42,12 @@ public class ListController {
 	)
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<ListDTO> getListsByFilter(@RequestParam(value = "name", required = false) String name,
-										  @RequestParam(value = "subjectCode", required = false) String subjectCode) {
-		return listService.getListsByFilter(name, subjectCode);
+	public List<ListDTO> getListsByFilter(@RequestParam(value = "subjectCode", required = false) String subjectCode,
+										  @RequestParam(value = "difficultyLevel", required = false) Integer difficultyLevel,
+										  @RequestParam(value = "knowledgeAreaCode", required = false) String knowledgeAreaCode,
+										  @RequestParam(value = "answerTime", required = false) Integer answerTime,
+										  @RequestParam(value = "tags", required = false) List<String> tags) {
+		return listService.getListsByFilter(subjectCode, difficultyLevel, knowledgeAreaCode, answerTime, tags);
 	}
 
 	@ApiOperation(
