@@ -43,6 +43,7 @@ listelab:
     url:
       auth: http://api.sifo.tech/api/usuario/login
       list: http://api.sifo.tech/api/lista
+      filter-list: http://api.sifo.tech/api/lista/filtro
       discursive-question: http://api.sifo.tech/api/QuestaoDiscursiva
       objective-question: http://api.sifo.tech/api/QuestaoObjetiva
       knowledge-area: http://api.sifo.tech/api/AreaDeConhecimento
