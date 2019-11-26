@@ -49,6 +49,13 @@ public class QuestionDTO {
     )
     private String answer;
 
+	@ApiModelProperty(
+			value = "Question's answer",
+			dataType = "string",
+			example = "Lenda, Animal, Humano"
+	)
+	private String expectedAnswers;
+
     public UUID getId() {
         return id;
     }
@@ -88,4 +95,12 @@ public class QuestionDTO {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
+
+	public String getExpectedAnswers() {
+		return expectedAnswers;
+	}
+
+	public void setExpectedAnswers(String expectedAnswers) {
+		this.expectedAnswers = expectedAnswers;
+	}
 }

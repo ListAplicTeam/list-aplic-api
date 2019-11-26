@@ -20,10 +20,10 @@ public final class QuestionConverterDTO {
 		questionDTO.setName(questaoIntegrationDTO.getEnunciado());
 		questionDTO.setType(QuestionType.DISCURSIVE);
 
-//		String answer = emptyIfNull(questaoIntegrationDTO.getRespostaEsperada()).stream()
-//				.map(RespostaEsperadaDTO::getDescricao)
-//				.collect(Collectors.joining(", "));
-//		questionDTO.setAnswer(answer);
+		String expectedAnswers = emptyIfNull(questaoIntegrationDTO.getRespostaEsperada()).stream()
+				.map(RespostaEsperadaDTO::getDescricao)
+				.collect(Collectors.joining(", "));
+		questionDTO.setExpectedAnswers(expectedAnswers);
 		return questionDTO;
 	}
 
