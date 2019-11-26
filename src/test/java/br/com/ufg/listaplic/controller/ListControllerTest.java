@@ -2,6 +2,7 @@ package br.com.ufg.listaplic.controller;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
+import br.com.ufg.listaplic.dto.AnswerStatusType;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
@@ -85,16 +86,16 @@ public class ListControllerTest extends BaseTest {
 		assertEquals(listDTOS.size(), result.size());
 	}
 
-	@Test
-	public void testAnsweringList() {
-		// Setup
-		Mockito.doNothing().when(mockListService).answeringList(any(UUID.class), any(ListDTO.class));
+    @Test
+    public void testAnsweringList() {
+        // Setup
+        Mockito.doNothing().when(mockListService).answeringList(any(), any(UUID.class), any(ListDTO.class));
 
-		// Run the test
-		listControllerUnderTest.answeringList(UUID.randomUUID(), new ListDTO());
+        // Run the test
+        listControllerUnderTest.answeringList(AnswerStatusType.SAVE, UUID.randomUUID(), new ListDTO());
 
-		// Verify the results
-		verify(mockListService, times(1)).answeringList(any(UUID.class), any(ListDTO.class));
-	}
+        // Verify the results
+        verify(mockListService, times(1)).answeringList(any(), any(UUID.class), any(ListDTO.class));
+    }
 
 }
