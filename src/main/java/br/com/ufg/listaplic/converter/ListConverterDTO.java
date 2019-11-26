@@ -1,15 +1,15 @@
 package br.com.ufg.listaplic.converter;
 
 import br.com.ufg.listaplic.dto.ListDTO;
-import br.com.ufg.listaplic.dto.QuestionDTO;
 import br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO;
 import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
 import br.com.ufg.listaplic.dto.listelab.ListIntegrationDTO;
 import br.com.ufg.listaplic.dto.listelab.QuestaoIntegrationDTO;
-import br.com.ufg.listaplic.model.Answer;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class ListConverterDTO {
@@ -57,19 +57,6 @@ public final class ListConverterDTO {
 		listDTO.setAnswerTime(answerTime);
 
 		return listDTO;
-	}
-
-	public static List<Answer> fromListDTOToListAnswer(final UUID userId, final ListDTO listDTO) {
-		List<Answer> answers = new ArrayList<>();
-		for (QuestionDTO questionDTO : listDTO.getQuestions()) {
-			Answer answer = new Answer();
-			answer.setApplicationId(listDTO.getListApplicationId());
-			answer.setQuestionId(questionDTO.getId());
-			answer.setAnswer(questionDTO.getAnswer());
-			answer.setUserId(userId);
-			answers.add(answer);
-		}
-		return answers;
 	}
 
 }

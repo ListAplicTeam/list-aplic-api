@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -14,4 +15,6 @@ public interface AnswerJpaRepository extends JpaRepository<Answer, UUID> {
     List<Answer> findByApplicationId(UUID applicationId);
 
     List<AnswerCount> findAnswerCountsByClassroomId(UUID classroomId);
+
+    Optional<Answer> findByApplicationIdAndQuestionIdAndUserId(UUID listApplicationId, UUID questionId, UUID userId);
 }

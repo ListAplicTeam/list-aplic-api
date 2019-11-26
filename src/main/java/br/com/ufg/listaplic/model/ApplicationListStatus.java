@@ -1,6 +1,7 @@
 package br.com.ufg.listaplic.model;
 
 public enum ApplicationListStatus {
+
     NAO_INICIADA,
     EM_ANDAMENTO,
     ENCERRADA;

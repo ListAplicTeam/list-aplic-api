@@ -2,6 +2,7 @@ package br.com.ufg.listaplic.service;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
+import br.com.ufg.listaplic.dto.AnswerStatusType;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.listelab.FilterList;
@@ -115,7 +116,7 @@ public class ListServiceTest extends BaseTest {
         final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
         when(mockClassroomService.findByStudentId(any(UUID.class))).thenReturn(classrooms);
-        when(mockListApplicationJpaRepository.findByClassrooms(anyList(), any(UUID.class))).thenReturn(listApplications);
+        when(mockListApplicationJpaRepository.findByClassrooms(anyList(), any(UUID.class), any())).thenReturn(listApplications);
         when(mockListElabNetwork.getListById(any(UUID.class))).thenReturn(listDTO);
 
         // Run the test
@@ -123,7 +124,7 @@ public class ListServiceTest extends BaseTest {
 
         // Verify the results
         verify(mockClassroomService, times(1)).findByStudentId(any(UUID.class));
-        verify(mockListApplicationJpaRepository, times(1)).findByClassrooms(anyList(), any(UUID.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassrooms(anyList(), any(UUID.class), any());
         verify(mockListElabNetwork, times(2)).getListById(any(UUID.class));
 
         assertEquals(listApplications.size(), result.size());
@@ -137,7 +138,7 @@ public class ListServiceTest extends BaseTest {
         Mockito.doNothing().when(mockAnswerService).saveAll(anyList());
 
         // Run the test
-        listServiceUnderTest.answeringList(UUID.randomUUID(), listDTO);
+        listServiceUnderTest.answeringList(AnswerStatusType.SAVE, UUID.randomUUID(), listDTO);
 
         // Verify the results
         verify(mockAnswerService, times(1)).saveAll(anyList());
