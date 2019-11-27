@@ -8,6 +8,8 @@ import br.com.ufg.listaplic.dto.listelab.QuestaoIntegrationDTO;
 import br.com.ufg.listaplic.template.QuestaoIntegrationDTOTemplate;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 
 public class QuestionConverterDTOTest extends BaseTest {
@@ -26,6 +28,7 @@ public class QuestionConverterDTOTest extends BaseTest {
         assertEquals(QuestionType.DISCURSIVE, result.getType());
         assertEquals(null, result.getOptions());
         assertEquals(null, result.getAnswer());
+        assertEquals("", result.getExpectedAnswers());
     }
 
 }

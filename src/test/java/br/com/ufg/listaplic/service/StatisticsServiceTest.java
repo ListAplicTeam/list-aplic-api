@@ -13,9 +13,12 @@ import br.com.ufg.listaplic.repository.QuestionCountJpaRepository;
 import br.com.ufg.listaplic.template.QuestionCountTemplate;
 import br.com.ufg.listaplic.template.QuestionDTOTemplate;
 import br.com.ufg.listaplic.util.AnswerCount;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import static org.mockito.Mockito.when;
 public class StatisticsServiceTest extends BaseTest {
 
     @InjectMocks
-    StatisticsService statisticsServiceUnderTest;
+    private StatisticsService statisticsServiceUnderTest;
 
     @Mock
     private AnswerJpaRepository mockAnswerJpaRepository;
@@ -45,6 +48,9 @@ public class StatisticsServiceTest extends BaseTest {
 
     @Mock
     private ListElabNetwork mockListElabNetwork;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void testCalculateClassroomStatistics() {
@@ -121,6 +127,15 @@ public class StatisticsServiceTest extends BaseTest {
         when(mockListApplicationJpaRepository.countByClassroomId(any(UUID.class))).thenReturn(applicationCount);
 
         StatisticsDTO result = statisticsServiceUnderTest.calculateClassroomStatistics(UUID.randomUUID());
+
+        assertEquals(result.getErrorMessage(), StatisticsService.APPLICATION_ERROR);
+    }
+
+    @Test
+    public void testShouldGetErrorMessageWhenExceptionOccur() {
+        Mockito.doThrow(new IllegalArgumentException(StatisticsService.APPLICATION_ERROR)).when(mockQuestionCountJpaRepository).findAllByInstructor(anyString());
+
+        StatisticsDTO result = statisticsServiceUnderTest.calculateInstructorStatistics("INSTRUCTOR");
 
         assertEquals(result.getErrorMessage(), StatisticsService.APPLICATION_ERROR);
     }

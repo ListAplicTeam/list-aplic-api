@@ -1,5 +1,6 @@
 package br.com.ufg.listaplic.repository;
 
+import br.com.ufg.listaplic.dto.AnswerStatusType;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
 import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
@@ -15,10 +16,12 @@ public interface ListApplicationJpaRepository extends JpaRepository<ListApplicat
 
     @Query(value = "SELECT * FROM application a " +
             "WHERE a.classroom_id IN (:classroomsId) " +
-            "AND a.id NOT IN (SELECT application_id FROM answer WHERE user_id = :studentId)", nativeQuery = true)
-    List<ListApplication> findByClassrooms(List<UUID> classroomsId, UUID studentId);
+            "AND a.id NOT IN (SELECT application_id FROM answer WHERE user_id = :studentId AND status_type = :answerStatusType)", nativeQuery = true)
+    List<ListApplication> findByClassrooms(List<UUID> classroomsId, UUID studentId, String answerStatusType);
 
     List<ListApplication> findByClassroomAndStatus(Classroom classroom, ApplicationListStatus status);
+
+    List<ListApplication> findByClassroom(Classroom classroom);
 
     Integer countByClassroomId(UUID classroomId);
 }

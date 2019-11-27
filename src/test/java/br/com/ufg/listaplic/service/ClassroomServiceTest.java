@@ -4,9 +4,13 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.Enrollment;
 import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
+import br.com.ufg.listaplic.repository.EnrollmentJpaRepository;
 import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
 import br.com.ufg.listaplic.template.ClassroomTemplate;
+import br.com.ufg.listaplic.template.EnrollmentTemplate;
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,6 +18,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +37,9 @@ public class ClassroomServiceTest extends BaseTest {
     @Mock
     private ClassroomJpaRepository mockClassroomJpaRepository;
 
+    @Mock
+    private EnrollmentJpaRepository mockEnrollmentJpaRepository;
+
     @Test
     public void testFindAll() {
         // Setup
@@ -43,6 +51,22 @@ public class ClassroomServiceTest extends BaseTest {
 
         // Verify the results
         assertEquals(classrooms.size(), result.size());
+    }
+
+    @Test
+    public void testFindEnrollments() {
+        // Setup
+        final List<Enrollment> enrollments = Fixture.from(Enrollment.class).gimme(2, EnrollmentTemplate.TYPES.ENROLLMENT.name());
+        final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        when(mockEnrollmentJpaRepository.findAllByClassroom(any(Classroom.class))).thenReturn(Sets.newHashSet(enrollments));
+
+        // Run the test
+        final Set<Enrollment> result = classroomServiceUnderTest.findEnrollments(classroom);
+
+        // Verify the results
+        verify(mockEnrollmentJpaRepository, times(1)).findAllByClassroom(any(Classroom.class));
+
+        assertEquals(enrollments.size(), result.size());
     }
 
     @Test
