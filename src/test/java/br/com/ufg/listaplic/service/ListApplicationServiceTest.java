@@ -129,10 +129,32 @@ public class ListApplicationServiceTest extends BaseTest {
 
 		// Verify the results
 		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
-
 	}
 
-	Set<Enrollment> buildEnrollmentSet(Classroom classroom) {
+	@Test
+	public void testSaveListApplication() {
+		// Setup
+		final ListApplication listApplication = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.LIST_APPLICATION.name());
+
+		when(mockListApplicationJpaRepository.save(any())).thenReturn(listApplication);
+
+		// Run the test
+		ListApplication result = listApplicationServiceUnderTest.save(listApplication);
+
+		// Verify the results
+		verify(mockListApplicationJpaRepository, times(1)).save(any());
+
+		assertEquals(listApplication.getId(), result.getId());
+		assertEquals(listApplication.getList(), result.getList());
+		assertEquals(listApplication.getStatus(), result.getStatus());
+		assertEquals(listApplication.getClassroom(), result.getClassroom());
+		assertEquals(listApplication.getClass(), result.getClass());
+		assertEquals(listApplication.getFinalDate(), result.getFinalDate());
+		assertEquals(listApplication.getStartDate(), result.getStartDate());
+		assertEquals(listApplication.getApplicationDateTime(), result.getApplicationDateTime());
+	}
+
+	private Set<Enrollment> buildEnrollmentSet(Classroom classroom) {
 		Set<Enrollment> enrollments = new HashSet<>();
 		Enrollment enrollment = new Enrollment();
 

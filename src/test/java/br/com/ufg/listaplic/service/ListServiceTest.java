@@ -12,19 +12,22 @@ import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
 import br.com.ufg.listaplic.template.ListApplicationTemplate;
 import br.com.ufg.listaplic.template.ListDTOTemplate;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ListServiceTest extends BaseTest {
 
@@ -43,16 +46,19 @@ public class ListServiceTest extends BaseTest {
     @Mock
     private AnswerService mockAnswerService;
 
-    @Ignore
     @Test
-    public void testGetAllLists() {
+    public void testGetListsByFilter() {
         // Setup
         final List<ListDTO> lists = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name(), ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
         when(mockListElabNetwork.getListsByFilter(any(FilterList.class))).thenReturn(lists);
 
         // Run the test
-		List<ListDTO> result = listServiceUnderTest.getListsByFilter(any(), anyInt(), anyString(), anyInt(), anyList());
+        List<ListDTO> result = listServiceUnderTest.getListsByFilter("SUBJECT_CODE",
+                5,
+                "KNOWLEDGE_AREA_CODE",
+                10,
+                Arrays.asList("TAG_1", "TAG_2"));
 
         // Verify the results
         verify(mockListElabNetwork, times(1)).getListsByFilter(any(FilterList.class));
@@ -60,7 +66,6 @@ public class ListServiceTest extends BaseTest {
         assertEquals(lists.size(), result.size());
     }
 
-    @Ignore
     @Test
     public void testGetListsByName() {
         // Setup
@@ -69,15 +74,18 @@ public class ListServiceTest extends BaseTest {
         when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", anyInt(), anyString(), anyInt(), anyList());
+        List<ListDTO> result = listServiceUnderTest.getListsByFilter("SUBJECT_CODE",
+                5,
+                "KNOWLEDGE_AREA_CODE",
+                10,
+                Arrays.asList("TAG_1", "TAG_2"));
 
         // Verify the results
         verify(mockListElabNetwork, times(1)).getListsByFilter(any());
 
-        assertEquals(1, result.size());
+        assertEquals(lists.size(), result.size());
     }
 
-    @Ignore
     @Test
     public void testGetListsByNameAndSujectCode() {
         // Setup
@@ -86,12 +94,16 @@ public class ListServiceTest extends BaseTest {
         when(mockListElabNetwork.getListsByFilter(any())).thenReturn(lists);
 
         // Run the test
-		List<ListDTO> result = listServiceUnderTest.getListsByFilter("Lista", anyInt(), anyString(), anyInt(), anyList());
+        List<ListDTO> result = listServiceUnderTest.getListsByFilter("SUBJECT_CODE",
+                5,
+                "KNOWLEDGE_AREA_CODE",
+                10,
+                Arrays.asList("TAG_1", "TAG_2"));
 
         // Verify the results
         verify(mockListElabNetwork, times(1)).getListsByFilter(any());
 
-        assertEquals(1, result.size());
+        assertEquals(lists.size(), result.size());
     }
 
     @Test
