@@ -63,6 +63,11 @@ public class ListController {
         return listService.getPendingListsByStudent(studentId);
     }
 
+    @PostMapping("/finish/{id}")
+    public ListDTO finishListApplication(@PathVariable("id") UUID applicationId) {
+        return listApplicationService.finishListApplication(applicationId);
+    }
+
     @ApiOperation(
             value = "Get finished applications by group",
             responseContainer = "list",

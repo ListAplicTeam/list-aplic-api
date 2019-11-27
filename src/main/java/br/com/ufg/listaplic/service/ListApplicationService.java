@@ -148,4 +148,8 @@ public class ListApplicationService {
     public ListApplication save(ListApplication listApplication) {
         return listApplicationJpaRepository.save(listApplication);
     }
+
+    public ListDTO finishListApplication(UUID applicationId) {
+        listApplicationJpaRepository.save
+    }
 }
