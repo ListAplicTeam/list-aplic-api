@@ -76,6 +76,16 @@ public class ListController {
 	}
 
 	@ApiOperation(
+			value = "Finish List Application by Id",
+			response = ListApplicationDTO.class
+	)
+	@PostMapping("/finish/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ListApplicationDTO finishListApplication(@PathVariable("id") UUID applicationId) {
+		return listApplicationService.finishListApplication(applicationId);
+	}
+
+	@ApiOperation(
 			value = "Get applications by classroom",
 			responseContainer = "list",
 			response = ListApplicationDTO.class

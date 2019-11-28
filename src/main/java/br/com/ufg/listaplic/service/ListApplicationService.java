@@ -154,4 +154,11 @@ public class ListApplicationService {
 	public ListApplication save(ListApplication listApplication) {
 		return listApplicationJpaRepository.save(listApplication);
 	}
+
+	public ListApplicationDTO finishListApplication(UUID applicationId) {
+		ListApplication application = listApplicationJpaRepository.findById(applicationId).orElse(new ListApplication());
+		application.setStatus(ApplicationListStatus.ENCERRADA);
+		ListApplication savedApplication = listApplicationJpaRepository.save(application);
+		return ListApplicationConverterDTO.fromDomainToDTO(savedApplication, null, null, new ListDTO());
+	}
 }
