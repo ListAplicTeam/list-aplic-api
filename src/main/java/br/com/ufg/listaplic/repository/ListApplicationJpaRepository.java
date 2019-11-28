@@ -14,11 +14,6 @@ import java.util.UUID;
 @Repository
 public interface ListApplicationJpaRepository extends JpaRepository<ListApplication, UUID> {
 
-    @Query(value = "SELECT * FROM application a " +
-            "WHERE a.classroom_id IN (:classroomsId) " +
-            "AND a.id NOT IN (SELECT application_id FROM answer WHERE user_id = :studentId AND status_type = :answerStatusType)", nativeQuery = true)
-    List<ListApplication> findByClassrooms(List<UUID> classroomsId, UUID studentId, String answerStatusType);
-
     List<ListApplication> findByClassroomAndStatus(Classroom classroom, ApplicationListStatus status);
 
     List<ListApplication> findByClassroom(Classroom classroom);
