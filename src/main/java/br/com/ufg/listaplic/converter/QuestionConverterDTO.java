@@ -21,7 +21,7 @@ public final class QuestionConverterDTO {
         questionDTO.setName(question.getEnunciado());
         questionDTO.setExpectedAnswers(question.getRespostaEsperada());
 
-        if (question.getRespostaEsperada().get(0)  instanceof RespostaEsperadaDiscursivaDTO) {
+        if (question.getRespostaEsperada() == null || question.getRespostaEsperada().get(0) instanceof RespostaEsperadaDiscursivaDTO) {
             questionDTO.setType(QuestionType.DISCURSIVE);
         } else if (question.getRespostaEsperada().get(0) instanceof RespostaEsperadaMultiplaEscolhaDTO) {
 			questionDTO.setType(QuestionType.MULTIPLE_CHOICE);
