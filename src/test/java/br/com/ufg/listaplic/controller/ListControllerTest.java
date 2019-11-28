@@ -121,10 +121,10 @@ public class ListControllerTest extends BaseTest {
 	public void testGetPendingListsByStudent() {
 		// Setup
 		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-		when(mockListService.getPendingListsByStudent(any(UUID.class))).thenReturn(listDTOS);
+		when(mockListService.getPendingListsByStudent(any(UUID.class), any(UUID.class))).thenReturn(listDTOS);
 
 		// Run the test
-		final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID());
+		final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID(), UUID.randomUUID());
 
 		// Verify the results
 		assertEquals(listDTOS.size(), result.size());
