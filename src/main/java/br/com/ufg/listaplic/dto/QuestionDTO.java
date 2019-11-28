@@ -1,6 +1,5 @@
 package br.com.ufg.listaplic.dto;
 
-import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaAssociacaoDeColunasDTO;
 import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaInterface;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
