@@ -4,13 +4,14 @@ import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO;
 import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
 import br.com.ufg.listaplic.dto.listelab.ListIntegrationDTO;
-import br.com.ufg.listaplic.dto.listelab.QuestaoIntegrationDTO;
+import br.com.ufg.listaplic.dto.listelab.QuestoesIntegrationDTO;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class ListConverterDTO {
 
@@ -23,38 +24,44 @@ public final class ListConverterDTO {
 		listDTO.setName(listIntegrationDTO.getTitulo());
 		listDTO.setUser(listIntegrationDTO.getUsuario());
 
-		List<QuestaoIntegrationDTO> questions = listIntegrationDTO.getQuestoes();
+		List<QuestoesIntegrationDTO<?>> questions = Stream.of(
+				listIntegrationDTO.getQuestoesDiscursiva().stream(),
+				listIntegrationDTO.getQuestoesMultiplaEscolha().stream(),
+				listIntegrationDTO.getQuestoesVerdadeiroOuFalso().stream(),
+				listIntegrationDTO.getQuestoesAssociacaoDeColunas().stream())
+				.flatMap(i -> i)
+				.collect(Collectors.toList());
 
 		Double averageDifficultyLevel = questions.stream()
-				.mapToInt(QuestaoIntegrationDTO::getNivelDificuldade)
+				.mapToInt(question -> question.getQuestao().getNivelDificuldade())
 				.average()
 				.orElse(BigDecimal.ZERO.doubleValue());
 		listDTO.setDifficultyLevel(averageDifficultyLevel.intValue());
 
 		Set<DisciplinaIntegrationDTO> subjects = questions.stream()
-				.map(QuestaoIntegrationDTO::getDisciplina)
+				.map(question -> question.getQuestao().getDisciplina())
 				.collect(Collectors.toSet());
 		listDTO.setSubjects(subjects);
 
 		Set<AreaDoConhecimentoDTO> knowledgeAreas = questions.stream()
-				.map(QuestaoIntegrationDTO::getAreaDeConhecimento)
+				.map(question -> question.getQuestao().getAreaDeConhecimento())
 				.collect(Collectors.toSet());
 		listDTO.setKnowledgeAreas(knowledgeAreas);
 
 		Set<String> tags = questions.stream()
-				.map(QuestaoIntegrationDTO::getTags)
+				.map(question -> question.getQuestao().getTags())
 				.flatMap(Collection::stream)
 				.collect(Collectors.toSet());
 		listDTO.setTags(tags);
 
-        listDTO.setQuestions(listIntegrationDTO.getQuestoes().stream()
-                .map(QuestionConverterDTO::fromDomainToDTO)
-                .collect(Collectors.toList()));
-
 		Integer answerTime = questions.stream()
-				.mapToInt(QuestaoIntegrationDTO::getTempoMaximoDeResposta)
+				.mapToInt(question -> question.getQuestao().getTempoMaximoDeResposta())
 				.sum();
 		listDTO.setAnswerTime(answerTime);
+
+        listDTO.setQuestions(questions.stream()
+				.map(questoesIntegrationDTO -> QuestionConverterDTO.fromDomainToDTO(questoesIntegrationDTO.getQuestao()))
+                .collect(Collectors.toList()));
 
 		return listDTO;
 	}

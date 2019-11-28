@@ -1,15 +1,15 @@
 package br.com.ufg.listaplic.dto.listelab;
 
-public class RespostaEsperadaDTO {
+public class RespostaEsperadaDiscursivaDTO implements RespostaEsperadaInterface {
 
-	private String peso;
+	private Integer peso;
 	private String descricao;
 
-	public String getPeso() {
+	public Integer getPeso() {
 		return peso;
 	}
 
-	public void setPeso(String peso) {
+	public void setPeso(Integer peso) {
 		this.peso = peso;
 	}
 
