@@ -9,7 +9,10 @@ public class ListIntegrationDTO {
     private String titulo;
     private String usuario;
     private Boolean prontaParaAplicacao;
-    private List<QuestaoIntegrationDTO> questoes;
+    private List<QuestoesIntegrationDTO<RespostaEsperadaDiscursivaDTO>> questoesDiscursiva;
+    private List<QuestoesIntegrationDTO<RespostaEsperadaMultiplaEscolhaDTO>> questoesMultiplaEscolha;
+    private List<QuestoesIntegrationDTO<RespostaEsperadaVerdadeiroOuFalsoDTO>> questoesVerdadeiroOuFalso;
+    private List<QuestoesIntegrationDTO<RespostaEsperadaAssociacaoDeColunasDTO>> questoesAssociacaoDeColunas;
 
     public UUID getId() {
         return id;
@@ -43,11 +46,35 @@ public class ListIntegrationDTO {
         this.prontaParaAplicacao = prontaParaAplicacao;
     }
 
-    public List<QuestaoIntegrationDTO> getQuestoes() {
-        return questoes;
+    public List<QuestoesIntegrationDTO<RespostaEsperadaDiscursivaDTO>> getQuestoesDiscursiva() {
+        return questoesDiscursiva;
     }
 
-    public void setQuestoes(List<QuestaoIntegrationDTO> questoes) {
-        this.questoes = questoes;
+    public void setQuestoesDiscursiva(List<QuestoesIntegrationDTO<RespostaEsperadaDiscursivaDTO>> questoesDiscursiva) {
+        this.questoesDiscursiva = questoesDiscursiva;
+    }
+
+    public List<QuestoesIntegrationDTO<RespostaEsperadaMultiplaEscolhaDTO>> getQuestoesMultiplaEscolha() {
+        return questoesMultiplaEscolha;
+    }
+
+    public void setQuestoesMultiplaEscolha(List<QuestoesIntegrationDTO<RespostaEsperadaMultiplaEscolhaDTO>> questoesMultiplaEscolha) {
+        this.questoesMultiplaEscolha = questoesMultiplaEscolha;
+    }
+
+    public List<QuestoesIntegrationDTO<RespostaEsperadaVerdadeiroOuFalsoDTO>> getQuestoesVerdadeiroOuFalso() {
+        return questoesVerdadeiroOuFalso;
+    }
+
+    public void setQuestoesVerdadeiroOuFalso(List<QuestoesIntegrationDTO<RespostaEsperadaVerdadeiroOuFalsoDTO>> questoesVerdadeiroOuFalso) {
+        this.questoesVerdadeiroOuFalso = questoesVerdadeiroOuFalso;
+    }
+
+    public List<QuestoesIntegrationDTO<RespostaEsperadaAssociacaoDeColunasDTO>> getQuestoesAssociacaoDeColunas() {
+        return questoesAssociacaoDeColunas;
+    }
+
+    public void setQuestoesAssociacaoDeColunas(List<QuestoesIntegrationDTO<RespostaEsperadaAssociacaoDeColunasDTO>> questoesAssociacaoDeColunas) {
+        this.questoesAssociacaoDeColunas = questoesAssociacaoDeColunas;
     }
 }
