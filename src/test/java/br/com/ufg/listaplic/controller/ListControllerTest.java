@@ -7,6 +7,7 @@ import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
 import br.com.ufg.listaplic.template.ApplyDTOTemplate;
@@ -35,23 +36,23 @@ import static org.mockito.Mockito.when;
 
 public class ListControllerTest extends BaseTest {
 
-	@InjectMocks
-	private ListController listControllerUnderTest;
+    @InjectMocks
+    private ListController listControllerUnderTest;
 
-	@Mock
-	private ListApplicationService mockListApplicationService;
+    @Mock
+    private ListApplicationService mockListApplicationService;
 
-	@Mock
-	private ListService mockListService;
+    @Mock
+    private ListService mockListService;
 
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
-	@Test
-	public void testGetListsByFilter() {
-		// Setup
-		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-		when(mockListService.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
+    @Test
+    public void testGetListsByFilter() {
+        // Setup
+        final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+        when(mockListService.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
 
 		// Run the test
 		final List<ListDTO> result = listControllerUnderTest.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList());
@@ -76,11 +77,22 @@ public class ListControllerTest extends BaseTest {
 		assertEquals(listApplicationDTOS.size(), result.size());
 	}
 
-	@Test
-	public void testGetApplicationsByClassroomId() {
-		// Setup
-		final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
-				.gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
+    @Test
+    public void testFinishListApplication() {
+        final ListApplicationDTO listApplicationDTO = Fixture.from(ListApplicationDTO.class).gimme(ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITHOUT_ANSWERS.name());
+		when(mockListApplicationService.finishListApplication(any(UUID.class))).thenReturn(listApplicationDTO);
+
+		final ListApplicationDTO result = listControllerUnderTest.finishListApplication(UUID.randomUUID());
+
+		assertEquals(result.getStatus(), listApplicationDTO.getStatus());
+		assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
+    }
+
+    @Test
+    public void testGetApplicationsByClassroomId() {
+        // Setup
+        final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
+                .gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
 
 		when(mockListApplicationService.getListsByClassroom(any(UUID.class), any())).thenReturn(listApplicationDTOS);
 

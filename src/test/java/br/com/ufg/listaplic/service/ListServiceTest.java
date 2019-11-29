@@ -4,8 +4,10 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.AnswerStatusType;
 import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.listelab.FilterList;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
 import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.network.ListElabNetwork;
@@ -87,6 +89,17 @@ public class ListServiceTest extends BaseTest {
         verify(mockListElabNetwork, times(1)).getListsByFilter(any());
 
         assertEquals(lists.size(), result.size());
+    }
+
+    @Test
+    public void testFinishListApplication() {
+        final ListApplication listApplication = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.FINISHED_APPLICATION.name());
+        when(mockListApplicationJpaRepository.save(any(ListApplication.class))).thenReturn(listApplication);
+
+        final ListApplication result = mockListApplicationJpaRepository.save(new ListApplication());
+
+        assertEquals(result.getStatus(), listApplication.getStatus());
+        assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
     }
 
     @Test
