@@ -2,21 +2,21 @@ package br.com.ufg.listaplic.service;
 
 import br.com.ufg.listaplic.converter.AnswerConverterDTO;
 import br.com.ufg.listaplic.dto.AnswerStatusType;
-import br.com.ufg.listaplic.dto.ClassroomDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.QuestionDTO;
 import br.com.ufg.listaplic.dto.listelab.FilterList;
+import br.com.ufg.listaplic.exception.ResourceNotFoundException;
 import br.com.ufg.listaplic.model.Answer;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,19 +53,13 @@ public class ListService {
 
     }
 
-    public List<ListDTO> getPendingListsByStudent(UUID studentId) {
-        List<UUID> classroomsId = classroomService.findByStudentId(studentId).stream()
-                .map(ClassroomDTO::getId)
+    public List<ListDTO> getPendingListsByStudent(UUID classroomId, UUID studentId) {
+        Classroom classroom = classroomService.findClassroomById(classroomId).orElseThrow(() -> new ResourceNotFoundException("Classroom not found"));
+        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroom(classroom);
+
+        return listApplications.stream()
+                .map(listApplication -> getListById(listApplication, studentId))
                 .collect(Collectors.toList());
-
-        if (!CollectionUtils.isEmpty(classroomsId)) {
-            List<ListApplication> listApplications = listApplicationJpaRepository.findByClassrooms(classroomsId, studentId, AnswerStatusType.SAVE.name());
-
-            return listApplications.stream()
-                    .map(listApplication -> getListById(listApplication, studentId))
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
     }
 
     private ListDTO getListById(ListApplication listApplication, UUID studentId) {
@@ -74,10 +68,12 @@ public class ListService {
         listDTO.setStatus(listApplication.getStatus());
 
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
-            String answer = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), studentId)
-                    .map(Answer::getAnswer)
-                    .orElse(null);
-            questionDTO.setAnswer(answer);
+            Optional<Answer> answerOptional = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), studentId);
+            if (answerOptional.isPresent()) {
+                Answer answer = answerOptional.get();
+                questionDTO.setAnswer(answer.getAnswer());
+                listDTO.setStatus(answer.getStatusType().equals(AnswerStatusType.DRAFT) ? ApplicationListStatus.EM_ANDAMENTO : ApplicationListStatus.ENCERRADA);
+            }
         }
 
         return listDTO;

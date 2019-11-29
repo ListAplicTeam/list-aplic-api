@@ -14,7 +14,7 @@ public class ListConverterDTOTest extends BaseTest {
     @Test
     public void testFromListIntegrationToListsDTO() {
         // Setup
-        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_FOUR_QUESTION.name());
 
         // Run the test
         final ListDTO result = ListConverterDTO.fromListIntegrationToListDTO(listIntegrationDTO);
@@ -23,10 +23,10 @@ public class ListConverterDTOTest extends BaseTest {
         assertEquals(listIntegrationDTO.getId(), result.getId());
         assertEquals(listIntegrationDTO.getTitulo(), result.getName());
         assertEquals(listIntegrationDTO.getUsuario(), result.getUser());
-        assertEquals(listIntegrationDTO.getQuestoes().size(), result.getQuestions().size());
-        assertEquals(2, result.getDifficultyLevel());
+        assertEquals(4, result.getQuestions().size());
+        assertEquals(3, result.getDifficultyLevel());
         assertEquals(1, result.getSubjects().size());
-        assertEquals(2, result.getTags().size());
+        assertEquals(6, result.getTags().size());
         assertEquals(1, result.getKnowledgeAreas().size());
     }
 

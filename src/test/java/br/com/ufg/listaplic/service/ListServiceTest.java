@@ -8,10 +8,12 @@ import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.listelab.FilterList;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.Classroom;
 import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
 import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
+import br.com.ufg.listaplic.template.ClassroomTemplate;
 import br.com.ufg.listaplic.template.ListApplicationTemplate;
 import br.com.ufg.listaplic.template.ListDTOTemplate;
 import org.junit.Test;
@@ -22,6 +24,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -122,13 +125,17 @@ public class ListServiceTest extends BaseTest {
     @Test
     public void testGetPendingListsByStudentShouldReturnEmptyList() {
         // Setup
-        when(mockClassroomService.findByStudentId(any(UUID.class))).thenReturn(Collections.emptyList());
+        final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+
+        when(mockClassroomService.findClassroomById(any(UUID.class))).thenReturn(Optional.of(classroom));
+        when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(Collections.emptyList());
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getPendingListsByStudent(UUID.randomUUID());
+        List<ListDTO> result = listServiceUnderTest.getPendingListsByStudent(UUID.randomUUID(), UUID.randomUUID());
 
         // Verify the results
-        verify(mockClassroomService, times(1)).findByStudentId(any(UUID.class));
+        verify(mockClassroomService, times(1)).findClassroomById(any(UUID.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
 
         assertEquals(Collections.emptyList(), result);
     }
@@ -136,20 +143,20 @@ public class ListServiceTest extends BaseTest {
     @Test
     public void testGetPendingListsByStudent() {
         // Setup
-        final List<ClassroomDTO> classrooms = Fixture.from(ClassroomDTO.class).gimme(2, ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
+        final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
         final List<ListApplication> listApplications = Fixture.from(ListApplication.class).gimme(2, ListApplicationTemplate.TYPES.LIST_APPLICATION.name());
         final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
-        when(mockClassroomService.findByStudentId(any(UUID.class))).thenReturn(classrooms);
-        when(mockListApplicationJpaRepository.findByClassrooms(anyList(), any(UUID.class), any())).thenReturn(listApplications);
+        when(mockClassroomService.findClassroomById(any(UUID.class))).thenReturn(Optional.of(classroom));
+        when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(listApplications);
         when(mockListElabNetwork.getListById(any(UUID.class))).thenReturn(listDTO);
 
         // Run the test
-        List<ListDTO> result = listServiceUnderTest.getPendingListsByStudent(UUID.randomUUID());
+        List<ListDTO> result = listServiceUnderTest.getPendingListsByStudent(UUID.randomUUID(), UUID.randomUUID());
 
         // Verify the results
-        verify(mockClassroomService, times(1)).findByStudentId(any(UUID.class));
-        verify(mockListApplicationJpaRepository, times(1)).findByClassrooms(anyList(), any(UUID.class), any());
+        verify(mockClassroomService, times(1)).findClassroomById(any(UUID.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
         verify(mockListElabNetwork, times(2)).getListById(any(UUID.class));
 
         assertEquals(listApplications.size(), result.size());

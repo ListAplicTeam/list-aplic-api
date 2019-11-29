@@ -51,7 +51,7 @@ public class Answer {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "answer", nullable = false)
+    @Column(name = "answer")
     private String answer;
 
     @Column(name = "status_type", nullable = false)
