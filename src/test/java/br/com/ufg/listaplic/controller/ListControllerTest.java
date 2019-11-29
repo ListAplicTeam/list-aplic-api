@@ -7,6 +7,7 @@ import br.com.ufg.listaplic.dto.ApplyDTO;
 import br.com.ufg.listaplic.dto.ListApplicationDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.ListApplication;
 import br.com.ufg.listaplic.service.ListApplicationService;
 import br.com.ufg.listaplic.service.ListService;
 import br.com.ufg.listaplic.template.ApplyDTOTemplate;
@@ -35,100 +36,111 @@ import static org.mockito.Mockito.when;
 
 public class ListControllerTest extends BaseTest {
 
-	@InjectMocks
-	private ListController listControllerUnderTest;
+    @InjectMocks
+    private ListController listControllerUnderTest;
 
-	@Mock
-	private ListApplicationService mockListApplicationService;
+    @Mock
+    private ListApplicationService mockListApplicationService;
 
-	@Mock
-	private ListService mockListService;
+    @Mock
+    private ListService mockListService;
 
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
-	@Test
-	public void testGetListsByFilter() {
-		// Setup
-		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-		when(mockListService.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
+    @Test
+    public void testGetListsByFilter() {
+        // Setup
+        final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+        when(mockListService.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList())).thenReturn(listDTOS);
 
-		// Run the test
-		final List<ListDTO> result = listControllerUnderTest.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList());
+        // Run the test
+        final List<ListDTO> result = listControllerUnderTest.getListsByFilter(anyString(), anyInt(), anyString(), anyInt(), anyList());
 
-		// Verify the results
-		assertEquals(listDTOS.size(), result.size());
-	}
+        // Verify the results
+        assertEquals(listDTOS.size(), result.size());
+    }
 
-	@Test
-	public void testGetFinishedApplicationsByClassroomId() {
-		// Setup
-		final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
-				.gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
-		final ApplicationListStatus status = ApplicationListStatus.ENCERRADA;
+    @Test
+    public void testGetFinishedApplicationsByClassroomId() {
+        // Setup
+        final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
+                .gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
+        final ApplicationListStatus status = ApplicationListStatus.ENCERRADA;
 
-		when(mockListApplicationService.getListsByClassroom(any(UUID.class), eq(status))).thenReturn(listApplicationDTOS);
+        when(mockListApplicationService.getListsByClassroom(any(UUID.class), eq(status))).thenReturn(listApplicationDTOS);
 
-		// Run the test
-		final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), status.name());
+        // Run the test
+        final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), status.name());
 
-		// Verify the results
-		assertEquals(listApplicationDTOS.size(), result.size());
-	}
+        // Verify the results
+        assertEquals(listApplicationDTOS.size(), result.size());
+    }
 
-	@Test
-	public void testGetApplicationsByClassroomId() {
-		// Setup
-		final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
-				.gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
+    @Test
+    public void testFinishListApplication() {
+        final ListApplicationDTO listApplicationDTO = Fixture.from(ListApplicationDTO.class).gimme(ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITHOUT_ANSWERS.name());
+		when(mockListApplicationService.finishListApplication(any(UUID.class))).thenReturn(listApplicationDTO);
 
-		when(mockListApplicationService.getListsByClassroom(any(UUID.class), any())).thenReturn(listApplicationDTOS);
+		final ListApplicationDTO result = listControllerUnderTest.finishListApplication(UUID.randomUUID());
 
-		// Run the test
-		final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), null);
+		assertEquals(result.getStatus(), listApplicationDTO.getStatus());
+		assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
+    }
 
-		// Verify the results
-		assertEquals(listApplicationDTOS.size(), result.size());
-	}
+    @Test
+    public void testGetApplicationsByClassroomId() {
+        // Setup
+        final List<ListApplicationDTO> listApplicationDTOS = Fixture.from(ListApplicationDTO.class)
+                .gimme(2, ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
 
-	@Test
-	public void testShouldThrowExceptionWhenGetApplicationsByClassroomIdWithInvalidStatus() {
-		// Setup
-		exceptionRule.expect(IllegalArgumentException.class);
-		exceptionRule.expectMessage("The status param is invalid");
+        when(mockListApplicationService.getListsByClassroom(any(UUID.class), any())).thenReturn(listApplicationDTOS);
 
-		// Run the test
-		final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), "STATUS_INVALIDO");
+        // Run the test
+        final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), null);
 
-		// Verify the results
-		verify(mockListApplicationService, times(0)).getListsByClassroom(any(UUID.class), any());
-	}
+        // Verify the results
+        assertEquals(listApplicationDTOS.size(), result.size());
+    }
 
-	@Test
-	public void testGetApplicationDetailById() {
-		final ListApplicationDTO listApplicationDTO = Fixture.from(ListApplicationDTO.class)
-				.gimme(ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
-		when(mockListApplicationService.getListApplicationDetail(any(UUID.class))).thenReturn(listApplicationDTO);
+    @Test
+    public void testShouldThrowExceptionWhenGetApplicationsByClassroomIdWithInvalidStatus() {
+        // Setup
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("The status param is invalid");
 
-		final ListApplicationDTO result = listControllerUnderTest.getApplicationDetailById(UUID.randomUUID());
+        // Run the test
+        final List<ListApplicationDTO> result = listControllerUnderTest.getApplicationsByClassroom(UUID.randomUUID(), "STATUS_INVALIDO");
 
-		assertEquals(listApplicationDTO.getListId(), result.getListId());
-		assertEquals(listApplicationDTO.getGroupId(), result.getGroupId());
-		assertEquals(listApplicationDTO.getStatus(), result.getStatus());
-	}
+        // Verify the results
+        verify(mockListApplicationService, times(0)).getListsByClassroom(any(UUID.class), any());
+    }
 
-	@Test
-	public void testGetPendingListsByStudent() {
-		// Setup
-		final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
-		when(mockListService.getPendingListsByStudent(any(UUID.class))).thenReturn(listDTOS);
+    @Test
+    public void testGetApplicationDetailById() {
+        final ListApplicationDTO listApplicationDTO = Fixture.from(ListApplicationDTO.class)
+                .gimme(ListApplicationDTOTemplate.TYPES.APPLICATIONDTO_WITH_ANSWERS.name());
+        when(mockListApplicationService.getListApplicationDetail(any(UUID.class))).thenReturn(listApplicationDTO);
 
-		// Run the test
-		final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID());
+        final ListApplicationDTO result = listControllerUnderTest.getApplicationDetailById(UUID.randomUUID());
 
-		// Verify the results
-		assertEquals(listDTOS.size(), result.size());
-	}
+        assertEquals(listApplicationDTO.getListId(), result.getListId());
+        assertEquals(listApplicationDTO.getGroupId(), result.getGroupId());
+        assertEquals(listApplicationDTO.getStatus(), result.getStatus());
+    }
+
+    @Test
+    public void testGetPendingListsByStudent() {
+        // Setup
+        final List<ListDTO> listDTOS = Fixture.from(ListDTO.class).gimme(2, ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+        when(mockListService.getPendingListsByStudent(any(UUID.class))).thenReturn(listDTOS);
+
+        // Run the test
+        final List<ListDTO> result = listControllerUnderTest.getPendingListsByStudent(UUID.randomUUID());
+
+        // Verify the results
+        assertEquals(listDTOS.size(), result.size());
+    }
 
     @Test
     public void testAnsweringList() {
@@ -142,19 +154,19 @@ public class ListControllerTest extends BaseTest {
         verify(mockListService, times(1)).answeringList(any(), any(UUID.class), any(ListDTO.class));
     }
 
-	@Test
-	public void testApplyListToGroup() {
-		// Setup
-		final ApplyDTO applyDTO = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
-		Mockito.doNothing().when(mockListApplicationService).applyListTo(any(ApplyDTO.class));
+    @Test
+    public void testApplyListToGroup() {
+        // Setup
+        final ApplyDTO applyDTO = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
+        Mockito.doNothing().when(mockListApplicationService).applyListTo(any(ApplyDTO.class));
 
-		// Run the test
-		ResponseEntity responseEntity = listControllerUnderTest.applyListToGroup(applyDTO);
+        // Run the test
+        ResponseEntity responseEntity = listControllerUnderTest.applyListToGroup(applyDTO);
 
-		// Verify the results
-		verify(mockListApplicationService, times(1)).applyListTo(any(ApplyDTO.class));
+        // Verify the results
+        verify(mockListApplicationService, times(1)).applyListTo(any(ApplyDTO.class));
 
-		assertEquals(ResponseEntity.ok().build(), responseEntity);
-	}
+        assertEquals(ResponseEntity.ok().build(), responseEntity);
+    }
 
 }
