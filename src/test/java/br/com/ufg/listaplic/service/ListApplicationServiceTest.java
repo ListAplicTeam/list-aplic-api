@@ -3,10 +3,7 @@ package br.com.ufg.listaplic.service;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
-import br.com.ufg.listaplic.dto.ApplyDTO;
-import br.com.ufg.listaplic.dto.ClassroomDTO;
-import br.com.ufg.listaplic.dto.ListApplicationDTO;
-import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.dto.*;
 import br.com.ufg.listaplic.exception.NoOneStudentOnClassroomException;
 import br.com.ufg.listaplic.model.*;
 import br.com.ufg.listaplic.network.ListElabNetwork;
@@ -15,11 +12,9 @@ import br.com.ufg.listaplic.template.*;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -162,6 +157,40 @@ public class ListApplicationServiceTest extends BaseTest {
 		enrollments.add(enrollment);
 
 		return enrollments;
+	}
+
+	@Test
+	public void testCountQuestionsFirstTime() {
+		List<QuestionDTO> questions = Fixture.from(QuestionDTO.class).gimme(2, QuestionDTOTemplate.TYPES.QUESTION.name());
+		when(questionCountJpaRepository.findAllByQuestionsAndInstructor(anyList(), anyString())).thenReturn(new ArrayList<QuestionCount>());
+		when(questionCountJpaRepository.findByQuestionAndInstructor(any(UUID.class), anyString())).thenReturn(Optional.empty());
+		when(questionCountJpaRepository.save(any(QuestionCount.class))).thenReturn(null);
+
+		listApplicationServiceUnderTest.countQuestions(UUID.randomUUID().toString(), questions);
+	}
+
+	@Test
+	public void testCountQuestionsSecondTime() {
+		List<QuestionDTO> questions = Fixture.from(QuestionDTO.class).gimme(1, QuestionDTOTemplate.TYPES.QUESTION.name());
+		List<QuestionCount> questionCountList = new ArrayList<>();
+
+		QuestionCount questionCount = new QuestionCount();
+		questionCount.setInstructor(UUID.randomUUID().toString());
+		questionCount.setQuestion(UUID.randomUUID());
+		questionCount.setCounter(1);
+		questionCountList.add(questionCount);
+
+		when(questionCountJpaRepository.findAllByQuestionsAndInstructor(anyList(), anyString())).thenReturn(questionCountList);
+		when(questionCountJpaRepository.findByQuestionAndInstructor(any(UUID.class), anyString())).thenReturn(Optional.of(questionCount));
+
+		doAnswer(new org.mockito.stubbing.Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				return null;
+			}
+		}).when(questionCountJpaRepository).updateCounter(any(UUID.class), anyInt());
+
+		listApplicationServiceUnderTest.countQuestions(UUID.randomUUID().toString(), questions);
 	}
 
 }
