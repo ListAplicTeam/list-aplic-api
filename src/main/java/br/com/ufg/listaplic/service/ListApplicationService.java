@@ -83,7 +83,7 @@ public class ListApplicationService {
 		return enrollments != null && !enrollments.isEmpty();
 	}
 
-	private void countQuestions(String instructorId, List<QuestionDTO> questions) {
+	protected void countQuestions(String instructorId, List<QuestionDTO> questions) {
 		HashMap<UUID, Integer> questionCountMap = new HashMap<>();
 
 		List<QuestionCount> questionCountList = questionCountJpaRepository
