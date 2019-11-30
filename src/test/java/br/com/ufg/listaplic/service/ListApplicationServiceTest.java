@@ -193,4 +193,15 @@ public class ListApplicationServiceTest extends BaseTest {
 		listApplicationServiceUnderTest.countQuestions(UUID.randomUUID().toString(), questions);
 	}
 
+	@Test
+	public void testFinishListApplication() {
+		final ListApplication listApplication = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.FINISHED_APPLICATION.name());
+		when(mockListApplicationJpaRepository.save(any(ListApplication.class))).thenReturn(listApplication);
+
+		final ListApplication result = mockListApplicationJpaRepository.save(new ListApplication());
+
+		assertEquals(result.getStatus(), listApplication.getStatus());
+		assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
+	}
+
 }
