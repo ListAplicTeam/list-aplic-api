@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasItem;
@@ -98,6 +99,7 @@ public class StudentControllerIT extends AbstractIT {
     public void shouldUpdate() throws Exception {
         final Student student = Fixture.from(Student.class).gimme(StudentTemplate.TYPES.STUDENT_WITH_ID.name());
         student.setName("Nome Alterado");
+        student.setEnrollments(Collections.emptySet());
 
         mvc.perform(MockMvcRequestBuilders.put((BASE_PATH + "/" + student.getId()))
                 .content(mapper.writeValueAsString(student))

@@ -3,22 +3,56 @@ package br.com.ufg.listaplic.service;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.converter.ClassroomConverterDTO;
-import br.com.ufg.listaplic.dto.*;
+import br.com.ufg.listaplic.dto.ApplyDTO;
+import br.com.ufg.listaplic.dto.ClassroomDTO;
+import br.com.ufg.listaplic.dto.ListApplicationDTO;
+import br.com.ufg.listaplic.dto.ListDTO;
+import br.com.ufg.listaplic.dto.QuestionDTO;
 import br.com.ufg.listaplic.exception.NoOneStudentOnClassroomException;
-import br.com.ufg.listaplic.model.*;
+import br.com.ufg.listaplic.model.Answer;
+import br.com.ufg.listaplic.model.ApplicationListStatus;
+import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.Enrollment;
+import br.com.ufg.listaplic.model.ListApplication;
+import br.com.ufg.listaplic.model.QuestionCount;
+import br.com.ufg.listaplic.model.Student;
 import br.com.ufg.listaplic.network.ListElabNetwork;
-import br.com.ufg.listaplic.repository.*;
-import br.com.ufg.listaplic.template.*;
+import br.com.ufg.listaplic.repository.AnswerJpaRepository;
+import br.com.ufg.listaplic.repository.ClassroomJpaRepository;
+import br.com.ufg.listaplic.repository.ListApplicationJpaRepository;
+import br.com.ufg.listaplic.repository.QuestionCountJpaRepository;
+import br.com.ufg.listaplic.repository.StudentJpaRepository;
+import br.com.ufg.listaplic.template.AnswerTemplate;
+import br.com.ufg.listaplic.template.ApplyDTOTemplate;
+import br.com.ufg.listaplic.template.ClassroomDTOTemplate;
+import br.com.ufg.listaplic.template.ClassroomTemplate;
+import br.com.ufg.listaplic.template.ListApplicationTemplate;
+import br.com.ufg.listaplic.template.ListDTOTemplate;
+import br.com.ufg.listaplic.template.QuestionDTOTemplate;
+import br.com.ufg.listaplic.template.StudentTemplate;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
+import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ListApplicationServiceTest extends BaseTest {
 
@@ -39,6 +73,20 @@ public class ListApplicationServiceTest extends BaseTest {
 	private QuestionCountJpaRepository questionCountJpaRepository;
 	@Mock
 	private ListElabNetwork listElabNetwork;
+
+	@Test
+	public void testGetFindAll() {
+		// Setup
+		final List<ListApplication> applications = Fixture.from(ListApplication.class).gimme(2, ListApplicationTemplate.TYPES.FINISHED_APPLICATION.name());
+
+		when(mockListApplicationJpaRepository.findAll()).thenReturn(applications);
+
+		// Run the Test
+		final List<ListApplication> result = listApplicationServiceUnderTest.findAll();
+
+		// Verify the results
+		assertEquals(applications.size(), result.size());
+	}
 
 	@Test
 	public void testGetFinishedListsByClassroomId() {
@@ -84,16 +132,33 @@ public class ListApplicationServiceTest extends BaseTest {
 		// Setup
 		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
 		final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
+		final ListApplication listApplication = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.LIST_APPLICATION.name());
+		final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name());
 		final Classroom classroom = ClassroomConverterDTO.fromDTOToDomain(classroomDTO);
 
 		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(classroomDTO);
 		when(classroomService.findEnrollments(any())).thenReturn(buildEnrollmentSet(classroom));
+		when(mockListApplicationJpaRepository.save(any())).thenReturn(listApplication);
+		when(listElabNetwork.getListById(any())).thenReturn(listDTO);
 
 		// Run the test
 		listApplicationServiceUnderTest.applyListTo(applyDto);
 
 		// Verify the results
 		verify(mockListApplicationJpaRepository, times(1)).save(any());
+	}
+
+	@Test
+	public void testApplyListToForSpecificGroup() {
+		// Setup
+		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
+		applyDto.setAllClassroom(false);
+
+		// Run the test
+		listApplicationServiceUnderTest.applyListTo(applyDto);
+
+		// Verify the results
+		verify(mockListApplicationJpaRepository, times(0)).save(any());
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -117,13 +182,15 @@ public class ListApplicationServiceTest extends BaseTest {
 		final ApplyDTO applyDto = Fixture.from(ApplyDTO.class).gimme(ApplyDTOTemplate.TYPES.APPLY.name());
 		final ClassroomDTO classroomDTO = Fixture.from(ClassroomDTO.class).gimme(ClassroomDTOTemplate.TYPES.CLASSROOM_WITH_ID.name());
 
-		when(classroomService.findById(applyDto.getClassroomId())).thenReturn(classroomDTO);
+		when(classroomService.findById(any(UUID.class))).thenReturn(classroomDTO);
+		when(classroomService.findEnrollments(any())).thenReturn(Collections.emptySet());
 
 		// Run the test
 		listApplicationServiceUnderTest.applyListTo(applyDto);
 
 		// Verify the results
-		verify(classroomService, times(1)).findById(applyDto.getClassroomId());
+		verify(classroomService, times(1)).findById(any(UUID.class));
+		verify(classroomService, times(1)).findEnrollments(any());
 	}
 
 	@Test
@@ -195,13 +262,18 @@ public class ListApplicationServiceTest extends BaseTest {
 
 	@Test
 	public void testFinishListApplication() {
-		final ListApplication listApplication = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.FINISHED_APPLICATION.name());
-		when(mockListApplicationJpaRepository.save(any(ListApplication.class))).thenReturn(listApplication);
+		final ListApplication listApplicationUnfinished = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.UNFINISHED_APPLICATION.name());
+		final ListApplication listApplicationFinished = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.FINISHED_APPLICATION.name());
 
-		final ListApplication result = mockListApplicationJpaRepository.save(new ListApplication());
+		when(mockListApplicationJpaRepository.findById(any(UUID.class))).thenReturn(Optional.of(listApplicationUnfinished));
+		when(mockListApplicationJpaRepository.save(listApplicationUnfinished)).thenReturn(listApplicationFinished);
 
-		assertEquals(result.getStatus(), listApplication.getStatus());
-		assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
+		final ListApplicationDTO result = listApplicationServiceUnderTest.finishListApplication(listApplicationUnfinished.getId());
+
+		verify(mockListApplicationJpaRepository, times(1)).findById(any(UUID.class));
+		verify(mockListApplicationJpaRepository, times(1)).save(any());
+
+		assertEquals(ApplicationListStatus.ENCERRADA, result.getStatus());
 	}
 
 }
