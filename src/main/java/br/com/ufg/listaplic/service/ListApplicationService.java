@@ -68,12 +68,10 @@ public class ListApplicationService {
 			listApplication.setStartDate(applyDTO.getStartDate());
 			listApplication.setFinalDate(applyDTO.getFinalDate());
 
-			ListApplication savedApplication = listApplicationJpaRepository.save(listApplication);
+			listApplicationJpaRepository.save(listApplication);
 
-			if (savedApplication != null && savedApplication.getId() != null) {
-				ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
-				this.countQuestions(classroom.getInstructorId(), listDTO.getQuestions());
-			}
+			ListDTO listDTO = listElabNetwork.getListById(applyDTO.getListId());
+			this.countQuestions(classroom.getInstructorId(), listDTO.getQuestions());
 		} else {
 			//do stuff
 		}

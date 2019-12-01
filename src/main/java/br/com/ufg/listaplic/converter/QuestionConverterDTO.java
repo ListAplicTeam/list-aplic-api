@@ -24,9 +24,9 @@ public final class QuestionConverterDTO {
         if (question.getRespostaEsperada() == null || question.getRespostaEsperada().get(0) instanceof RespostaEsperadaDiscursivaDTO) {
             questionDTO.setType(QuestionType.DISCURSIVE);
         } else if (question.getRespostaEsperada().get(0) instanceof RespostaEsperadaMultiplaEscolhaDTO) {
-			questionDTO.setType(QuestionType.MULTIPLE_CHOICE);
-		} else if (question.getRespostaEsperada().get(0) instanceof RespostaEsperadaVerdadeiroOuFalsoDTO) {
-        	questionDTO.setType(QuestionType.TRUE_OR_FALSE);
+            questionDTO.setType(QuestionType.MULTIPLE_CHOICE);
+        } else if (question.getRespostaEsperada().get(0) instanceof RespostaEsperadaVerdadeiroOuFalsoDTO) {
+            questionDTO.setType(QuestionType.TRUE_OR_FALSE);
         } else if (question.getRespostaEsperada().get(0) instanceof RespostaEsperadaAssociacaoDeColunasDTO) {
             questionDTO.setType(QuestionType.COLUMN_BINDING);
         }

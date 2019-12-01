@@ -103,6 +103,36 @@ public class ListApplicationServiceTest extends BaseTest {
 		final List<ListApplicationDTO> result = listApplicationServiceUnderTest.getListsByClassroom(classroom.getId(), ApplicationListStatus.ENCERRADA);
 
 		// Verify the results
+		verify(mockClassroomJpaRepository, times(1)).findById(any(UUID.class));
+		verify(mockListApplicationJpaRepository, times(0)).findByClassroom(any(Classroom.class));
+		verify(mockListApplicationJpaRepository, times(1)).findByClassroomAndStatus(any(Classroom.class), any(ApplicationListStatus.class));
+		verify(mockStudentJpaRepository, times(1)).findStudentsByClassroomId(any(UUID.class));
+		verify(listElabNetwork, times(2)).getListById(any(UUID.class));
+
+		assertEquals(applications.size(), result.size());
+	}
+
+	@Test
+	public void testGetFinishedListsByClassroomIdWithoutStatus() {
+		// Setup
+		final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
+		final List<Student> students = Fixture.from(Student.class).gimme(1, StudentTemplate.TYPES.STUDENT_WITH_ID.name());
+		final List<ListApplication> applications = Fixture.from(ListApplication.class).gimme(2, ListApplicationTemplate.TYPES.FINISHED_APPLICATION.name());
+		when(mockClassroomJpaRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(classroom));
+		when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(applications);
+		when(mockStudentJpaRepository.findStudentsByClassroomId(any(UUID.class))).thenReturn(students);
+		when(listElabNetwork.getListById(any(UUID.class))).thenReturn(new ListDTO());
+
+		// Run the Test
+		final List<ListApplicationDTO> result = listApplicationServiceUnderTest.getListsByClassroom(classroom.getId(), null);
+
+		// Verify the results
+		verify(mockClassroomJpaRepository, times(1)).findById(any(UUID.class));
+		verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
+		verify(mockListApplicationJpaRepository, times(0)).findByClassroomAndStatus(any(Classroom.class), any(ApplicationListStatus.class));
+		verify(mockStudentJpaRepository, times(1)).findStudentsByClassroomId(any(UUID.class));
+		verify(listElabNetwork, times(2)).getListById(any(UUID.class));
+
 		assertEquals(applications.size(), result.size());
 	}
 
