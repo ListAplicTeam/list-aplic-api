@@ -12,6 +12,7 @@ import br.com.ufg.listaplic.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class ListApplicationService {
 
 	private boolean checkIfTheresStudentsOnClassroom(Classroom classroom) {
 		final Set<Enrollment> enrollments = classroomService.findEnrollments(classroom);
-		return enrollments != null && !enrollments.isEmpty();
+		return !CollectionUtils.isEmpty(enrollments);
 	}
 
 	protected void countQuestions(String instructorId, List<QuestionDTO> questions) {
