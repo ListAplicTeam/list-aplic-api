@@ -217,14 +217,17 @@ public class ListServiceTest extends BaseTest {
     @Test
     public void testAnsweringList() {
         // Setup
+        final ListApplication listApplication = Fixture.from(ListApplication.class).gimme(ListApplicationTemplate.TYPES.LIST_APPLICATION.name());
         final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
+        when(mockListApplicationJpaRepository.findById(any(UUID.class))).thenReturn(Optional.of(listApplication));
         Mockito.doNothing().when(mockAnswerService).saveAll(anyList());
 
         // Run the test
         listServiceUnderTest.answeringList(AnswerStatusType.SAVE, UUID.randomUUID(), listDTO);
 
         // Verify the results
+        verify(mockListApplicationJpaRepository, times(1)).findById(any(UUID.class));
         verify(mockAnswerService, times(1)).saveAll(anyList());
     }
 
