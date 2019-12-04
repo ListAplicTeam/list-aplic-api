@@ -161,7 +161,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 		}
 
 		if (filterList.getTags() != null && filterList.getTags().size() > 0) {
-			builder.queryParam("tags", filterList.getTags());
+			builder.queryParam("tags", filterList.getTags().toArray());
 		}
 
 		return builder;

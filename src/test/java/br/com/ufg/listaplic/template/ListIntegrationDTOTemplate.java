@@ -14,6 +14,7 @@ public class ListIntegrationDTOTemplate implements TemplateLoader {
     private static final String ID = "id";
     private static final String TITULO = "titulo";
     private static final String USUARIO = "usuario";
+    private static final String NIVEL_DIFICULDADE = "nivelDeDificuldade";
     private static final String PRONTA_PARA_APLICACAO = "prontaParaAplicacao";
     private static final String QUESTOES_DISCURSIVA = "questoesDiscursiva";
     private static final String QUESTOES_MULTIPLA_ESCOLHA = "questoesMultiplaEscolha";
@@ -69,6 +70,7 @@ public class ListIntegrationDTOTemplate implements TemplateLoader {
             add(QUESTOES_MULTIPLA_ESCOLHA, has(1).of(QuestoesIntegrationDTO.class, QuestoesIntegrationDTOTemplate.TYPES.MULTIPLE_CHOICE.name()));
             add(QUESTOES_ASSOCIACAO_DE_COLUNAS, has(1).of(QuestoesIntegrationDTO.class, QuestoesIntegrationDTOTemplate.TYPES.COLUMN_BINDING.name()));
             add(QUESTOES_VERDADEIRO_OU_FALSO, has(1).of(QuestoesIntegrationDTO.class, QuestoesIntegrationDTOTemplate.TYPES.TRUE_OR_FALSE.name()));
+            add(NIVEL_DIFICULDADE, 1);
         }});
     }
 

@@ -9,6 +9,7 @@ public class ListIntegrationDTO {
     private String titulo;
     private String usuario;
     private Boolean prontaParaAplicacao;
+	private Integer nivelDeDificuldade;
     private List<QuestoesIntegrationDTO<RespostaEsperadaDiscursivaDTO>> questoesDiscursiva;
     private List<QuestoesIntegrationDTO<RespostaEsperadaMultiplaEscolhaDTO>> questoesMultiplaEscolha;
     private List<QuestoesIntegrationDTO<RespostaEsperadaVerdadeiroOuFalsoDTO>> questoesVerdadeiroOuFalso;
@@ -77,4 +78,12 @@ public class ListIntegrationDTO {
     public void setQuestoesAssociacaoDeColunas(List<QuestoesIntegrationDTO<RespostaEsperadaAssociacaoDeColunasDTO>> questoesAssociacaoDeColunas) {
         this.questoesAssociacaoDeColunas = questoesAssociacaoDeColunas;
     }
+
+	public Integer getNivelDeDificuldade() {
+		return nivelDeDificuldade;
+	}
+
+	public void setNivelDeDificuldade(Integer nivelDeDificuldade) {
+		this.nivelDeDificuldade = nivelDeDificuldade;
+	}
 }

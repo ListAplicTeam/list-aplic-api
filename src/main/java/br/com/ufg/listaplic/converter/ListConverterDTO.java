@@ -6,7 +6,6 @@ import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
 import br.com.ufg.listaplic.dto.listelab.ListIntegrationDTO;
 import br.com.ufg.listaplic.dto.listelab.QuestoesIntegrationDTO;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -32,11 +31,8 @@ public final class ListConverterDTO {
 				.flatMap(i -> i)
 				.collect(Collectors.toList());
 
-		Double averageDifficultyLevel = questions.stream()
-				.mapToInt(question -> question.getQuestao().getNivelDificuldade())
-				.average()
-				.orElse(BigDecimal.ZERO.doubleValue());
-		listDTO.setDifficultyLevel(averageDifficultyLevel.intValue());
+		Integer difficultyLevel = listIntegrationDTO.getNivelDeDificuldade();
+		listDTO.setDifficultyLevel(difficultyLevel);
 
 		Set<DisciplinaIntegrationDTO> subjects = questions.stream()
 				.map(question -> question.getQuestao().getDisciplina())
@@ -59,9 +55,9 @@ public final class ListConverterDTO {
 				.sum();
 		listDTO.setAnswerTime(answerTime);
 
-        listDTO.setQuestions(questions.stream()
+		listDTO.setQuestions(questions.stream()
 				.map(questoesIntegrationDTO -> QuestionConverterDTO.fromDomainToDTO(questoesIntegrationDTO.getQuestao()))
-                .collect(Collectors.toList()));
+				.collect(Collectors.toList()));
 
 		return listDTO;
 	}
