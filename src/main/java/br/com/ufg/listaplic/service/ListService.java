@@ -69,7 +69,9 @@ public class ListService {
 
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
             Optional<Answer> answerOptional = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), studentId);
-            if (answerOptional.isPresent()) {
+            if (listApplication.getStatus().isEncerrada()) {
+                listDTO.setStatus(ApplicationListStatus.ENCERRADA);
+            } else if (answerOptional.isPresent()) {
                 Answer answer = answerOptional.get();
                 questionDTO.setAnswer(answer.getAnswer());
                 listDTO.setStatus(answer.getStatusType().equals(AnswerStatusType.DRAFT) ? ApplicationListStatus.EM_ANDAMENTO : ApplicationListStatus.ENCERRADA);

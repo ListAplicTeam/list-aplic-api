@@ -38,7 +38,7 @@ public class ListApplicationSchedule {
                 .filter(listApplication ->
                                 now.isAfter(listApplication.getStartDate())
                                 && now.isBefore(listApplication.getFinalDate())
-                                && !listApplication.getStatus().isEmAndamento())
+                                && listApplication.getStatus().isNaoIniciada())
                 .map(listApplication -> {
                     listApplication.setStatus(ApplicationListStatus.EM_ANDAMENTO);
                     return listApplicationService.save(listApplication);
