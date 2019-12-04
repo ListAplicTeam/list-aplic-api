@@ -5,6 +5,7 @@ import br.com.ufg.listaplic.dto.AnswerStatusType;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.QuestionDTO;
 import br.com.ufg.listaplic.dto.listelab.FilterList;
+import br.com.ufg.listaplic.exception.ListApplicationFinishedException;
 import br.com.ufg.listaplic.exception.ResourceNotFoundException;
 import br.com.ufg.listaplic.model.Answer;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
@@ -17,7 +18,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -69,14 +69,16 @@ public class ListService {
 
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
             Optional<Answer> answerOptional = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), studentId);
-            if (listApplication.getStatus().isEncerrada()) {
-                listDTO.setStatus(ApplicationListStatus.ENCERRADA);
-            } else if (answerOptional.isPresent()) {
+            if (answerOptional.isPresent()) {
                 Answer answer = answerOptional.get();
                 questionDTO.setAnswer(answer.getAnswer());
                 listDTO.setStatus(answer.getStatusType().equals(AnswerStatusType.DRAFT) ? ApplicationListStatus.EM_ANDAMENTO : ApplicationListStatus.ENCERRADA);
             } else {
                 listDTO.setStatus(ApplicationListStatus.NAO_INICIADA);
+            }
+
+            if (listApplication.getStatus().isEncerrada()) {
+                listDTO.setStatus(ApplicationListStatus.ENCERRADA);
             }
         }
 
@@ -88,6 +90,13 @@ public class ListService {
     }
 
     public void answeringList(AnswerStatusType answerStatusType, UUID userId, ListDTO listDTO) {
+        ListApplication listApplication = listApplicationJpaRepository.findById(listDTO.getListApplicationId())
+                .orElseThrow(() -> new ResourceNotFoundException("List not found"));
+
+        if (listApplication.getStatus().isEncerrada()) {
+            throw new ListApplicationFinishedException();
+        }
+
         List<Answer> answers = new ArrayList<>();
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
 			UUID answerId = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), userId)
