@@ -2,8 +2,10 @@ package br.com.ufg.listaplic.repository;
 
 import br.com.ufg.listaplic.model.QuestionCount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +24,10 @@ public interface QuestionCountJpaRepository extends JpaRepository<QuestionCount,
 
     List<QuestionCount> findAllByInstructor(String instructor);
 
-    @Query(
-            value = "UPDATE QuestionCount set counter = :counter WHERE question = :question"
-    )
-    void updateCounter(UUID question, Integer counter);
+	@Transactional
+	@Modifying
+	@Query(
+			value = "UPDATE QuestionCount set counter = :counter WHERE question = :question"
+	)
+	void updateCounter(UUID question, Integer counter);
 }

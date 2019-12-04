@@ -83,6 +83,13 @@ public class ListDTO {
     )
     private ApplicationListStatus status;
 
+    @ApiModelProperty(
+            value = "List's answer time",
+            dataType = "Integer",
+            example = "10"
+    )
+    private Integer answerTime;
+
     public UUID getId() {
         return id;
     }
@@ -161,5 +168,13 @@ public class ListDTO {
 
     public void setStatus(ApplicationListStatus status) {
         this.status = status;
+    }
+
+    public Integer getAnswerTime() {
+        return answerTime;
+    }
+
+    public void setAnswerTime(Integer answerTime) {
+        this.answerTime = answerTime;
     }
 }

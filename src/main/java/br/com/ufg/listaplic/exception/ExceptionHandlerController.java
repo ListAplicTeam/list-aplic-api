@@ -73,4 +73,12 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseError(e.getMessage()));
     }
 
+	@ExceptionHandler(NoOneStudentOnClassroomException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ResponseBody
+	public ResponseEntity<ResponseError> handleStudentIsAlreadyEnrolledException(final NoOneStudentOnClassroomException e) {
+		LOGGER.error(AN_ERROR_OCCURRED, e.getMessage(), e);
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseError(e.getMessage()));
+	}
+
 }

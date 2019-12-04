@@ -4,13 +4,8 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.ufg.listaplic.base.BaseTest;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.listelab.ListIntegrationDTO;
-import br.com.ufg.listaplic.model.Answer;
-import br.com.ufg.listaplic.template.ListDTOTemplate;
 import br.com.ufg.listaplic.template.ListIntegrationDTOTemplate;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,7 +14,7 @@ public class ListConverterDTOTest extends BaseTest {
     @Test
     public void testFromListIntegrationToListsDTO() {
         // Setup
-        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
+        final ListIntegrationDTO listIntegrationDTO = Fixture.from(ListIntegrationDTO.class).gimme(ListIntegrationDTOTemplate.TYPES.LIST_WITH_FOUR_QUESTION.name());
 
         // Run the test
         final ListDTO result = ListConverterDTO.fromListIntegrationToListDTO(listIntegrationDTO);
@@ -28,27 +23,11 @@ public class ListConverterDTOTest extends BaseTest {
         assertEquals(listIntegrationDTO.getId(), result.getId());
         assertEquals(listIntegrationDTO.getTitulo(), result.getName());
         assertEquals(listIntegrationDTO.getUsuario(), result.getUser());
-        assertEquals(listIntegrationDTO.getQuestoes().size(), result.getQuestions().size());
-        assertEquals(2, result.getDifficultyLevel());
+        assertEquals(4, result.getQuestions().size());
+        assertEquals(1, result.getDifficultyLevel());
         assertEquals(1, result.getSubjects().size());
-        assertEquals(2, result.getTags().size());
+        assertEquals(6, result.getTags().size());
         assertEquals(1, result.getKnowledgeAreas().size());
     }
 
-    @Test
-    public void testFromListDTOToListAnswer() {
-        // Setup
-        final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_ONE_QUESTION.name());
-        UUID userId = UUID.randomUUID();
-
-        // Run the test
-        final List<Answer> result = ListConverterDTO.fromListDTOToListAnswer(userId, listDTO);
-
-        // Verify the results
-        Answer answer = result.get(0);
-        assertEquals(listDTO.getListApplicationId(), answer.getApplicationId());
-        assertEquals(listDTO.getQuestions().stream().findFirst().get().getId(), answer.getQuestionId());
-        assertEquals(userId, answer.getUserId());
-        assertEquals(listDTO.getQuestions().stream().findFirst().get().getAnswer(), answer.getAnswer());
-    }
 }

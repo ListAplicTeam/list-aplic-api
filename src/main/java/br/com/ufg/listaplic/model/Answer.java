@@ -1,18 +1,28 @@
 package br.com.ufg.listaplic.model;
 
+import br.com.ufg.listaplic.dto.AnswerStatusType;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
 @Table(name = "answer")
 @SqlResultSetMapping(
         name = "answer_count",
-                        columns = {
-                                @ColumnResult(name = "application", type = String.class),
-                                @ColumnResult(name = "quantity", type = Integer.class)
-                        }
+        columns = {
+                @ColumnResult(name = "application", type = String.class),
+                @ColumnResult(name = "quantity", type = Integer.class)
+        }
 )
 @NamedNativeQuery(
         name = "Answer.findAnswerCountsByClassroomId",
@@ -41,8 +51,12 @@ public class Answer {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "answer", nullable = false)
+    @Column(name = "answer")
     private String answer;
+
+    @Column(name = "status_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AnswerStatusType statusType;
 
     public UUID getId() {
         return id;
@@ -82,5 +96,13 @@ public class Answer {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public AnswerStatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(AnswerStatusType statusType) {
+        this.statusType = statusType;
     }
 }

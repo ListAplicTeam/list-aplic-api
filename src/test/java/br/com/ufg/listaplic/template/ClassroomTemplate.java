@@ -4,6 +4,8 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import br.com.ufg.listaplic.model.Classroom;
+import br.com.ufg.listaplic.model.Enrollment;
+import com.google.common.collect.Sets;
 
 import java.util.UUID;
 
@@ -14,6 +16,7 @@ public class ClassroomTemplate implements TemplateLoader {
     private static final String CODE = "code";
     private static final String SUBJECT_CODE = "subjectCode";
     private static final String INSTRUCTOR_ID = "instructorId";
+    private static final String ENROLLMENTS = "enrollments";
 
     public enum TYPES {
         CLASSROOM,
@@ -32,6 +35,7 @@ public class ClassroomTemplate implements TemplateLoader {
             add(CODE, "CWS4558");
             add(SUBJECT_CODE, "INF0089");
             add(INSTRUCTOR_ID, "5da3453a5718e904108acc25");
+            add(ENROLLMENTS, Sets.newHashSet(has(2).of(Enrollment.class, EnrollmentTemplate.TYPES.ENROLLMENT.name())));
         }});
     }
 

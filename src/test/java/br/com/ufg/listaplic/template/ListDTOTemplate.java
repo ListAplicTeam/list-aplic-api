@@ -17,6 +17,7 @@ public class ListDTOTemplate implements TemplateLoader {
     private static final String USER = "user";
     private static final String QUESTIONS = "questions";
     private static final String STATUS = "status";
+    private static final String ANSWER_TIME = "answerTime";
 
     public enum TYPES {
         LIST_WITH_ONE_QUESTION,
@@ -37,6 +38,7 @@ public class ListDTOTemplate implements TemplateLoader {
             add(USER, "professor@ufg.br");
             add(QUESTIONS, has(1).of(QuestionDTO.class, QuestionDTOTemplate.TYPES.QUESTION.name()));
             add(STATUS, ApplicationListStatus.NAO_INICIADA);
+            add(ANSWER_TIME, 12);
         }});
     }
 
@@ -48,6 +50,7 @@ public class ListDTOTemplate implements TemplateLoader {
             add(USER, "professor@ufg.br");
             add(QUESTIONS, has(2).of(QuestionDTO.class, QuestionDTOTemplate.TYPES.QUESTION.name()));
             add(STATUS, ApplicationListStatus.EM_ANDAMENTO);
+            add(ANSWER_TIME, 20);
         }});
     }
 

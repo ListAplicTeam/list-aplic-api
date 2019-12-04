@@ -3,7 +3,7 @@ package br.com.ufg.listaplic.dto.listelab;
 import java.util.List;
 import java.util.UUID;
 
-public class QuestaoIntegrationDTO {
+public class QuestaoIntegrationDTO<T extends RespostaEsperadaInterface> {
 
     private UUID id;
     private String enunciado;
@@ -14,6 +14,7 @@ public class QuestaoIntegrationDTO {
     private List<String> tags;
     private Integer tipo;
     private Integer tempoMaximoDeResposta;
+    private List<T> respostaEsperada;
 
     public UUID getId() {
         return id;
@@ -85,5 +86,13 @@ public class QuestaoIntegrationDTO {
 
     public void setTempoMaximoDeResposta(Integer tempoMaximoDeResposta) {
         this.tempoMaximoDeResposta = tempoMaximoDeResposta;
+    }
+
+    public List<T> getRespostaEsperada() {
+        return respostaEsperada;
+    }
+
+    public void setRespostaEsperada(List<T> respostaEsperada) {
+        this.respostaEsperada = respostaEsperada;
     }
 }

@@ -2,6 +2,7 @@ package br.com.ufg.listaplic.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Column;
 import java.util.UUID;
 
 public class AnswerDTO {
@@ -27,6 +28,14 @@ public class AnswerDTO {
     )
     private String answer;
 
+    @ApiModelProperty(
+            value = "Answer status",
+            dataType = "string",
+            example = "DRAFT",
+            allowableValues = "DRAFT, SAVE"
+    )
+    private AnswerStatusType status;
+
     public UUID getListId() {
         return listId;
     }
@@ -49,5 +58,13 @@ public class AnswerDTO {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public AnswerStatusType getStatus() {
+        return status;
+    }
+
+    public void setStatus(AnswerStatusType status) {
+        this.status = status;
     }
 }

@@ -1,5 +1,6 @@
 package br.com.ufg.listaplic.dto;
 
+import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaInterface;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,7 +33,7 @@ public class QuestionDTO {
             value = "Question's type",
             dataType = "string",
             example = "DISCURSIVE",
-            allowableValues = "DISCURSIVE, OBJECTIVE"
+            allowableValues = "DISCURSIVE, MULTIPLE_CHOICE, TRUE_OR_FALSE, COLUMN_BINDING"
     )
     private QuestionType type;
 
@@ -48,6 +49,12 @@ public class QuestionDTO {
             example = "Lenda"
     )
     private String answer;
+
+	@ApiModelProperty(
+			value = "Question's expected answers",
+			dataType = "List[br.com.ufg.listaplic.dto.listelab.RespostaEsperadaInterface]"
+	)
+	private List<? extends RespostaEsperadaInterface> expectedAnswers;
 
     public UUID getId() {
         return id;
@@ -87,5 +94,13 @@ public class QuestionDTO {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public List<? extends RespostaEsperadaInterface> getExpectedAnswers() {
+        return expectedAnswers;
+    }
+
+    public void setExpectedAnswers(List<? extends RespostaEsperadaInterface> expectedAnswers) {
+        this.expectedAnswers = expectedAnswers;
     }
 }
