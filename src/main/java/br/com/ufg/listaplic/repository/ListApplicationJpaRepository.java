@@ -18,6 +18,8 @@ public interface ListApplicationJpaRepository extends JpaRepository<ListApplicat
 
     List<ListApplication> findByClassroomAndStatus(Classroom classroom, ApplicationListStatus status);
 
+    List<ListApplication> findByClassroomAndStatusNot(Classroom classroom, ApplicationListStatus status);
+
     List<ListApplication> findByClassroom(Classroom classroom);
 
     Integer countByClassroomId(UUID classroomId);

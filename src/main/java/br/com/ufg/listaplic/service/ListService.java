@@ -17,6 +17,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,7 +56,7 @@ public class ListService {
 
     public List<ListDTO> getPendingListsByStudent(UUID classroomId, UUID studentId) {
         Classroom classroom = classroomService.findClassroomById(classroomId).orElseThrow(() -> new ResourceNotFoundException("Classroom not found"));
-        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroom(classroom);
+        List<ListApplication> listApplications = listApplicationJpaRepository.findByClassroomAndStatusNot(classroom, ApplicationListStatus.NAO_INICIADA);
 
         return listApplications.stream()
                 .map(listApplication -> getListById(listApplication, studentId))
@@ -65,7 +66,6 @@ public class ListService {
     private ListDTO getListById(ListApplication listApplication, UUID studentId) {
         ListDTO listDTO = listElabNetwork.getListById(listApplication.getList());
         listDTO.setListApplicationId(listApplication.getId());
-        listDTO.setStatus(listApplication.getStatus());
 
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
             Optional<Answer> answerOptional = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), studentId);
@@ -73,6 +73,8 @@ public class ListService {
                 Answer answer = answerOptional.get();
                 questionDTO.setAnswer(answer.getAnswer());
                 listDTO.setStatus(answer.getStatusType().equals(AnswerStatusType.DRAFT) ? ApplicationListStatus.EM_ANDAMENTO : ApplicationListStatus.ENCERRADA);
+            } else {
+                listDTO.setStatus(ApplicationListStatus.NAO_INICIADA);
             }
         }
 
