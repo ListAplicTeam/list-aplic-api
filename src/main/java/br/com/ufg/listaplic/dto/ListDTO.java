@@ -3,9 +3,13 @@ package br.com.ufg.listaplic.dto;
 import br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO;
 import br.com.ufg.listaplic.dto.listelab.DisciplinaIntegrationDTO;
 import br.com.ufg.listaplic.model.ApplicationListStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -89,6 +93,24 @@ public class ListDTO {
             example = "10"
     )
     private Integer answerTime;
+
+    @ApiModelProperty(
+            value = "List's start date",
+            example = "2019-11-11 00:00:00"
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @NotNull(message = "startDate must be provided")
+    private LocalDateTime startDate;
+
+    @ApiModelProperty(
+            value = "List's final date",
+            example = "2019-11-11 23:59:59"
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @NotNull(message = "finalDate must be provided")
+    private LocalDateTime finalDate;
 
     public UUID getId() {
         return id;
@@ -176,5 +198,21 @@ public class ListDTO {
 
     public void setAnswerTime(Integer answerTime) {
         this.answerTime = answerTime;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(LocalDateTime finalDate) {
+        this.finalDate = finalDate;
     }
 }
