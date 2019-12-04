@@ -127,14 +127,14 @@ public class ListServiceTest extends BaseTest {
         final Classroom classroom = Fixture.from(Classroom.class).gimme(ClassroomTemplate.TYPES.CLASSROOM_WITH_ID.name());
 
         when(mockClassroomService.findClassroomById(any(UUID.class))).thenReturn(Optional.of(classroom));
-        when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(Collections.emptyList());
+        when(mockListApplicationJpaRepository.findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class))).thenReturn(Collections.emptyList());
 
         // Run the test
         List<ListDTO> result = listServiceUnderTest.getPendingListsByStudent(UUID.randomUUID(), UUID.randomUUID());
 
         // Verify the results
         verify(mockClassroomService, times(1)).findClassroomById(any(UUID.class));
-        verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class));
 
         assertEquals(Collections.emptyList(), result);
     }
@@ -147,7 +147,7 @@ public class ListServiceTest extends BaseTest {
         final ListDTO listDTO = Fixture.from(ListDTO.class).gimme(ListDTOTemplate.TYPES.LIST_WITH_TWO_QUESTION.name());
 
         when(mockClassroomService.findClassroomById(any(UUID.class))).thenReturn(Optional.of(classroom));
-        when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(listApplications);
+        when(mockListApplicationJpaRepository.findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class))).thenReturn(listApplications);
         when(mockListElabNetwork.getListById(any(UUID.class))).thenReturn(listDTO);
 
         // Run the test
@@ -155,7 +155,7 @@ public class ListServiceTest extends BaseTest {
 
         // Verify the results
         verify(mockClassroomService, times(1)).findClassroomById(any(UUID.class));
-        verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class));
         verify(mockListElabNetwork, times(2)).getListById(any(UUID.class));
 
         assertEquals(listApplications.size(), result.size());
@@ -170,7 +170,7 @@ public class ListServiceTest extends BaseTest {
         final Answer answer = Fixture.from(Answer.class).gimme(AnswerTemplate.TYPES.ANSWER.name());
 
         when(mockClassroomService.findClassroomById(any(UUID.class))).thenReturn(Optional.of(classroom));
-        when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(listApplications);
+        when(mockListApplicationJpaRepository.findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class))).thenReturn(listApplications);
         when(mockListElabNetwork.getListById(any(UUID.class))).thenReturn(listDTO);
         when(mockAnswerService.findByApplicationIdAndQuestionIdAndUserId(any(UUID.class), any(UUID.class), any(UUID.class))).thenReturn(Optional.of(answer));
 
@@ -179,7 +179,7 @@ public class ListServiceTest extends BaseTest {
 
         // Verify the results
         verify(mockClassroomService, times(1)).findClassroomById(any(UUID.class));
-        verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class));
         verify(mockListElabNetwork, times(1)).getListById(any(UUID.class));
         verify(mockAnswerService, times(2)).findByApplicationIdAndQuestionIdAndUserId(any(UUID.class), any(UUID.class), any(UUID.class));
 
@@ -197,7 +197,7 @@ public class ListServiceTest extends BaseTest {
         answer.setStatusType(AnswerStatusType.SAVE);
 
         when(mockClassroomService.findClassroomById(any(UUID.class))).thenReturn(Optional.of(classroom));
-        when(mockListApplicationJpaRepository.findByClassroom(any(Classroom.class))).thenReturn(listApplications);
+        when(mockListApplicationJpaRepository.findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class))).thenReturn(listApplications);
         when(mockListElabNetwork.getListById(any(UUID.class))).thenReturn(listDTO);
         when(mockAnswerService.findByApplicationIdAndQuestionIdAndUserId(any(UUID.class), any(UUID.class), any(UUID.class))).thenReturn(Optional.of(answer));
 
@@ -206,7 +206,7 @@ public class ListServiceTest extends BaseTest {
 
         // Verify the results
         verify(mockClassroomService, times(1)).findClassroomById(any(UUID.class));
-        verify(mockListApplicationJpaRepository, times(1)).findByClassroom(any(Classroom.class));
+        verify(mockListApplicationJpaRepository, times(1)).findByClassroomAndStatusNot(any(Classroom.class), any(ApplicationListStatus.class));
         verify(mockListElabNetwork, times(1)).getListById(any(UUID.class));
         verify(mockAnswerService, times(2)).findByApplicationIdAndQuestionIdAndUserId(any(UUID.class), any(UUID.class), any(UUID.class));
 
