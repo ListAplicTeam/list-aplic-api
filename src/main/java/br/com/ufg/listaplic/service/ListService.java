@@ -66,6 +66,8 @@ public class ListService {
     private ListDTO getListById(ListApplication listApplication, UUID studentId) {
         ListDTO listDTO = listElabNetwork.getListById(listApplication.getList());
         listDTO.setListApplicationId(listApplication.getId());
+        listDTO.setStartDate(listApplication.getStartDate());
+        listDTO.setFinalDate(listApplication.getFinalDate());
 
         for (QuestionDTO questionDTO : listDTO.getQuestions()) {
             Optional<Answer> answerOptional = answerService.findByApplicationIdAndQuestionIdAndUserId(listDTO.getListApplicationId(), questionDTO.getId(), studentId);
