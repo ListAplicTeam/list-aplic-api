@@ -5,7 +5,15 @@ jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
 install: true
-script: ./mvnw -Dspring-boot.run.profiles=test clean install verify
+addons:
+  sonarcloud:
+    organization: "listaplicteam"
+    token:
+      secure: "travis encrypt 36e4fdafadc35e45885e09722836e3849e4ff98f"
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=ListAplicTeam_list-aplic-api
 cache:
   directories:
     - $HOME/.m2
