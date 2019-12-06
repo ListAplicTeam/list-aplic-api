@@ -1,5 +1,10 @@
 language: java
 sudo: true
+disty: trusty
+
+before_install:
+  - chmod +x mvw
+
 install: true
 
 addons:
