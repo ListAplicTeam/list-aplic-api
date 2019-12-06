@@ -10,7 +10,7 @@ addons:
   sonarcloud:
     organization: "listaplicteam"
     token:
-      secure: "fXGmQb/j8pTqIkZ3crdKjrQlmFbmJfAMhXDdArHx95pWPIjGLCFJU8PE1unxjVd3/KpW1z2dBlccXChCVAZ/F5yEOGn56zKzLSD8cxhSK37TCAIPosgbi7huX0u4GizoluW7aD5ChoGc9q2nkU59gIjq3OffSN+hzrIgBS0CjTSAVE+GHaRaeCk+5tb9C9n70vjlbi3PjJoBaNIUvw/5SvS9K0V/QMl8xpdwWMwFaW/qNgNEKNtKee4aSdVF122dzRQ4BgpBHZqkwS8eegqRKDn52oZ8SNjd//w1T0Iz+ZaN6vmA6iMzUwD9AVeRO7n2CLi9ZcA06XoB9AAhGI38bNylgFuLuUYxfU69ocm2So0DftMGusteMW9aL7D9IRG5ptrnbbIDkEEa20FCWFHQBPAgnA3YRZXmYPOW5K6/aJsWNN3WSw+wod/G7WjS4dF1RiIsCAfv2IFP2qzBBwNVBlfzZZ+vWlNpo3wX3zcF2XL8+IUC0s3KQ9Ha2DPxMtBsgPzxtQ7Yynmle1k1YAycm6BVNs+EpRPWas3zBphuLnBm4Ir1ejusJ2e1xpKStAv8iEfTIyq/80kdsB5/J6BhrTFXyzqeUUMyse+G37MepDLagWrFVQ08K67oX+BmXePYgS9zmlJauLQUGICGO3DapzpWKVhEfY9xrUC2bEeAqyc="
+      secure: "UsoV8stAQ+ErMQjO1dpIuiAjEQvjHHbGB1nfIb5Z2Ej4JqWRnNbQWpgmUiSj78XkrdCj/j0Zn5VT1TMGJOCLyI9/mrN+jQmUNy8vPhrEoSogvjhf6LAvgZ7SHUcawCXdwyytakVDLEQh6Wr4V1PKbxpJpAU4stolIhiXIuSlBVVAGKW4lssf1Rhxjc2pqQuXshT14HHL42j6R03ig0xMokxXqOKigl5QLqBYUWQJfsaHvbkKURDApveuWg+4v9PgRYugT5fQuQtjzfzMRl0XiNljcT+bUTQxCHITqG/09WzZE8Ebh3nV6vcJC/UMWloLKkNEfzhajzseALBkXhQD6/zuOJCrZUnod27oWyHRROTu4rAGkAzp37mGbi/adjsYyMCnu6tVdmeZbaTq0jLwaI+sw4C9dEEpBdPBAi1dRQIBSwY/JopPyOjowFeLIZB6woCyifUCg4qXKf8FUxznSBaomiWiiLbNlyVP+o3ZEmNpcXTn0o8DVuQHsJ9BvT342ouGZ85F9rFOfLLGGPcQE91nz6ID8McE8rddg1dVVH01LjVOsMb1cCrdqBCzkftVaZyjjq/sKxkHmM+o6YFtHLTYd4SWUgxZXwMlN9n+9OXvuP/3AKpRMt5/Ig9BAs0F9LXPkgCtkjTB5Aix5McbvxpJxs+AO6Axn9hnL7P7BvQ="
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
@@ -19,4 +19,3 @@ script:
 cache:
   directories:
     - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
