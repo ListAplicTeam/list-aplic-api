@@ -9,7 +9,7 @@ addons:
   sonarcloud:
     organization: "listaplicteam"
     token:
-      secure: "travis encrypt 36e4fdafadc35e45885e09722836e3849e4ff98f"
+      secure: "413ad5aa844826f3af09afae272b33265e93138f"
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
