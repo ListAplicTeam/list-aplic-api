@@ -26,6 +26,8 @@
         <fixture.version>3.1.0</fixture.version>
         <maven.plugin.failsafe.version>2.22.2</maven.plugin.failsafe.version>
         <apache.commons.lang.version>3.9</apache.commons.lang.version>
+
+        <sonar-cloud-version>3.7.0.1746</sonar-cloud-version>
     </properties>
 
     <dependencies>
@@ -148,6 +150,13 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Sonar -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-cloud-version}</version>
             </plugin>
         </plugins>
     </build>
