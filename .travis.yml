@@ -14,7 +14,7 @@ addons:
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install verify sonar:sonar -Dspring-boot.run.profiles=test -Dsonar.projectKey=ListAplicTeam_list-aplic-api -Dsonar.host.url=https://sonarcloud.io
+  - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install verify sonar:sonar -Dspring-boot.run.profiles=test -Dsonar.projectKey=ListAplicTeam_list-aplic-api -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=6926b5a63f6b77f407e10bb5d3929060a3d23be2
 
 cache:
   directories:
