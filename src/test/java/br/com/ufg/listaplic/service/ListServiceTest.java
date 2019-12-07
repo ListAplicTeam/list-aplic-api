@@ -97,8 +97,8 @@ public class ListServiceTest extends BaseTest {
 
         final ListApplication result = mockListApplicationJpaRepository.save(new ListApplication());
 
-        assertEquals(result.getStatus(), listApplication.getStatus());
-        assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
+        assertEquals(listApplication.getStatus(), result.getStatus());
+        assertEquals(ApplicationListStatus.ENCERRADA, result.getStatus());
     }
 
     @Test

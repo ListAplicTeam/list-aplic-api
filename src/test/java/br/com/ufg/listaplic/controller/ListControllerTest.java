@@ -84,8 +84,8 @@ public class ListControllerTest extends BaseTest {
 
 		final ListApplicationDTO result = listControllerUnderTest.finishListApplication(UUID.randomUUID());
 
-		assertEquals(result.getStatus(), listApplicationDTO.getStatus());
-		assertEquals(result.getStatus(), ApplicationListStatus.ENCERRADA);
+		assertEquals(listApplicationDTO.getStatus(), result.getStatus());
+		assertEquals(ApplicationListStatus.ENCERRADA, result.getStatus());
     }
 
     @Test

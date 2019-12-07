@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ public class ApplyDTO {
             example = "true",
             required = false
     )
-    private Boolean allClassroom;
+    private boolean allClassroom;
 
     @ApiModelProperty(
             value = "Group to list be applied",
@@ -71,11 +70,11 @@ public class ApplyDTO {
     @NotNull(message = "finalDate must be provided")
     private LocalDateTime finalDate;
 
-    public Boolean getAllClassroom() {
+    public boolean getAllClassroom() {
         return allClassroom;
     }
 
-    public void setAllClassroom(Boolean allClassroom) {
+    public void setAllClassroom(boolean allClassroom) {
         this.allClassroom = allClassroom;
     }
 

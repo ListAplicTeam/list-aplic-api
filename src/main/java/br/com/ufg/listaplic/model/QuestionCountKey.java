@@ -6,7 +6,6 @@ import java.util.UUID;
 public class QuestionCountKey implements Serializable {
 
     private UUID question;
-
     private String instructor;
 
     public QuestionCountKey() {

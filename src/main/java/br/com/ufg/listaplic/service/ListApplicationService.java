@@ -90,9 +90,7 @@ public class ListApplicationService {
 						.map(QuestionDTO::getId)
 						.collect(Collectors.toList()), instructorId);
 
-		questionCountList.forEach(count -> {
-			questionCountMap.put(count.getQuestion(), count.getCounter());
-		});
+		questionCountList.forEach(count -> questionCountMap.put(count.getQuestion(), count.getCounter()));
 
 		questions.forEach(q -> {
 			if (questionCountMap.containsKey(q.getId())) {

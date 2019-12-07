@@ -5,9 +5,18 @@ jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
 install: true
-script: ./mvnw -Dspring-boot.run.profiles=test clean install verify
+
+addons:
+  sonarcloud:
+    organization: "listaplicteam"
+    token:
+      secure: "OA5W88DIDhxzrCHyH96sg3sXH88uj5qF9JhkLoS1OfmxdUzbD3+oaSkfEgMxMDij3FX69QMZ7Tpecd9ELoaN3Rq9RKnyr1Ps0j5HJzDtpxYLW8A7oxdoz3Vde5JbfpKX4j/u5EIXCGrK4Qer8cj3kw6kKhw2KHysK+FLupRy8Jw7gDB0l8yUVdO6m+N4SaDQu1mzFmZNRwO1oHvmCQbYfOIaldqTu1ioKCgDcanGuPgxUT5ziSUpwM+E+GU6LEvD2PPXrG5BRsMlxbgZ41SSzb3XRMVCacLOHooygdgaju2PTGWTw/Pyd98vNy/8scXyqpMopFguysMnph4oNJlemqa5yGAHQH8gFgamw7KtiUf+9PCPb+J8QichmsM9bjXRl6gHPvC6XORJ0+xZ8yaeFd1QgCM8k6FStqsOib1wVLiX41vurLhxZL78ujUN0Re0m8/CmNXjwj4QNUyPpBK0uSXzzrlAJzSg/FtWHHVEgm0t81g+IjFBcVde0v5Ng0672IOF15c8AitUMB8XU8JI4IGeYQ9twIfEMx894AZt/A74SAKrtYoXxWIHPazQbOGZ16dkk8+Z/oP+Rmkzh3ogvonyJyqeXE9khL4GTerVIrUzPDKLAVVjvGuQ9MBj34noa0Z3sk40YZVgT/T5KxGFr9dgfPTcI/ZQ5olst5DtUvg="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install verify sonar:sonar -Dspring-boot.run.profiles=test -Dsonar.projectKey=ListAplicTeam_list-aplic-api -Dsonar.host.url=https://sonarcloud.io -Dsonar.exclusions=**/listaplic/dto/**/*,**/listaplic/model/**/* -Dsonar.coverage.exclusions=**/listaplic/dto/**/*,**/listaplic/model/**/*,**/listaplic/config/**/*,**/listaplic/exception/**/*
+
 cache:
   directories:
-    - $HOME/.m2
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
