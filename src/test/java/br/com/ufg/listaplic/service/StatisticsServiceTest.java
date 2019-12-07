@@ -111,7 +111,7 @@ public class StatisticsServiceTest extends BaseTest {
 
         StatisticsDTO result = statisticsServiceUnderTest.calculateClassroomStatistics(UUID.randomUUID());
 
-        assertEquals(result.getErrorMessage(), StatisticsService.STUDENT_ERROR);
+        assertEquals(StatisticsService.STUDENT_ERROR, result.getErrorMessage());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class StatisticsServiceTest extends BaseTest {
 
         StatisticsDTO result = statisticsServiceUnderTest.calculateClassroomStatistics(UUID.randomUUID());
 
-        assertEquals(result.getErrorMessage(), StatisticsService.APPLICATION_ERROR);
+        assertEquals(StatisticsService.APPLICATION_ERROR, result.getErrorMessage());
     }
 
     @Test
@@ -137,6 +137,6 @@ public class StatisticsServiceTest extends BaseTest {
 
         StatisticsDTO result = statisticsServiceUnderTest.calculateInstructorStatistics("INSTRUCTOR");
 
-        assertEquals(result.getErrorMessage(), StatisticsService.APPLICATION_ERROR);
+        assertEquals(StatisticsService.APPLICATION_ERROR, result.getErrorMessage());
     }
 }

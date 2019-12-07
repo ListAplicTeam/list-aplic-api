@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class ListElabNetworkImpl implements ListElabNetwork {
 
 	private static final java.lang.String FAILED_TO_GET_TOKEN_IN_LIST_ELAB_SERVICE = "Failed to get token in ListElab service";
+	private static final String FAILED_TO_GET_LIST_IN_LIST_ELAB_SERVICE = "Failed to get list in ListElab service";
 	private static final String BEARER = "Bearer ";
 
 	@Value("${listelab.api.auth.email}")
@@ -72,7 +73,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 					.map(ListConverterDTO::fromListIntegrationToListDTO)
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get list in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_LIST_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
