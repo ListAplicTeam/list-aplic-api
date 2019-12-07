@@ -4,8 +4,6 @@ import br.com.ufg.listaplic.model.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.UUID;
-
 @ApiModel(
         value = "User",
         description = "Model of a User."

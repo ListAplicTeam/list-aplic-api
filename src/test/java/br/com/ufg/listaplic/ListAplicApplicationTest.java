@@ -6,6 +6,7 @@ public class ListAplicApplicationTest extends AbstractIT {
 
 	@Test
 	public void contextLoads() {
+		assertTrue(true);
 	}
 
 }

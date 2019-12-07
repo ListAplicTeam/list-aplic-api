@@ -97,7 +97,7 @@ public class StatisticsServiceTest extends BaseTest {
 
         StatisticsDTO result = statisticsServiceUnderTest.calculateInstructorStatistics(UUID.randomUUID().toString());
 
-        assertEquals(result.getTopFiveQuestions().size(), 5);
+        assertEquals(5, result.getTopFiveQuestions().size());
     }
 
     @Test

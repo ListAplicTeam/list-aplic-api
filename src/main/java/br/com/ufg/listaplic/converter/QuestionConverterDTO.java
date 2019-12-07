@@ -8,8 +8,6 @@ import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaDiscursivaDTO;
 import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaMultiplaEscolhaDTO;
 import br.com.ufg.listaplic.dto.listelab.RespostaEsperadaVerdadeiroOuFalsoDTO;
 
-import java.util.List;
-
 public final class QuestionConverterDTO {
 
     private QuestionConverterDTO() {

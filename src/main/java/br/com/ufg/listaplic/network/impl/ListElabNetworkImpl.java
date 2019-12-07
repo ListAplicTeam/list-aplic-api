@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @Component
 public class ListElabNetworkImpl implements ListElabNetwork {
 
+	private static final java.lang.String FAILED_TO_GET_TOKEN_IN_LIST_ELAB_SERVICE = "Failed to get token in ListElab service";
 	private static final String BEARER = "Bearer ";
 
 	@Value("${listelab.api.auth.email}")
@@ -64,7 +65,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 
 			HttpEntity<?> entity = new HttpEntity<>(headers);
 
-			UriComponentsBuilder builder = buildUriComponentsBuilderForFilterList(filterList, apiFilterListUrl);
+			UriComponentsBuilder builder = buildUriComponentsBuilderForFilterList(filterList);
 
 			ListElabResultDTO listElabResultDTO = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
 			return listElabResultDTO.getResultado().stream()
@@ -130,7 +131,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 		try {
 			return login(getLoginAdmin()).getToken();
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get token in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_TOKEN_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
@@ -141,7 +142,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 		return loginDTO;
 	}
 
-	private UriComponentsBuilder buildUriComponentsBuilderForFilterList(FilterList filterList, String apiUrl) {
+	private UriComponentsBuilder buildUriComponentsBuilderForFilterList(FilterList filterList) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiFilterListUrl);
 
 		if (filterList.getAreaDeConhecimento() != null) {
@@ -160,7 +161,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 			builder.queryParam("tempoEsperadoResposta", filterList.getTempoEsperadoResposta());
 		}
 
-		if (filterList.getTags() != null && filterList.getTags().size() > 0) {
+		if (filterList.getTags() != null && !filterList.getTags().isEmpty()) {
 			builder.queryParam("tags", filterList.getTags().toArray());
 		}
 
