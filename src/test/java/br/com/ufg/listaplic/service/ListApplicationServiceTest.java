@@ -264,6 +264,10 @@ public class ListApplicationServiceTest extends BaseTest {
 		when(questionCountJpaRepository.save(any(QuestionCount.class))).thenReturn(null);
 
 		listApplicationServiceUnderTest.countQuestions(UUID.randomUUID().toString(), questions);
+
+		verify(questionCountJpaRepository, times(1)).findAllByQuestionsAndInstructor(anyList(), anyString());
+		verify(questionCountJpaRepository, times(1)).findByQuestionAndInstructor(any(UUID.class), anyString());
+		verify(questionCountJpaRepository, times(1)).save(any(QuestionCount.class));
 	}
 
 	@Test
@@ -288,6 +292,10 @@ public class ListApplicationServiceTest extends BaseTest {
 		}).when(questionCountJpaRepository).updateCounter(any(UUID.class), anyInt());
 
 		listApplicationServiceUnderTest.countQuestions(UUID.randomUUID().toString(), questions);
+
+		verify(questionCountJpaRepository, times(1)).findAllByQuestionsAndInstructor(anyList(), anyString());
+		verify(questionCountJpaRepository, times(2)).findByQuestionAndInstructor(any(UUID.class), anyString());
+		verify(questionCountJpaRepository, times(2)).updateCounter(any(UUID.class), anyInt());
 	}
 
 	@Test

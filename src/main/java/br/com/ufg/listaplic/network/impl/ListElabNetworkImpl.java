@@ -5,7 +5,14 @@ import br.com.ufg.listaplic.converter.QuestionConverterDTO;
 import br.com.ufg.listaplic.dto.ListDTO;
 import br.com.ufg.listaplic.dto.LoginDTO;
 import br.com.ufg.listaplic.dto.QuestionDTO;
-import br.com.ufg.listaplic.dto.listelab.*;
+import br.com.ufg.listaplic.dto.listelab.AreaDoConhecimentoDTO;
+import br.com.ufg.listaplic.dto.listelab.AuthenticationDTO;
+import br.com.ufg.listaplic.dto.listelab.FilterList;
+import br.com.ufg.listaplic.dto.listelab.ListElabKnowledgeAreaResultDTO;
+import br.com.ufg.listaplic.dto.listelab.ListElabResultDTO;
+import br.com.ufg.listaplic.dto.listelab.ListElabSingleQuestionResultDTO;
+import br.com.ufg.listaplic.dto.listelab.ListElabSingleResultDTO;
+import br.com.ufg.listaplic.dto.listelab.UserIntegrationDTO;
 import br.com.ufg.listaplic.exception.NetworkException;
 import br.com.ufg.listaplic.network.ListElabNetwork;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +34,9 @@ import java.util.stream.Collectors;
 @Component
 public class ListElabNetworkImpl implements ListElabNetwork {
 
+	private static final String FAILED_TO_GET_TOKEN_IN_LIST_ELAB_SERVICE = "Failed to get token in ListElab service";
+	private static final String FAILED_TO_GET_LIST_IN_LIST_ELAB_SERVICE = "Failed to get list in ListElab service";
+	private static final String FAILED_TO_GET_QUESTION_IN_LIST_ELAB_SERVICE = "Failed to get question in ListElab service";
 	private static final String BEARER = "Bearer ";
 
 	@Value("${listelab.api.auth.email}")
@@ -64,14 +74,14 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 
 			HttpEntity<?> entity = new HttpEntity<>(headers);
 
-			UriComponentsBuilder builder = buildUriComponentsBuilderForFilterList(filterList, apiFilterListUrl);
+			UriComponentsBuilder builder = buildUriComponentsBuilderForFilterList(filterList);
 
 			ListElabResultDTO listElabResultDTO = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, ListElabResultDTO.class).getBody();
 			return listElabResultDTO.getResultado().stream()
 					.map(ListConverterDTO::fromListIntegrationToListDTO)
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get list in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_LIST_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
@@ -86,7 +96,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 
 			return ListConverterDTO.fromListIntegrationToListDTO(listElabSingleResultDTO.getResultado());
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get list in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_LIST_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
@@ -101,7 +111,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 
 			return areaDoConhecimentoDTOS.getResultado();
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get list in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_LIST_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
@@ -114,7 +124,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 			ListElabSingleQuestionResultDTO questionResultDTO = restTemplate.exchange(apiDiscursiveQuestionUrl + "/" + id, HttpMethod.GET, entity, ListElabSingleQuestionResultDTO.class).getBody();
 			return questionResultDTO.getResultado() != null ? QuestionConverterDTO.fromDomainToDTO(questionResultDTO.getResultado()) : new QuestionDTO();
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get question in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_QUESTION_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
@@ -130,7 +140,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 		try {
 			return login(getLoginAdmin()).getToken();
 		} catch (Exception e) {
-			throw new NetworkException("Failed to get token in ListElab service", e);
+			throw new NetworkException(FAILED_TO_GET_TOKEN_IN_LIST_ELAB_SERVICE, e);
 		}
 	}
 
@@ -141,7 +151,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 		return loginDTO;
 	}
 
-	private UriComponentsBuilder buildUriComponentsBuilderForFilterList(FilterList filterList, String apiUrl) {
+	private UriComponentsBuilder buildUriComponentsBuilderForFilterList(FilterList filterList) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiFilterListUrl);
 
 		if (filterList.getAreaDeConhecimento() != null) {
@@ -160,7 +170,7 @@ public class ListElabNetworkImpl implements ListElabNetwork {
 			builder.queryParam("tempoEsperadoResposta", filterList.getTempoEsperadoResposta());
 		}
 
-		if (filterList.getTags() != null && filterList.getTags().size() > 0) {
+		if (filterList.getTags() != null && !filterList.getTags().isEmpty()) {
 			builder.queryParam("tags", filterList.getTags().toArray());
 		}
 

@@ -2,7 +2,6 @@ package br.com.ufg.listaplic.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
 import java.util.UUID;
 
 public class AnswerDTO {

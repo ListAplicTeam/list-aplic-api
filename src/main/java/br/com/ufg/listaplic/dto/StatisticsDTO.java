@@ -3,7 +3,6 @@ package br.com.ufg.listaplic.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
